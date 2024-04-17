@@ -3,6 +3,7 @@ import { DocumentSnapshot } from "firebase/firestore";
 export default class Product {
     id: string;
     name: string;
+    mainImageUrl: string;
     categoryId: string;
     subCategoryId: string;
     order: number;
@@ -12,10 +13,12 @@ export default class Product {
     price: number;
     customerSellingPrice: number;
     code: string;
+    desc: string;
 
-    constructor (id: string, name: string, categoryId: string, subCategoryId: string, order: number, isPopular: boolean, isSoldOut: boolean, originalPrice: number, price: number, customerSellingPrice: number, code: string) {
+    constructor (id: string, name: string, mainImageUrl: string, categoryId: string, subCategoryId: string, order: number, isPopular: boolean, isSoldOut: boolean, originalPrice: number, price: number, customerSellingPrice: number, code: string, desc: string) {
         this.id = id;
         this.name = name;
+        this.mainImageUrl = mainImageUrl;
         this.categoryId = categoryId;
         this.subCategoryId = subCategoryId;
         this.order = order;
@@ -25,6 +28,7 @@ export default class Product {
         this.price = price;
         this.customerSellingPrice = customerSellingPrice;
         this.code = code;
+        this.desc = desc;
     }
 }
 
@@ -33,6 +37,7 @@ export function convertFirebaseObjectToProduct(docSnap: DocumentSnapshot): Produ
     return new Product(
         docSnap.id,
         data.name,
+        data.mainImageUrl,
         data.categoryId,
         data.subCategoryId,
         data.order,
@@ -41,6 +46,7 @@ export function convertFirebaseObjectToProduct(docSnap: DocumentSnapshot): Produ
         data.originalPrice,
         data.price,
         data.customerSellingPrice,
-        data.code
+        data.code,
+        data.desc
     );
 }

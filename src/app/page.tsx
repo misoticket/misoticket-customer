@@ -8,7 +8,7 @@ import Category from "@/models/Category";
 import { useEffect, useState } from "react";
 import MainPage from "./pages/MainPage";
 import { Tab } from "./constants/Tab";
-import { fetchCategoryList as fetchCategoryListFromServer, fetchProductList as fetchProductListFromServer } from "@/apis/FirestoreGET";
+import { fetchCategoryList as fetchCategoryListFromServer, fetchAllProductList as fetchProductListFromServer } from "@/apis/FirestoreGET";
 import Product from "@/models/Product";
 import { useRouter } from "next/navigation";
 
@@ -31,8 +31,7 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <MyHeader />
-      <CategoryTabBar categoryList={categoryList} clickCategory={(category) => router.push(`/category/${category.id}`)} />
-      { selectedTab === Tab.MAIN && <MainPage /> }
+      <CategoryTabBar selectedCategoryId={null} />
       <MySubFooter />
       <MyFooter />
     </main>

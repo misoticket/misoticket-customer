@@ -1,4 +1,5 @@
 import Category, { convertFirebaseObjectToCategory } from "@/models/Category";
+import Order, { convertDocSnapToOrder } from "@/models/Order";
 import Product, { convertFirebaseObjectToProduct } from "@/models/Product";
 import SubCategory, { convertFirebaseObjectToSubCategory } from "@/models/SubCategory";
 import db from "@/utils/FirebaseDB";
@@ -8,7 +9,6 @@ export async function fetchCategory(categoryId: string): Promise<Category> {
     const docRef = doc(db, `categories/${categoryId}`);
     return convertFirebaseObjectToCategory(await getDoc(docRef));
 }
-
 
 export async function fetchCategoryList(): Promise<Category[]> {
     const categoriesRef = collection(db, "categories/");
@@ -37,4 +37,15 @@ export async function fetchProductListWithCategoryId(categoryId: string): Promis
     const q = query(collection(db, "products/"), where("categoryId", "==", categoryId));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(docSnap => convertFirebaseObjectToProduct(docSnap)).sort((a, b) => a.order - b.order);
+}
+
+export async function fetchOrder(orderId: string): Promise<Order> {
+    const docRef = doc(db, `orders/${orderId}`);
+    return convertDocSnapToOrder(await getDoc(docRef));
+}
+
+export async function searchOrderList(personName: string): Promise<Order[]> {
+    const q = query(collection(db, "orders/"), where("orderPersonName", "==", personName));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(docSnap => convertDocSnapToOrder(docSnap));
 }

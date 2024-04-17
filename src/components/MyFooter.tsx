@@ -2,8 +2,8 @@ export default function MyFooter() {
     return (
         <>
             <div className="flex flex-col gap-5 mt-32">
-                <div className="flex px-40 gap-5">
-                    <div className="rounded-lg py-4 border border-solid border-1 border-gray-200 pl-4 pr-16">
+                <div className="flex px-56 gap-5">
+                    <div className="rounded-lg py-4 border border-solid border-gray-200 pl-4 pr-16">
                         <p className="font-semibold text-2xl">02-421-6311</p>
                         <div className="mt-4 flex flex-col gap-1">
                             <p className="font-medium text-xs">월~토 : 오전 9:40 ~ 오후 7:30</p>
@@ -11,7 +11,7 @@ export default function MyFooter() {
                             <p className="font-medium text-xs">일요일 : 휴무</p>
                         </div>
                     </div>
-                    <div className="rounded-lg py-4 border border-solid border-1 border-gray-200 pl-4 pr-16">
+                    <div className="rounded-lg py-4 border border-solid border-gray-200 pl-4 pr-16">
                         <p className="font-medium text-xs text-gray-400">BANK INFO</p>
                         <div className="flex h-full flex-col justify-center">
                             <p className="font-medium text-base">국민 852501-04-084385</p>
@@ -19,7 +19,7 @@ export default function MyFooter() {
                         </div>
                     </div>
                 </div>
-                <div className="bg-gray-100 py-10 px-40 flex flex-col gap-6">
+                <div className="bg-gray-100 py-10 px-56 flex flex-col gap-6">
                     <div className="flex gap-5">
                         <button className="font-medium text-xs text-gray-400">회사소개</button>
                         <button className="font-medium text-xs text-gray-400">이용약관</button>

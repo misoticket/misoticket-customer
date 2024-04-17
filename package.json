@@ -9,7 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.15.15",
+    "@nextui-org/react": "^2.2.10",
     "firebase": "^10.11.0",
+    "framer-motion": "^11.0.28",
+    "material": "^0.9.9",
     "next": "14.2.1",
     "react": "^18",
     "react-dom": "^18"
