@@ -120,7 +120,7 @@ export default function Page() {
                                             deliveryPhoneNumber1 + deliveryPhoneNumber2 + deliveryPhoneNumber3,
                                             deliveryMessage,
                                             depositorName,
-                                            OrderStatus.PREPARE_DELIVERY,
+                                            OrderStatus.WAITING_PAYMENT,
                                             ""
                                         ));
                 router.push(`/order/${orderId}`);

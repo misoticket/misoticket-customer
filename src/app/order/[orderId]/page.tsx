@@ -117,7 +117,7 @@ export default function Page({ params }: { params: { orderId: string } }) {
                                 </div>
                                 <div className="border-t flex gap-3 mt-3 pt-12 justify-end">
                                     <p className="font-medium text-sm">총</p>
-                                    <p className="font-semibold text-sm text-theme">{ order && getTotalPrice(order).toLocaleString() }원</p>
+                                    <p className="font-semibold text-xl text-theme">{ order && getTotalPrice(order).toLocaleString() }원</p>
                                 </div>
                             </div>
                         </div>

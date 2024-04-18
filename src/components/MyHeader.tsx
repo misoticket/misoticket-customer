@@ -10,9 +10,11 @@ export default function MyHeader() {
     const router = useRouter();
 
     const [isMobile, setIsMobile] = useState(false);
+    const [isLogIn, setIsLogIn] = useState(false);
 
     useEffect(() => {
         checkIsMobile();
+        checkIsLogIn();
     }, []);
 
     function checkIsMobile() {
@@ -21,6 +23,24 @@ export default function MyHeader() {
         }
     }
 
+    function checkIsLogIn() {
+        const ili = localStorage.getItem("misoticket-isLogIn");
+
+        if (ili === null) {
+            setIsLogIn(false);
+        } else {
+            setIsLogIn(ili === "y");
+        }
+    }
+
+    function logInAction() {
+        if (isLogIn) {
+            localStorage.setItem("misoticket-isLogIn", "n");
+            setIsLogIn(false);
+        } else {
+            router.push("/user/log_in");
+        }
+    }
 
     return (
         <>
@@ -30,6 +50,7 @@ export default function MyHeader() {
                         <div className="mx-4 py-3 flex justify-between items-center">
                             <Image onClick={() => router.push("/")} src={logoImg} alt="" width={70} className="cursor-pointer" />
                             <div className="flex items-center gap-4">
+                                {/* <p className="font-medium text-sm cursor-pointer hover:opacity-50" onClick={() => router.push("/inquire")}>{`${isLogIn ? "로그아웃" : "로그인"}`}</p> */}
                                 <p className="font-medium text-sm cursor-pointer hover:opacity-50" onClick={() => router.push("/inquire")}>주문조회</p>
                                 <div
                                     onClick={() => router.push("/market")}
@@ -56,6 +77,7 @@ export default function MyHeader() {
                         <div className="mx-10 py-3 flex justify-between items-center">
                             <Image onClick={() => router.push("/")} src={logoImg} alt="" width={120} className="cursor-pointer" />
                             <div className="flex items-center gap-6">
+                                <p className="font-medium text-sm cursor-pointer hover:opacity-50" onClick={() => logInAction()}>{`${isLogIn ? "로그아웃" : "로그인"}`}</p>
                                 <p className="font-medium text-sm cursor-pointer hover:opacity-50" onClick={() => router.push("/inquire")}>주문조회</p>
                                 <div
                                     onClick={() => router.push("/market")}

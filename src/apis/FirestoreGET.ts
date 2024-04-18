@@ -5,6 +5,7 @@ import MainCategory, { convertDocSnapToMainCategory } from "@/models/MainCategor
 import Order, { convertDocSnapToOrder } from "@/models/Order";
 import Product, { convertFirebaseObjectToProduct } from "@/models/Product";
 import SubCategory, { convertFirebaseObjectToSubCategory } from "@/models/SubCategory";
+import { convertDocSnapToUser } from "@/models/User";
 import db from "@/utils/FirebaseDB";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 
@@ -75,5 +76,24 @@ export async function fetchActiveBanner(): Promise<Banner | null> {
         }
 
         return banner;
+    }
+}
+
+export async function checkUserExist(id: string): Promise<boolean> {
+    const docRef = doc(db, `users/${id}`);
+    const docSnap = await getDoc(docRef);
+    return docSnap.exists();
+}
+
+export async function logIn(id: string, pw: string): Promise<boolean> {
+    const docRef = doc(db, `users/${id}`);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        const user = convertDocSnapToUser(docSnap);
+
+        return user.pw === pw;
+    } else {
+        return false;
     }
 }
