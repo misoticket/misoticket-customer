@@ -3,8 +3,8 @@
 import Image from "next/image";
 import logoImg from "@/../public/images/logo.png";
 import { useRouter } from "next/navigation";
-import giftCardGradient from "@/../public/images/GiftCardGradient.png";
 import { useEffect, useState } from "react";
+import giftCardImg from "@/../public/images/giftCardGradient.png";
 
 export default function MyHeader() {
     const router = useRouter();
@@ -37,7 +37,7 @@ export default function MyHeader() {
                                 >
                                     <Image
                                         className="w-full h-full rounded-lg"
-                                        src={giftCardGradient}
+                                        src={giftCardImg}
                                         alt=""
                                     />
                                     <div className="w-full h-full absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center">
@@ -63,7 +63,7 @@ export default function MyHeader() {
                                 >
                                     <Image
                                         className="w-full h-full rounded-lg"
-                                        src={giftCardGradient}
+                                        src={giftCardImg}
                                         alt=""
                                     />
                                     <div className="w-full h-full absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center">
