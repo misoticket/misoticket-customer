@@ -85,6 +85,7 @@ export default function Page({ params }: { params: { categoryId: string } }) {
                                 {
                                     subCategoryList.map((subCategory) => (
                                         <div 
+                                            key={subCategory.id}
                                             onClick={() => setSelectedSubCategory(subCategory)} 
                                             className="flex cursor-pointer hover:opacity-40 items-center gap-2"
                                         >
@@ -116,6 +117,7 @@ export default function Page({ params }: { params: { categoryId: string } }) {
                                 {
                                     showProductList.map((product) => (
                                         <ProductCell 
+                                            key={product.id}
                                             product={product} 
                                             handleClick={() => router.push(`/product/${product.id}`)}
                                         />
@@ -134,6 +136,7 @@ export default function Page({ params }: { params: { categoryId: string } }) {
                                 {
                                     subCategoryList.map((subCategory) => (
                                         <div 
+                                            key={subCategory.id}
                                             onClick={() => setSelectedSubCategory(subCategory)} 
                                             className="flex cursor-pointer hover:opacity-40 items-center gap-2"
                                         >
@@ -165,6 +168,7 @@ export default function Page({ params }: { params: { categoryId: string } }) {
                                 {
                                     showProductList.map((product) => (
                                         <ProductCell 
+                                            key={product.id}
                                             product={product} 
                                             handleClick={() => router.push(`/product/${product.id}`)}
                                         />

@@ -72,6 +72,7 @@ export default function Page() {
                                         {
                                             categoryList.map((category) => (
                                                 <p 
+                                                    key={category.id}
                                                     onClick={() => setSelectedCategory(category)}
                                                     className={`font-medium whitespace-nowrap text-sm py-4 px-3 cursor-pointer hover:bg-gray-100 ${selectedCategory && selectedCategory.id === category.id ? "text-theme-sub" : "text-black"}`}
                                                 >
@@ -100,6 +101,7 @@ export default function Page() {
                                     { 
                                         showProductList.map((product) => (
                                             <div 
+                                                key={product.id}
                                                 onClick={() => router.push(`/product/${product.id}`)}
                                                 className="flex mx-4 border-b border-solid border-gray-200 cursor-pointer group"
                                             >
@@ -137,6 +139,7 @@ export default function Page() {
                                         {
                                             categoryList.map((category) => (
                                                 <p 
+                                                    key={category.id}
                                                     onClick={() => setSelectedCategory(category)}
                                                     className={`font-medium text-sm py-4 px-3 cursor-pointer hover:bg-gray-100 ${selectedCategory && selectedCategory.id === category.id ? "text-theme-sub" : "text-black"}`}
                                                 >
@@ -165,6 +168,7 @@ export default function Page() {
                                     { 
                                         showProductList.map((product) => (
                                             <div 
+                                                key={product.id}
                                                 onClick={() => router.push(`/product/${product.id}`)}
                                                 className="flex w-full border-b border-solid border-gray-200 cursor-pointer group"
                                             >

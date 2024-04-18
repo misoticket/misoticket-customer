@@ -35,6 +35,7 @@ export default function CategoryPage({ params }: { params: { categoryId: string 
                         {
                             subCategoryList.map((subCategory) => (
                                 <button 
+                                    key={subCategory.id}
                                     onClick={() => setSelectSubCategory(subCategory)} 
                                     className="font-medium text-base hover:opacity-40"
                                 >
@@ -50,7 +51,7 @@ export default function CategoryPage({ params }: { params: { categoryId: string 
                     <div className="grid gap-10">
                         {
                             productList.map((product) => (
-                                <ProductCell product={product} handleClick={() => alert("!")} />
+                                <ProductCell key={product.id} product={product} handleClick={() => alert("!")} />
                             ))
                         }
                     </div>
