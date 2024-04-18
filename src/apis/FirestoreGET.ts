@@ -1,4 +1,7 @@
+import { BannerStatus } from "@/app/constants/BannerStatus";
+import { Banner, convertDocSnapToBanner } from "@/models/Banner";
 import Category, { convertFirebaseObjectToCategory } from "@/models/Category";
+import MainCategory, { convertDocSnapToMainCategory } from "@/models/MainCategory";
 import Order, { convertDocSnapToOrder } from "@/models/Order";
 import Product, { convertFirebaseObjectToProduct } from "@/models/Product";
 import SubCategory, { convertFirebaseObjectToSubCategory } from "@/models/SubCategory";
@@ -48,4 +51,29 @@ export async function searchOrderList(personName: string): Promise<Order[]> {
     const q = query(collection(db, "orders/"), where("orderPersonName", "==", personName));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(docSnap => convertDocSnapToOrder(docSnap));
+}
+
+export async function fetchMainCategoryList(): Promise<MainCategory[]> {
+    const collectionRef = collection(db, "mainCategories/");
+    const querySnapshot = await getDocs(collectionRef);
+    return querySnapshot.docs.map(obj => convertDocSnapToMainCategory(obj));
+}
+
+export async function fetchActiveBanner(): Promise<Banner | null> {
+    const collRef = collection(db, "banners/");
+    const querySnapshot = await getDocs(collRef);
+    
+    if (querySnapshot.docs.length === 0) {
+        return null;
+    } else {
+        let banner: Banner | null = null;
+
+        for (let b of querySnapshot.docs.map(docSnap => convertDocSnapToBanner(docSnap))) {
+            if (b.status === BannerStatus.ACTIVE) {
+                banner = b;
+            }
+        }
+
+        return banner;
+    }
 }

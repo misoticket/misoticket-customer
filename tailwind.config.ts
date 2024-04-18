@@ -10,7 +10,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      width:{
+      fontSize: {
+        'xxs': '10px',
+      },
+      width: {
         '705': '705px',
       },
       backgroundImage: {

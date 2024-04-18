@@ -5,18 +5,26 @@ import CategoryTabBar from "@/components/CategoryTabBar";
 import MyFooter from "@/components/MyFooter";
 import MyHeader from "@/components/MyHeader";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Page() {
     const router = useRouter();
 
+    const [isMobile, setIsMobile] = useState(false);
     const personNameRef = useRef<HTMLInputElement>(null);
     const personPhoneNumberRef = useRef<HTMLInputElement>(null);
     const orderPasswordRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
+        checkIsMobile();
         window.scrollTo(0, 0);
     }, []);
+
+    function checkIsMobile() {
+        if (window.innerWidth < 576) {
+            setIsMobile(true);
+        }
+    }
 
     async function search() {
         if (personNameRef.current && personPhoneNumberRef.current && orderPasswordRef.current) {
@@ -51,44 +59,87 @@ export default function Page() {
         <>
             <MyHeader />
             <CategoryTabBar selectedCategoryId={null} />
-            <div className="justify-center flex w-full mt-56">
-                <div className="w-96">
-                    <p className="font-medium text-base border-black border-l-4 pl-2 mb-6">주문조회</p>
-                    <div className="border rounded-lg p-5">
-                        <p className="font-regular text-sm text-gray-400 mb-8">아래 정보를 입력해주세요.</p>
-                        <div className="flex gap-3 items-center mb-3">
-                            <p className="font-medium text-sm w-20">주문자명</p>
-                            <input 
-                                className="flex-1 border font-medium text-sm h-8 px-3"
-                                ref={personNameRef}
-                            />
+            {
+                isMobile ?
+                <div className="justify-center flex w-full mt-40 px-6">
+                    <div className="w-full">
+                        <p className="font-medium text-base border-black border-l-4 pl-2 mb-6">주문조회</p>
+                        <div className="border rounded-lg p-5">
+                            <p className="font-regular text-sm text-gray-400 mb-8">아래 정보를 입력해주세요.</p>
+                            <div className="flex gap-3 items-center mb-3">
+                                <p className="font-medium text-sm w-20">주문자명</p>
+                                <input 
+                                    className="flex-1 border font-medium text-sm h-8 px-3"
+                                    ref={personNameRef}
+                                />
+                            </div>
+                            <div className="flex gap-3 items-center mb-3">
+                                <p className="font-medium text-sm w-20">휴대폰번호</p>
+                                <input 
+                                    placeholder="숫자만 입력해주세요."
+                                    type="number"
+                                    className="flex-1 border font-medium text-sm h-8 px-3 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    ref={personPhoneNumberRef}
+                                />
+                            </div>
+                            <div className="flex gap-3 items-center">
+                                <p className="font-medium text-sm w-20">주문 비밀번호</p>
+                                <input 
+                                    type="password"
+                                    placeholder="4~12자"
+                                    className="flex-1 border font-medium text-sm h-8 px-3"
+                                    ref={orderPasswordRef}
+                                />
+                            </div>
+                            <button
+                                className="mt-16 bg-gray-900 w-full h-10 font-medium text-white rounded-lg hover:opacity-80"
+                                onClick={() => search()}
+                            >
+                                검색하기
+                            </button>
                         </div>
-                        <div className="flex gap-3 items-center mb-3">
-                            <p className="font-medium text-sm w-20">휴대폰번호</p>
-                            <input 
-                                placeholder="숫자만 입력해주세요."
-                                type="number"
-                                className="flex-1 border font-medium text-sm h-8 px-3 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                ref={personPhoneNumberRef}
-                            />
+                    </div>
+                </div> :
+                <div className="justify-center flex w-full mt-56">
+                    <div className="w-96">
+                        <p className="font-medium text-base border-black border-l-4 pl-2 mb-6">주문조회</p>
+                        <div className="border rounded-lg p-5">
+                            <p className="font-regular text-sm text-gray-400 mb-8">아래 정보를 입력해주세요.</p>
+                            <div className="flex gap-3 items-center mb-3">
+                                <p className="font-medium text-sm w-20">주문자명</p>
+                                <input 
+                                    className="flex-1 border font-medium text-sm h-8 px-3"
+                                    ref={personNameRef}
+                                />
+                            </div>
+                            <div className="flex gap-3 items-center mb-3">
+                                <p className="font-medium text-sm w-20">휴대폰번호</p>
+                                <input 
+                                    placeholder="숫자만 입력해주세요."
+                                    type="number"
+                                    className="flex-1 border font-medium text-sm h-8 px-3 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    ref={personPhoneNumberRef}
+                                />
+                            </div>
+                            <div className="flex gap-3 items-center">
+                                <p className="font-medium text-sm w-20">주문 비밀번호</p>
+                                <input 
+                                    type="password"
+                                    placeholder="4~12자"
+                                    className="flex-1 border font-medium text-sm h-8 px-3"
+                                    ref={orderPasswordRef}
+                                />
+                            </div>
+                            <button
+                                className="mt-16 bg-gray-900 w-full h-10 font-medium text-white rounded-lg hover:opacity-80"
+                                onClick={() => search()}
+                            >
+                                검색하기
+                            </button>
                         </div>
-                        <div className="flex gap-3 items-center">
-                            <p className="font-medium text-sm w-20">주문 비밀번호</p>
-                            <input 
-                                placeholder="4~12자"
-                                className="flex-1 border font-medium text-sm h-8 px-3"
-                                ref={orderPasswordRef}
-                            />
-                        </div>
-                        <button
-                            className="mt-16 bg-gray-900 w-full h-10 font-medium text-white rounded-lg hover:opacity-80"
-                            onClick={() => search()}
-                        >
-                            검색하기
-                        </button>
                     </div>
                 </div>
-            </div>
+            }
             <MyFooter />
         </>
     );
