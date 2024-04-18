@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import localFont from 'next/font/local'
+import { Suspense } from "react";
 
 const pretendard = localFont({
   src: [
@@ -44,8 +45,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={pretendard.className}>
-      <body>{children}</body>
-    </html>
+    <Suspense>
+      <html lang="en" className={pretendard.className}>
+        <body>{children}</body>
+      </html>
+    </Suspense>
   );
 }
