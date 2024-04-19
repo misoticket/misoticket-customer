@@ -1,11 +1,13 @@
 import { BannerStatus } from "@/app/constants/BannerStatus";
+import AdminPost, { convertDocSnapToAdminPost } from "@/models/AdminPost";
 import { Banner, convertDocSnapToBanner } from "@/models/Banner";
 import Category, { convertFirebaseObjectToCategory } from "@/models/Category";
 import MainCategory, { convertDocSnapToMainCategory } from "@/models/MainCategory";
 import Order, { convertDocSnapToOrder } from "@/models/Order";
+import Post, { convertDocSnapToPost } from "@/models/Post";
 import Product, { convertFirebaseObjectToProduct } from "@/models/Product";
 import SubCategory, { convertFirebaseObjectToSubCategory } from "@/models/SubCategory";
-import { convertDocSnapToUser } from "@/models/User";
+import User, { convertDocSnapToUser } from "@/models/User";
 import db from "@/utils/FirebaseDB";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 
@@ -96,4 +98,19 @@ export async function logIn(id: string, pw: string): Promise<boolean> {
     } else {
         return false;
     }
+}
+
+export async function fetchUserList(): Promise<User[]> {
+    const querySnapshot = await getDocs(collection(db, "users"));
+    return querySnapshot.docs.map(doc => convertDocSnapToUser(doc));
+}
+
+export async function fetchPostList(): Promise<Post[]> {
+    const querySnapshot = await getDocs(collection(db, "posts"));
+    return querySnapshot.docs.map(doc => convertDocSnapToPost(doc)).sort((a, b) => b.createdTime.getTime() - a.createdTime.getTime());
+}
+
+export async function fetchAdminPostList(): Promise<AdminPost[]> {
+    const querySnapshot = await getDocs(collection(db, "adminPosts"));
+    return querySnapshot.docs.map(doc => convertDocSnapToAdminPost(doc)).sort((a, b) => b.createdTime.getTime() - a.createdTime.getTime());
 }

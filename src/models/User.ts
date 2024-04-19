@@ -3,12 +3,14 @@ import { DocumentSnapshot } from "@firebase/firestore";
 export default class User {
     id: string;
     pw: string;
+    name: string;
     phoneNumber: string;
     email: string;
 
-    constructor (id: string, pw: string, phoneNumber: string, email: string) {
+    constructor (id: string, pw: string, name: string, phoneNumber: string, email: string) {
         this.id = id;
         this.pw = pw;
+        this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
@@ -16,6 +18,7 @@ export default class User {
     toFirebaseObjectWithoutId() {
         return {
             pw: this.pw,
+            name: this.name,
             phoneNumber: this.phoneNumber,
             email: this.email
         };
@@ -27,6 +30,7 @@ export function convertDocSnapToUser(docSnap: DocumentSnapshot): User {
     return new User(
         docSnap.id,
         data.pw,
+        data.name,
         data.phoneNumber,
         data.email
     );

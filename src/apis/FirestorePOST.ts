@@ -1,4 +1,5 @@
 import Order from "@/models/Order";
+import Post from "@/models/Post";
 import User from "@/models/User";
 import db from "@/utils/FirebaseDB";
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
@@ -12,10 +13,11 @@ export async function uploadOrder(order: Order): Promise<string> {
     return doc.id;
 }
 
-export async function makeUser(id: string, pw: string, phoneNumber: string, email: string) {
+export async function makeUser(id: string, pw: string, name: string, phoneNumber: string, email: string) {
     const user = new User(
         "",
         pw,
+        name,
         phoneNumber,
         email
     );
@@ -23,5 +25,18 @@ export async function makeUser(id: string, pw: string, phoneNumber: string, emai
     await setDoc(
         doc(db, "users", id),
         user.toFirebaseObjectWithoutId()
+    );
+}
+
+export async function addPost(userId: string, title: string, content: string) {
+    await addDoc(
+        collection(db, "posts/"),
+        new Post(
+            "",
+            userId,
+            new Date(),
+            title, 
+            content
+        ).toFirebaseObjectWithoutId()
     );
 }

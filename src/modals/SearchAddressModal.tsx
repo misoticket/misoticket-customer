@@ -17,7 +17,7 @@ export default function SearchAddressModal(props: SearchAddressModalProps) {
 
     return (
         <>
-            <Modal isOpen={props.isOpen} onOpenChange={props.onOpenChange} onClose={()=>close()}>
+            <Modal isOpen={props.isOpen} onOpenChange={props.onOpenChange}>
                 <ModalContent>
                     {(onClose) => (
                         <>

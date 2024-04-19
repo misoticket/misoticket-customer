@@ -14,16 +14,18 @@ export default function Page() {
     const idRef = useRef<HTMLInputElement>(null);
     const pwRef = useRef<HTMLInputElement>(null);
     const pwConfirmRef = useRef<HTMLInputElement>(null);
+    const nameRef = useRef<HTMLInputElement>(null);
     const phoneNumberRef1 = useRef<HTMLInputElement>(null);
     const phoneNumberRef2 = useRef<HTMLInputElement>(null);
     const phoneNumberRef3 = useRef<HTMLInputElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
 
     async function signUp() {
-        if (idRef.current && pwRef.current && pwConfirmRef.current && phoneNumberRef1.current && phoneNumberRef2.current && phoneNumberRef3.current && emailRef.current) {
+        if (idRef.current && pwRef.current && pwConfirmRef.current && nameRef.current && phoneNumberRef1.current && phoneNumberRef2.current && phoneNumberRef3.current && emailRef.current) {
             const id = idRef.current.value;
             const pw = pwRef.current.value;
             const pwConfirm = pwConfirmRef.current.value;
+            const name = nameRef.current.value;
             const phoneNumber = phoneNumberRef1.current.value + phoneNumberRef2.current.value + phoneNumberRef3.current.value;
             const email = emailRef.current.value;
 
@@ -39,7 +41,7 @@ export default function Page() {
                 if (await checkUserExist(id)) {
                     alert("이미 존재하는 아이디입니다.");
                 } else {
-                    await makeUser(id, pw, phoneNumber, email);
+                    await makeUser(id, pw, name, phoneNumber, email);
                     localStorage.setItem("misoticket-isLogIn", "y");
                     localStorage.setItem("misoticket-userId", id);
 
@@ -83,6 +85,13 @@ export default function Page() {
                                 <input
                                     ref={pwConfirmRef}
                                     type="password"
+                                    className="flex-1 h-10 bg-white rounded border px-3 text-sm font-medium"
+                                />
+                            </div>
+                            <div className="flex items-center gap-4 mt-3">
+                                <p className="font-medium text-sm w-20">성함</p>
+                                <input
+                                    ref={nameRef}
                                     className="flex-1 h-10 bg-white rounded border px-3 text-sm font-medium"
                                 />
                             </div>
