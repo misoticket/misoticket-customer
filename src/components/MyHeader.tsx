@@ -46,7 +46,7 @@ export default function MyHeader() {
         <>
             {
                 isMobile ?
-                    <div className="w-full fixed bg-white left-0 right-0 top-0 z-10">
+                    <div className="w-full fixed bg-white left-0 right-0 top-0 z-50">
                         <div className="mx-4 py-3 flex justify-between items-center">
                             <Image onClick={() => router.push("/")} src={logoImg} alt="" width={70} className="cursor-pointer" />
                             <div className="flex items-center gap-4">
@@ -73,7 +73,7 @@ export default function MyHeader() {
                         </div>
                         <div className="h-0.5 bg-gray-200"></div>
                     </div> :
-                    <div className="w-full fixed bg-white left-0 right-0 top-0 z-10">
+                    <div className="w-full fixed bg-white left-0 right-0 top-0 z-50">
                         <div className="mx-10 py-3 flex justify-between items-center">
                             <Image onClick={() => router.push("/")} src={logoImg} alt="" width={120} className="cursor-pointer" />
                             <div className="flex items-center gap-6">

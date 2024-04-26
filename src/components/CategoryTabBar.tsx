@@ -33,8 +33,8 @@ export default function CategoryTabBar(props: CategoryTabBar) {
         <>
             {
                 isMobile ?
-                    <div className="flex">
-                        <div className="flex flex-col w-full fixed left-0 right-0 top-14 bg-white overflow-hidden">
+                    <div className="flex z-10">
+                        <div className="flex flex-col w-full fixed left-0 right-0 top-14 bg-white overflow-hidden z-10">
                             <div className="flex overflow-scroll scrollbar-hide">
                                 {
                                     categoryList.map((category: Category) => (
@@ -52,7 +52,7 @@ export default function CategoryTabBar(props: CategoryTabBar) {
                         </div>
                     </div> : 
                     <div>
-                        <div className="flex flex-col w-full items-center fixed left-0 right-0 top-14 bg-white">
+                        <div className="flex flex-col w-full items-center fixed left-0 right-0 top-14 bg-white z-10">
                             <div>
                                 {
                                     categoryList.map((category: Category) => (

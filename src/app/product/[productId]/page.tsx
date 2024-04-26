@@ -67,7 +67,13 @@ export default function Page({ params }: { params: { productId: string } }) {
                                         </div>
                                         <div className="w-0.5 flex-1 bg-gray-100"></div>
                                         <div className="">
-                                            <p className="text-base font-semibold">{product && product.name}</p>
+                                            <div className="flex items-center gap-2">
+                                                <p className="text-base font-semibold">{product && product.name}</p>
+                                                {
+                                                    product && product.isPopular &&
+                                                        <p className="text-white bg-red-400 px-1 py-0.5 rounded font-medium text-xs">인기상품</p>
+                                                }
+                                            </div>
                                             <p className="text-xs font-regular mr-4 text-gray-400 mt-2">상품코드 <span className="ml-2">{product && product.code}</span></p>
                                             <div className="mt-8">
                                                 <p className="font-bold text-sm text-gray-400 line-through">{ product && product.originalPrice.toLocaleString() }<span className="font-medium">원</span></p>
@@ -102,12 +108,22 @@ export default function Page({ params }: { params: { productId: string } }) {
                                             <div className="h-0.5 bg-gray-100 mt-5"></div>
                                             {
                                                 product &&
-                                                    <button 
-                                                        onClick={() => router.push(`/order?from=product&productId=${product.id}&amount=${amount}`)}
-                                                        className="w-full py-5 border-2 border-solid border-black font-semibold mt-10 hover:bg-gray-100"
-                                                    >
-                                                        구매하기
-                                                    </button>
+                                                    <>
+                                                        {
+                                                            product.isSoldOut ?
+                                                                <p
+                                                                    className="w-full text-center py-5 border-2 border-solid text-gray-600 border-gray-400 font-semibold bg-gray-200 mt-10"
+                                                                >
+                                                                    Sold Out
+                                                                </p> :
+                                                                <button 
+                                                                    onClick={() => router.push(`/order?from=product&productId=${product.id}&amount=${amount}`)}
+                                                                    className="w-full py-5 border-2 border-solid border-black font-semibold mt-10 hover:bg-gray-100"
+                                                                >
+                                                                    구매하기
+                                                                </button>
+                                                        }
+                                                    </>
                                             }
                                         </div>
                                     </div>
@@ -142,7 +158,13 @@ export default function Page({ params }: { params: { productId: string } }) {
                                         </div>
                                         <div className="w-0.5 flex-1 bg-gray-100"></div>
                                         <div className="w-80">
-                                            <p className="text-base font-semibold">{product && product.name}</p>
+                                            <div className="flex items-center gap-2">
+                                                <p className="text-base font-semibold">{product && product.name}</p>
+                                                {
+                                                    product && product.isPopular &&
+                                                        <p className="text-white bg-red-400 px-1 py-0.5 rounded font-medium text-xs">인기상품</p>
+                                                }
+                                            </div>
                                             <p className="text-xs font-regular mr-4 text-gray-400 mt-2">상품코드 <span className="ml-2">{product && product.code}</span></p>
                                             <div className="mt-8">
                                                 <p className="font-bold text-sm text-gray-400 line-through">{ product && product.originalPrice.toLocaleString() }<span className="font-medium">원</span></p>
@@ -177,12 +199,22 @@ export default function Page({ params }: { params: { productId: string } }) {
                                             <div className="h-0.5 bg-gray-100 mt-5"></div>
                                             {
                                                 product &&
-                                                    <button 
-                                                        onClick={() => router.push(`/order?from=product&productId=${product.id}&amount=${amount}`)}
-                                                        className="w-full py-5 border-2 border-solid border-black font-semibold mt-10 hover:bg-gray-100"
-                                                    >
-                                                        구매하기
-                                                    </button>
+                                                    <>
+                                                        {
+                                                            product.isSoldOut ?
+                                                                <p
+                                                                    className="w-full text-center py-5 border-2 border-solid text-gray-600 border-gray-400 font-semibold bg-gray-200 mt-10"
+                                                                >
+                                                                    Sold Out
+                                                                </p> :
+                                                                <button 
+                                                                    onClick={() => router.push(`/order?from=product&productId=${product.id}&amount=${amount}`)}
+                                                                    className="w-full py-5 border-2 border-solid border-black font-semibold mt-10 hover:bg-gray-100"
+                                                                >
+                                                                    구매하기
+                                                                </button>
+                                                        }
+                                                    </>
                                             }
                                         </div>
                                     </div>
