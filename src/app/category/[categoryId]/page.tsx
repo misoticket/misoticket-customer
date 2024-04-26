@@ -124,6 +124,10 @@ export default function Page({ params }: { params: { categoryId: string } }) {
                                     ))
                                 }
                             </div>
+                            {
+                                showProductList.length === 0 &&
+                                    <p className="font-medium text-base text-center mt-20 mb-56 text-gray-400">상품이 없습니다.</p>
+                            }
                         </div>
                         <MyFooter />
                     </div> :
@@ -175,6 +179,10 @@ export default function Page({ params }: { params: { categoryId: string } }) {
                                     ))
                                 }
                             </div>
+                            {
+                                showProductList.length === 0 &&
+                                    <p className="font-medium text-base text-center mt-20 mb-56 text-gray-400">상품이 없습니다.</p>
+                            }
                         </div>
                         <MyFooter />
                     </div>
