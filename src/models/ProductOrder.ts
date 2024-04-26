@@ -7,10 +7,24 @@ export default class ProductOrder {
         this.amount = amount;
     }
 
+    toObject() {
+        return {
+            productId: this.productId,
+            amount: this.amount
+        };
+    }
+
     toFirebaseObject() {
         return {
             productId: this.productId,
             amount: this.amount
         };
     }
+}
+
+export function convertObjectToProductOrder(obj: any) {
+    return new ProductOrder(
+        obj.productId,
+        obj.amount
+    );
 }

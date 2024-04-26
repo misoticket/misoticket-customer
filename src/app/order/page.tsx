@@ -1,7 +1,7 @@
 'use client';
 
-import { fetchProduct } from "@/apis/FirestoreGET";
-import { uploadOrder } from "@/apis/FirestorePOST";
+import { fetchAllProductList, fetchProduct } from "@/apis/FirestoreGET";
+import { removeProductOrderListWithNoneUserId, removeProductOrderListWithUserId, uploadOrder } from "@/apis/FirestorePOST";
 import CategoryTabBar from "@/components/CategoryTabBar";
 import MyFooter from "@/components/MyFooter";
 import MyHeader from "@/components/MyHeader";
@@ -28,6 +28,9 @@ export default function Page() {
     const [amount, setAmount] = useState<number | null>(null);
     const [product, setProduct] = useState<Product | null>(null);
     const [address, setAddress] = useState("");
+
+    const [productOrderList, setProductOrderList] = useState<ProductOrder[]>([]);
+    const [productList, setProductList] = useState<Product[]>([]);
 
     const orderPersonNameRef = useRef<HTMLInputElement>(null);
     const orderPhoneNumber1Ref = useRef<HTMLInputElement>(null);
@@ -63,9 +66,25 @@ export default function Page() {
     }
 
     async function fetchData() {
-        setFrom(searchParams.get("from"));
-        setAmount(Number(searchParams.get("amount")));
-        setProduct(await fetchProduct(searchParams.get("productId")!));
+        const from = searchParams.get("from");
+        setFrom(from);
+
+        if (from === OrderFrom.product) {
+            setAmount(Number(searchParams.get("amount")));
+            setProduct(await fetchProduct(searchParams.get("productId")!));
+        } else {
+            setProductList(await fetchAllProductList());
+            const pList: ProductOrder[] = [];
+
+            for (const p of searchParams.getAll("prod_order")) {
+                pList.push(new ProductOrder(
+                    p.split("_")[0],
+                    Number(p.split("_")[1]),
+                ));
+            }
+
+            setProductOrderList(pList);
+        }
     }
 
     async function order() {
@@ -124,8 +143,45 @@ export default function Page() {
                                             ""
                                         ));
                 router.push(`/order/${orderId}`);
-            } else {
-                alert("Todo");
+            } else if (from && from === OrderFrom.basket) {
+                setIsOrdering(true);
+                const orderId = await uploadOrder(new Order(
+                                            "",
+                                            new Date(),
+                                            productOrderList,
+                                            orderPersonName,
+                                            orderPhoneNumber1 + orderPhoneNumber2 + orderPhoneNumber3,
+                                            orderEmail1 + orderEmail2,
+                                            orderPassword,
+                                            address,
+                                            addressDeatailRef.current!.value,
+                                            deliveryPersonName,
+                                            deliveryPhoneNumber1 + deliveryPhoneNumber2 + deliveryPhoneNumber3,
+                                            deliveryMessage,
+                                            depositorName,
+                                            OrderStatus.WAITING_PAYMENT,
+                                            ""
+                                        ));
+                
+                const isLogIn = localStorage.getItem("misoticket-isLogIn");
+                if (isLogIn !== null) {
+                    if (isLogIn === "y") {
+                        const userId = localStorage.getItem("misoticket-userId")!;
+                        await removeProductOrderListWithUserId(userId, productOrderList);
+                    } else {
+                        const noneUserId = localStorage.getItem("misoticket-noneUserId");
+                        if (noneUserId !== null) {
+                            await removeProductOrderListWithNoneUserId(noneUserId, productOrderList);
+                        }
+                    }
+                } else {
+                    const noneUserId = localStorage.getItem("misoticket-noneUserId");
+                    if (noneUserId !== null) {
+                        await removeProductOrderListWithNoneUserId(noneUserId, productOrderList);
+                    } 
+                }
+
+                router.push(`/order/${orderId}`);
             }
         }
     }
@@ -137,6 +193,21 @@ export default function Page() {
 
     function openEscrow() {
         window.open("http://escrow1.kbstar.com/quics?page=B009111&cc=b010807%3Ab008491&mHValue=034d60a69b928601e8ab5b534f1ca8a8", "_blank");
+    }
+
+    function getProduct(id: string): Product {
+        return productList.filter(p => p.id === id)[0];
+    }
+
+    function getTotalPrice(): number {
+        let sum = 0; 
+
+        for (const po of productOrderList) {
+            const product = getProduct(po.productId);
+            sum += product.price*po.amount;
+        }
+
+        return sum;
     }
 
     return (
@@ -160,23 +231,23 @@ export default function Page() {
                                             </div>
                                             <div className="w-full mt-8">
                                                 <p className="bg-gray-100 font-medium px-3 py-2 border border-gray-300">주문내역</p>
-                                                <div className="flex border-r border-l border-b border-1 border-gray-300">
+                                                <div className="flex border-r border-l border-b border-gray-300">
                                                     <p className="w-full font-regular text-xs bg-gray-50 px-3 py-2 border-r border-gray-300">상품정보</p>
                                                     <p className="w-56 font-regular text-xs bg-gray-50 text-center py-2 border-r border-gray-300">판매가</p>
-                                                    <p className="w-56 font-regular text-xs bg-gray-50 text-center py-2 border-r border-gray-300">수량</p>
+                                                    <p className="w-24 font-regular text-xs bg-gray-50 text-center py-2 border-r border-gray-300">수량</p>
                                                     <p className="w-56 font-regular text-xs bg-gray-50 text-center py-2">합계</p>
                                                 </div>
                                             </div>
                                             {
                                                 from && from === OrderFrom.product && amount && product &&
                                                     <div>
-                                                        <div className="flex border-r border-l border-b border-1 border-gray-300">
-                                                            <p className="w-full font-regular text-xs bg-white px-3 py-6 border-r border-1 border-white">{ product.name }</p>
+                                                        <div className="flex border-r border-l border-b border-gray-300">
+                                                            <p className="w-full font-regular text-xs bg-white px-3 py-6 border-r border-white">{ product.name }</p>
                                                             <p className="w-56 font-medium text-xs bg-white text-center py-6 border-r border-white">{ product.price.toLocaleString() }원</p>
-                                                            <p className="w-56 font-regular text-xs bg-white text-center py-6 border-r border-white">{ amount }</p>
+                                                            <p className="w-24 font-regular text-xs bg-white text-center py-6 border-r border-white">{ amount }</p>
                                                             <p className="w-56 font-semibold text-xs bg-white text-center py-6">{ (product.price*amount).toLocaleString() }<span className="font-medium">원</span></p>
                                                         </div>
-                                                        <div className="flex justify-end border-r border-l border-b border-1 border-gray-300 bg-gray-100">
+                                                        <div className="flex justify-end border-r border-l border-b border-gray-300 bg-gray-100">
                                                             <div className="flex py-6">
                                                                 <div className="flex flex-col gap-1 items-start">
                                                                     <p className="font-regular text-xs text-gray-400">상품 총 금액</p>
@@ -189,6 +260,38 @@ export default function Page() {
                                                                 </div>
                                                                 <p className="font-medium mx-4">=</p>
                                                                 <p className="font-bold text-base text-theme mr-5">{ (product.price*amount).toLocaleString() }<span className="font-medium">원</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <p className="font-medium text-theme mt-4 text-xs mx-3">상품의 옵션 및 수량 변경은 상품상세 또는 장바구니에서 가능합니다.</p>
+                                                    </div>
+                                            }
+                                            {
+                                                from && from === OrderFrom.basket && productOrderList.length > 0 &&
+                                                    <div>
+                                                        {
+                                                            productOrderList.map(prodOrder => (
+                                                                <div key={prodOrder.productId} className="flex border-r border-l border-b border-gray-300">
+                                                                    <p className="w-full font-regular text-xs bg-white px-3 py-6 border-r border-white">{ getProduct(prodOrder.productId).name }</p>
+                                                                    <p className="w-56 font-medium text-xs bg-white text-center py-6 border-r border-white">{ getProduct(prodOrder.productId).price.toLocaleString() }원</p>
+                                                                    <p className="w-24 font-regular text-xs bg-white text-center py-6 border-r border-white">{ prodOrder.amount }</p>
+                                                                    <p className="w-56 font-semibold text-xs bg-white text-center py-6">{ (getProduct(prodOrder.productId).price*prodOrder.amount).toLocaleString() }<span className="font-medium">원</span></p>
+                                                                </div>
+                                                            ))
+
+                                                        }
+                                                        <div className="flex justify-end border-r border-l border-b border-gray-300 bg-gray-100">
+                                                            <div className="flex py-6">
+                                                                <div className="flex flex-col gap-1 items-start">
+                                                                    <p className="font-regular text-xs text-gray-400">상품 총 금액</p>
+                                                                    <p className="font-medium text-xs">{ getTotalPrice().toLocaleString() }<span className="font-medium">원</span></p>
+                                                                </div>
+                                                                <p className="font-medium mx-4">+</p>
+                                                                <div className="flex flex-col gap-1 items-start">
+                                                                    <p className="font-regular text-xs text-gray-400">배송비</p>
+                                                                    <p className="font-medium text-xs">{ (4000).toLocaleString() }<span className="font-medium">원</span></p>
+                                                                </div>
+                                                                <p className="font-medium mx-4">=</p>
+                                                                <p className="font-bold text-base text-theme mr-5">{ getTotalPrice().toLocaleString() }<span className="font-medium">원</span></p>
                                                             </div>
                                                         </div>
                                                         <p className="font-medium text-theme mt-4 text-xs mx-3">상품의 옵션 및 수량 변경은 상품상세 또는 장바구니에서 가능합니다.</p>
@@ -395,7 +498,7 @@ export default function Page() {
                                             </div>
                                             <div className="w-full mt-8">
                                                 <p className="bg-gray-100 font-medium px-5 py-2 border border-gray-300">주문내역</p>
-                                                <div className="flex border-r border-l border-b border-1 border-gray-300">
+                                                <div className="flex border-r border-l border-b border-gray-300">
                                                     <p className="w-full font-regular text-sm bg-gray-50 px-5 py-2 border-r border-gray-300">상품정보</p>
                                                     <p className="w-56 font-regular text-sm bg-gray-50 text-center py-2 border-r border-gray-300">판매가</p>
                                                     <p className="w-56 font-regular text-sm bg-gray-50 text-center py-2 border-r border-gray-300">수량</p>
@@ -407,15 +510,15 @@ export default function Page() {
                                             {
                                                 from && from === OrderFrom.product && amount && product &&
                                                     <div>
-                                                        <div className="flex border-r border-l border-b border-1 border-gray-300">
-                                                            <p className="w-full font-regular text-sm bg-white px-5 py-6 border-r border-1 border-white">{ product.name }</p>
+                                                        <div className="flex border-r border-l border-b border-gray-300">
+                                                            <p className="w-full font-regular text-sm bg-white px-5 py-6 border-r border-white">{ product.name }</p>
                                                             <p className="w-56 font-medium text-sm bg-white text-center py-6 border-r border-white">{ product.price.toLocaleString() }원</p>
                                                             <p className="w-56 font-regular text-sm bg-white text-center py-6 border-r border-white">{ amount }</p>
                                                             <p className="w-56 font-regular text-sm bg-white text-center py-6 border-r border-white">기본배송</p>
                                                             <p className="w-56 font-medium text-sm bg-white text-center py-6 border-r border-white">고정</p>
                                                             <p className="w-56 font-semibold text-sm bg-white text-center py-6">{ (product.price*amount).toLocaleString() }<span className="font-medium">원</span></p>
                                                         </div>
-                                                        <div className="flex justify-end border-r border-l border-b border-1 border-gray-300 bg-gray-100">
+                                                        <div className="flex justify-end border-r border-l border-b border-gray-300 bg-gray-100">
                                                             <div className="flex py-6">
                                                                 <div className="flex gap-2 items-center">
                                                                     <p className="font-regular text-xs text-gray-400">상품 총 금액</p>
@@ -433,6 +536,40 @@ export default function Page() {
                                                         <p className="font-medium text-theme mt-4 text-xs mx-5">상품의 옵션 및 수량 변경은 상품상세 또는 장바구니에서 가능합니다.</p>
                                                     </div>
                                             }
+                                            {
+                                                from && from === OrderFrom.basket && productOrderList.length > 0 &&
+                                                    <div>
+                                                        {
+                                                            productOrderList.map(prodOrder => (
+                                                                <div key={prodOrder.productId} className="flex border-r border-l border-b border-gray-300">
+                                                                    <p className="w-full font-regular text-sm bg-white px-5 py-6 border-r border-white">{ getProduct(prodOrder.productId).name }</p>
+                                                                    <p className="w-56 font-medium text-sm bg-white text-center py-6 border-r border-white">{ getProduct(prodOrder.productId).price.toLocaleString() }원</p>
+                                                                    <p className="w-56 font-regular text-sm bg-white text-center py-6 border-r border-white">{ prodOrder.amount }</p>
+                                                                    <p className="w-56 font-regular text-sm bg-white text-center py-6 border-r border-white">기본배송</p>
+                                                                    <p className="w-56 font-medium text-sm bg-white text-center py-6 border-r border-white">고정</p>
+                                                                    <p className="w-56 font-semibold text-sm bg-white text-center py-6">{ (getProduct(prodOrder.productId).price*prodOrder.amount).toLocaleString() }<span className="font-medium">원</span></p>
+                                                                </div>
+                                                            ))
+
+                                                        }
+                                                        <div className="flex justify-end border-r border-l border-b border-gray-300 bg-gray-100">
+                                                            <div className="flex py-6">
+                                                                <div className="flex gap-2 items-center">
+                                                                    <p className="font-regular text-xs text-gray-400">상품 총 금액</p>
+                                                                    <p className="font-medium text-sm">{ getTotalPrice().toLocaleString() }<span className="font-medium">원</span></p>
+                                                                </div>
+                                                                <p className="font-medium mx-4">+</p>
+                                                                <div className="flex gap-2 items-center">
+                                                                    <p className="font-regular text-xs text-gray-400">배송비</p>
+                                                                    <p className="font-medium text-sm">{ (4000).toLocaleString() }<span className="font-medium">원</span></p>
+                                                                </div>
+                                                                <p className="font-medium mx-4">=</p>
+                                                                <p className="font-bold text-xl text-theme mr-5">{ getTotalPrice().toLocaleString() }<span className="font-medium">원</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <p className="font-medium text-theme mt-4 text-xs mx-5">상품의 옵션 및 수량 변경은 상품상세 또는 장바구니에서 가능합니다.</p>
+                                                    </div>
+                                            }
                                             <div className="w-full h-0.5 bg-gray-100 my-10"></div>
                                             <div>
                                                 <p className="font-medium text-sm mx-2">주문 정보</p>
@@ -445,7 +582,7 @@ export default function Page() {
                                                         />
                                                     </div>
                                                 </div>
-                                                <div className="flex border-l border-r border-b border-1 border-gray-200">
+                                                <div className="flex border-l border-r border-b border-gray-200">
                                                     <p className="w-56 font-regular text-sm p-4 bg-gray-50 border-r border-gray-200">휴대폰 번호 <span className="font-medium text-theme">*</span></p>
                                                     <div className="w-full flex items-center px-5">
                                                         <input 
@@ -467,7 +604,7 @@ export default function Page() {
                                                         />
                                                     </div>
                                                 </div>
-                                                <div className="flex border-l border-r border-b border-1 border-gray-200">
+                                                <div className="flex border-l border-r border-b border-gray-200">
                                                     <p className="w-56 font-regular text-sm p-4 bg-gray-50 border-r border-gray-200">이메일 <span className="font-medium text-theme">*</span></p>
                                                     <div className="w-full flex items-center px-5">
                                                         <input 
@@ -481,7 +618,7 @@ export default function Page() {
                                                         />
                                                     </div>
                                                 </div>
-                                                <div className="flex border-l border-r border-b border-1 border-gray-200">
+                                                <div className="flex border-l border-r border-b border-gray-200">
                                                     <p className="w-56 font-regular text-sm p-4 bg-gray-50 border-r border-gray-200">주문조회 비밀번호 <span className="font-medium text-theme">*</span></p>
                                                     <div className="w-full flex items-center px-5">
                                                         <input 
@@ -492,7 +629,7 @@ export default function Page() {
                                                         <p className="ml-4 font-regular text-xs text-gray-400">(주문조회시 필요합니다. 4자에서 12자 영문 또는 숫자 대소문자 구분)</p>
                                                     </div>
                                                 </div>
-                                                <div className="flex border-l border-r border-b border-1 border-gray-200">
+                                                <div className="flex border-l border-r border-b border-gray-200">
                                                     <p className="w-56 font-regular text-sm p-4 bg-gray-50 border-r border-gray-200">주문조회 비밀번호 확인 <span className="font-medium text-theme">*</span></p>
                                                     <div className="w-full flex items-center px-5">
                                                         <input 
@@ -505,7 +642,7 @@ export default function Page() {
                                             </div>
                                             <div className="mt-10">
                                                 <p className="font-medium text-sm mx-2">배송 정보</p>
-                                                <div className="flex border border-gray-200 mt-4">
+                                                <div className="flex border-l border-r border-t border-gray-200 mt-4">
                                                     <p className="w-56 font-regular text-sm p-4 bg-gray-50 border-r border-gray-200">주소<span className="font-medium text-theme">*</span></p>
                                                     <div className="w-full flex items-center px-5 py-3">
                                                         {
@@ -531,7 +668,7 @@ export default function Page() {
                                                         />
                                                     </div>
                                                 </div>
-                                                <div className="flex border-l border-r border-b border-1 border-gray-200">
+                                                <div className="flex border-l border-r border-b border-gray-200">
                                                     <p className="w-56 font-regular text-sm p-4 bg-gray-50 border-r border-gray-200">휴대폰 번호 <span className="font-medium text-theme">*</span></p>
                                                     <div className="w-full flex items-center px-5">
                                                         <input 
@@ -553,7 +690,7 @@ export default function Page() {
                                                         />
                                                     </div>
                                                 </div>
-                                                <div className="flex border-l border-r border-b border-1 border-gray-200">
+                                                <div className="flex border-l border-r border-b border-gray-200">
                                                     <p className="w-56 font-regular text-sm p-4 bg-gray-50 border-r border-gray-200">배송메시지</p>
                                                     <div className="w-full flex items-center px-5 py-4">
                                                         <textarea 
@@ -563,60 +700,64 @@ export default function Page() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {
-                                                from && from === OrderFrom.product && amount && product &&
-                                                    <div className="mt-10">
-                                                        <p className="font-medium text-sm mx-2">결제 정보</p>
-                                                        <div className="mt-4 border border-gray-200 flex items-center">
-                                                            <div className="w-full">
-                                                                <p className="my-4 mx-6 font-medium text-sm">무통장 입금</p>
-                                                                <div className="my-4 mx-6">
-                                                                    <div className="flex mt-4 border border-gray-200">
-                                                                        <p className="w-56 font-regular text-sm p-4 bg-gray-50 border-r border-gray-200">입금자명</p>
-                                                                        <div className="w-full flex items-center px-5">
-                                                                            <input 
-                                                                                ref={depositorNameRef}
-                                                                                className="w-64 border border-gray-300 px-2 py-1 text-sm font-regular" 
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="flex border-l border-r border-b border-1 border-gray-200">
-                                                                        <p className="w-56 font-regular text-sm p-4 bg-gray-50 border-r border-gray-200">입금은행</p>
-                                                                        <div className="w-full flex items-center px-5">
-                                                                            <p className="w-full text-sm font-medium">국민은행 85250104084385 백승헌(티켓나라잠실)</p>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="flex border-l border-r border-b border-1 border-gray-200">
-                                                                        <p className="w-56 font-regular text-sm p-4 bg-gray-50 border-r border-gray-200">안심구매 (에스크로)</p>
-                                                                        <div className="w-full flex items-center px-5">
-                                                                            <button 
-                                                                                onClick={() => openEscrow()}
-                                                                                className="font-medium text-sm underline hover:opacity-50"
-                                                                            >
-                                                                                KB에스크로 바로가기
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
+                                            <div className="mt-10">
+                                                <p className="font-medium text-sm mx-2">결제 정보</p>
+                                                <div className="mt-4 border border-gray-200 flex items-center">
+                                                    <div className="w-full">
+                                                        <p className="my-4 mx-6 font-medium text-sm">무통장 입금</p>
+                                                        <div className="my-4 mx-6">
+                                                            <div className="flex mt-4 border border-gray-200">
+                                                                <p className="w-56 font-regular text-sm p-4 bg-gray-50 border-r border-gray-200">입금자명</p>
+                                                                <div className="w-full flex items-center px-5">
+                                                                    <input 
+                                                                        ref={depositorNameRef}
+                                                                        className="w-64 border border-gray-300 px-2 py-1 text-sm font-regular" 
+                                                                    />
                                                                 </div>
                                                             </div>
-                                                            <div className="w-96 bg-gray-100 px-5 py-8 h-full flex flex-col">
-                                                                <div>
-                                                                    <p className="font-regular text-sm">무통장입금 최종결제 금액</p>
-                                                                    <p className="font-bold text-xl mt-1 text-theme">{ (product.price*amount).toLocaleString() }<span className="font-medium">원</span></p>
+                                                            <div className="flex border-l border-r border-b border-gray-200">
+                                                                <p className="w-56 font-regular text-sm p-4 bg-gray-50 border-r border-gray-200">입금은행</p>
+                                                                <div className="w-full flex items-center px-5">
+                                                                    <p className="w-full text-sm font-medium">국민은행 85250104084385 백승헌(티켓나라잠실)</p>
                                                                 </div>
-                                                                <div>
-                                                                    <p className="font-medium text-xs mt-10 mb-1">결제정보를 확인하였으며,<br/>구매진행에 동의합니다.</p>
+                                                            </div>
+                                                            <div className="flex border-l border-r border-b border-gray-200">
+                                                                <p className="w-56 font-regular text-sm p-4 bg-gray-50 border-r border-gray-200">안심구매 (에스크로)</p>
+                                                                <div className="w-full flex items-center px-5">
                                                                     <button 
-                                                                        onClick={() => order()}
-                                                                        className="font-medium w-full py-4 text-white bg-black mt-2 hover:opacity-70"
+                                                                        onClick={() => openEscrow()}
+                                                                        className="font-medium text-sm underline hover:opacity-50"
                                                                     >
-                                                                        결제하기
+                                                                        KB에스크로 바로가기
                                                                     </button>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                            }
+                                                    <div className="w-96 bg-gray-100 px-5 py-8 h-full flex flex-col">
+                                                        <div>
+                                                            <p className="font-regular text-sm">무통장입금 최종결제 금액</p>
+                                                            {
+                                                                from && from === OrderFrom.product && product && amount &&
+                                                                    <p className="font-bold text-xl mt-1 text-theme">{ (product.price*amount).toLocaleString() }<span className="font-medium">원</span></p>
+                                                            }
+                                                            {
+                                                               from && from === OrderFrom.basket &&
+                                                                    <p className="font-bold text-xl mt-1 text-theme">{ getTotalPrice().toLocaleString() }<span className="font-medium">원</span></p>
+                                                            }
+                                                        </div>
+                                                        <div>
+                                                            <p className="font-medium text-xs mt-10 mb-1">결제정보를 확인하였으며,<br/>구매진행에 동의합니다.</p>
+                                                            <button 
+                                                                onClick={() => order()}
+                                                                className="font-medium w-full py-4 text-white bg-black mt-2 hover:opacity-70"
+                                                            >
+                                                                결제하기
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                             }

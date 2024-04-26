@@ -1,6 +1,6 @@
 'use client';
 
-import { fetchProduct } from "@/apis/FirestoreGET";
+import { fetchProduct, fetchProductOrderListWithNoneUserId, fetchProductOrderListWithUserId } from "@/apis/FirestoreGET";
 import CategoryTabBar from "@/components/CategoryTabBar";
 import MyFooter from "@/components/MyFooter";
 import MyHeader from "@/components/MyHeader";
@@ -11,22 +11,48 @@ import { useEffect, useState } from "react";
 import plusImg from "@/../public/images/plusFill.png";
 import minusImg from "@/../public/images/minusFill.png";
 import { NextUIProvider } from "@nextui-org/react";
+import { addProductOrderWithNoneUserId, addProductOrderWithUserId } from "@/apis/FirestorePOST";
+import ProductOrder from "@/models/ProductOrder";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Page({ params }: { params: { productId: string } }) {
     const router = useRouter();
 
     const [isMobile, setIsMobile] = useState(false);
+    const [productOrderList, setProductOrderList] = useState<ProductOrder[]>([]);
     const [product, setProduct] = useState<Product | null>(null);
     const [amount, setAmount] = useState(1);
 
     useEffect(() => {
         checkIsMobile();
+        fetchProductOrderList();
         fetchData();
     }, []);
 
     function checkIsMobile() {
         if (window.innerWidth < 576) {
             setIsMobile(true);
+        }
+    }
+
+    async function fetchProductOrderList() {
+        const isLogIn = localStorage.getItem("misoticket-isLogIn");
+
+        if (isLogIn !== null) {
+            if (isLogIn === "y") {
+                const userId = localStorage.getItem("misoticket-userId")!;
+                setProductOrderList(await fetchProductOrderListWithUserId(userId));
+            } else {
+                const noneUserId = localStorage.getItem("misoticket-noneUserId");
+                if (noneUserId !== null) {
+                    setProductOrderList(await fetchProductOrderListWithNoneUserId(noneUserId));
+                }
+            }
+        } else {
+            const noneUserId = localStorage.getItem("misoticket-noneUserId");
+            if (noneUserId !== null) {
+                setProductOrderList(await fetchProductOrderListWithNoneUserId(noneUserId));
+            } 
         }
     }
 
@@ -42,6 +68,43 @@ export default function Page({ params }: { params: { productId: string } }) {
         } else {
             setAmount(amount+1);
         }
+    }
+
+    async function addToCart() {
+        const isExist = productOrderList.filter(po => po.productId === product!.id).length > 0;
+
+        if (isExist) {
+            alert("이미 장바구니에 있는 상품입니다.");
+        } else {
+            const isLogIn = localStorage.getItem("misoticket-isLogIn");
+
+            if (isLogIn !== null) {
+                if (isLogIn === "y") {
+                    const userId = localStorage.getItem("misoticket-userId")!;
+                    await addProductOrderWithUserId(userId, new ProductOrder(product!.id, amount));
+                } else {
+                    const noneUserId = localStorage.getItem("misoticket-noneUserId");
+                    if (noneUserId !== null) {
+                        await addProductOrderWithNoneUserId(noneUserId, new ProductOrder(product!.id, amount));
+                    } else {
+                        const newNoneUserId = uuidv4();
+                        localStorage.setItem("misoticket-noneUserId", newNoneUserId);
+                        await addProductOrderWithNoneUserId(newNoneUserId, new ProductOrder(product!.id, amount));
+                    }
+                }
+            } else {
+                const noneUserId = localStorage.getItem("misoticket-noneUserId");
+                if (noneUserId !== null) {
+                    await addProductOrderWithNoneUserId(noneUserId, new ProductOrder(product!.id, amount));
+                } else {
+                    const newNoneUserId = uuidv4();
+                    localStorage.setItem("misoticket-noneUserId", newNoneUserId);
+                    await addProductOrderWithNoneUserId(newNoneUserId, new ProductOrder(product!.id, amount));
+                }
+            }
+        }
+        
+        router.push("/basket");
     }
 
     return (
@@ -116,12 +179,20 @@ export default function Page({ params }: { params: { productId: string } }) {
                                                                 >
                                                                     Sold Out
                                                                 </p> :
-                                                                <button 
-                                                                    onClick={() => router.push(`/order?from=product&productId=${product.id}&amount=${amount}`)}
-                                                                    className="w-full py-5 border-2 border-solid border-black font-semibold mt-10 hover:bg-gray-100"
-                                                                >
-                                                                    구매하기
-                                                                </button>
+                                                                <div>
+                                                                    <button 
+                                                                        onClick={() => router.push(`/order?from=product&productId=${product.id}&amount=${amount}`)}
+                                                                        className="w-full py-5 border-2 border-solid border-black font-semibold mt-10 hover:bg-gray-100"
+                                                                    >
+                                                                        구매하기
+                                                                    </button>
+                                                                    <button 
+                                                                        onClick={() => addToCart()}
+                                                                        className="w-full py-5 border-2 border-gray-300 font-medium mt-3 hover:bg-gray-100"
+                                                                    >
+                                                                        ADD TO CART
+                                                                    </button>
+                                                                </div>
                                                         }
                                                     </>
                                             }
@@ -207,12 +278,20 @@ export default function Page({ params }: { params: { productId: string } }) {
                                                                 >
                                                                     Sold Out
                                                                 </p> :
-                                                                <button 
-                                                                    onClick={() => router.push(`/order?from=product&productId=${product.id}&amount=${amount}`)}
-                                                                    className="w-full py-5 border-2 border-solid border-black font-semibold mt-10 hover:bg-gray-100"
-                                                                >
-                                                                    구매하기
-                                                                </button>
+                                                                <div>
+                                                                    <button 
+                                                                        onClick={() => router.push(`/order?from=product&productId=${product.id}&amount=${amount}`)}
+                                                                        className="w-full py-5 border-2 border-solid border-black font-semibold mt-10 hover:bg-gray-100"
+                                                                    >
+                                                                        구매하기
+                                                                    </button>
+                                                                    <button 
+                                                                        onClick={() => addToCart()}
+                                                                        className="w-full py-5 border-2 border-gray-300 font-medium mt-3 hover:bg-gray-100"
+                                                                    >
+                                                                        ADD TO CART
+                                                                    </button>
+                                                                </div>
                                                         }
                                                     </>
                                             }

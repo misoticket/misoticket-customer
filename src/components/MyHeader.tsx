@@ -84,6 +84,9 @@ export default function MyHeader() {
                                             <p className="font-medium text-xs" onClick={() => router.push("/inquire")}>주문조회</p>
                                         </DropdownItem>
                                         <DropdownItem>
+                                            <p className="font-medium text-xs" onClick={() => router.push("/basket")}>장바구니</p>
+                                        </DropdownItem>
+                                        <DropdownItem>
                                             <p className="font-medium text-xs" onClick={() => router.push("/qna")}>Q&A</p>
                                         </DropdownItem>
                                         <DropdownItem>
@@ -100,6 +103,7 @@ export default function MyHeader() {
                             <Image onClick={() => router.push("/")} src={logoImg} alt="" width={120} className="cursor-pointer" />
                             <div className="flex items-center gap-6">
                                 <p className="font-medium text-sm cursor-pointer hover:opacity-50" onClick={() => logInAction()}>{`${isLogIn ? "로그아웃" : "로그인"}`}</p>
+                                <p className="font-medium text-sm cursor-pointer hover:opacity-50" onClick={() => router.push("/basket")}>장바구니</p>
                                 <p className="font-medium text-sm cursor-pointer hover:opacity-50" onClick={() => router.push("/qna")}>Q&A</p>
                                 <p className="font-medium text-sm cursor-pointer hover:opacity-50" onClick={() => router.push("/inquire")}>주문조회</p>
                                 <div

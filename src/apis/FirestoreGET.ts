@@ -6,6 +6,7 @@ import MainCategory, { convertDocSnapToMainCategory } from "@/models/MainCategor
 import Order, { convertDocSnapToOrder } from "@/models/Order";
 import Post, { convertDocSnapToPost } from "@/models/Post";
 import Product, { convertFirebaseObjectToProduct } from "@/models/Product";
+import ProductOrder, { convertObjectToProductOrder } from "@/models/ProductOrder";
 import SubCategory, { convertFirebaseObjectToSubCategory } from "@/models/SubCategory";
 import User, { convertDocSnapToUser } from "@/models/User";
 import db from "@/utils/FirebaseDB";
@@ -113,4 +114,28 @@ export async function fetchPostList(): Promise<Post[]> {
 export async function fetchAdminPostList(): Promise<AdminPost[]> {
     const querySnapshot = await getDocs(collection(db, "adminPosts"));
     return querySnapshot.docs.map(doc => convertDocSnapToAdminPost(doc)).sort((a, b) => b.createdTime.getTime() - a.createdTime.getTime());
+}
+
+export async function fetchProductOrderListWithNoneUserId(noneUserId: string): Promise<ProductOrder[]> {
+    const q = query(collection(db, "productOrders/"), where("noneUserId", "==", noneUserId));
+    const querySnapshot = await getDocs(q);
+    
+    if (querySnapshot.docs.length === 0) {
+        return [];
+    } else {
+        const doc = querySnapshot.docs[0];
+        return doc.data().productOrderList.map((obj: any) => convertObjectToProductOrder(obj));
+    }
+}
+
+export async function fetchProductOrderListWithUserId(userId: string): Promise<ProductOrder[]> {
+    const q = query(collection(db, "productOrders/"), where("userId", "==", userId));
+    const querySnapshot = await getDocs(q);
+    
+    if (querySnapshot.docs.length === 0) {
+        return [];
+    } else {
+        const doc = querySnapshot.docs[0];
+        return doc.data().productOrderList.map((obj: any) => convertObjectToProductOrder(obj));
+    }
 }

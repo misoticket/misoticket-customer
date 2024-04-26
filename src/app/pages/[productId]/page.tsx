@@ -1,6 +1,6 @@
 'use client';
 
-import { fetchProduct } from "@/apis/FirestoreGET";
+import { fetchProduct, fetchProductOrderListWithUserId } from "@/apis/FirestoreGET";
 import CategoryTabBar from "@/components/CategoryTabBar";
 import MyFooter from "@/components/MyFooter";
 import MyHeader from "@/components/MyHeader";
@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import plusImg from "@/../public/images/plusFill.png";
 import minusImg from "@/../public/images/minusFill.png";
 import { NextUIProvider } from "@nextui-org/react";
+import ProductOrder from "@/models/ProductOrder";
 
 export default function Page({ params }: { params: { productId: string } }) {
     const router = useRouter();
