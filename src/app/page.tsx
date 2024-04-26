@@ -59,7 +59,7 @@ export default function Home() {
 
               }
             </div>
-            <div className={`${banner ? "mt-12" : "mt-56"} flex justify-center`}>
+            <div className={`${banner ? "mt-12" : "mt-40"} flex justify-center`}>
               <div className="overflow-hidden">
                 {
                   mainCategoryList.map((mc) => (

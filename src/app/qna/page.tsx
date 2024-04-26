@@ -19,6 +19,8 @@ import AdminPostModal from "@/modals/AdminPostModal";
 export default function Page() {
     const router = useRouter();
 
+    const [isMobile, setIsMobile] = useState<boolean | null>(null);
+    
     const [postList, setPostList] = useState<Post[]>([]);
     const [adminPostList, setAdminPostList] = useState<AdminPost[]>([]);
     const [userList, setUserList] = useState<User[]>([]);
@@ -31,7 +33,16 @@ export default function Page() {
 
     useEffect(() => {
         fetchData();
+        checkIsMobile();
     }, []);
+
+    function checkIsMobile() {
+        if (window.innerWidth < 576) {
+            setIsMobile(true);
+        } else {
+            setIsMobile(false);
+        }
+    }
 
     async function fetchData() {
         setUserList(await fetchUserList());
@@ -94,25 +105,13 @@ export default function Page() {
 
         const hour = date.getHours();
         const min = date.getMinutes();
-        let hourStr = "";
+        
+        const hourStr = hour < 10 ? `0${hour}` : `${hour}`
+        const minStr = min < 10 ? `0${min}` : `${min}`
 
-        if (hour < 12) {
-            if (hour == 0) {
-                hourStr = "오전 12시";
-            } else {
-                hourStr = `오전 ${hour}시`;
-            }
-        } else {
-            if (hour === 12) {
-                hourStr = "오후 12시";
-            } else {
-                hourStr = `오후 ${hour-12}시`;
-            }
-        }
+        const timeStr = hourStr + ":" + minStr
 
-        hourStr = hourStr + ` ${min.toLocaleString()}분`;
-
-        return dateStr + " " + hourStr;
+        return dateStr + " " + timeStr;
     }
 
     function openPost(post: Post) {
@@ -179,58 +178,118 @@ export default function Page() {
             <div>
                 <MyHeader />
                 <CategoryTabBar selectedCategoryId={null} />
-                <div className="mt-52 px-96">
-                    <div>
-                        <div className="mb-6 flex justify-between items-center">
-                            <div className="flex items-end">
-                                <p className="border-l-5 px-3 border-gray-800 text-lg font-medium">Q&A</p>
-                                <p className="text-xs font-medium mb-1 text-gray-400">상품에 관한 질문 & 답변입니다.</p>
-                            </div>
-                            <button 
-                                onClick={() => startAddingPost()}
-                                className="px-4 py-1 bg-gray-800 text-white font-medium text-sm hover:opacity-80 rounded-lg"
-                            >
-                                글쓰기
-                            </button>
-                        </div>
-                        <div className="border">
-                            <div className="flex bg-gray-100 border-b">
-                                <p className="text-sm font-medium flex-1 px-4 border-r py-1.5 text-center">제목</p>
-                                <p className="text-sm font-medium w-40 px-4 border-r py-1.5 text-center">작성자</p>
-                                <p className="text-sm font-medium w-44 px-4 py-1.5 text-center">작성일</p>
-                            </div>
-                            <div>
-                                {
-                                    postList.map((post) => (
-                                        <div key={post.id}>
-                                            <div 
-                                                onClick={() => openPost(post)}
-                                                key={post.id}
-                                                className="flex border-b hover:bg-gray-50 cursor-pointer"
-                                            >
-                                                <p className="text-sm font-regular flex-1 px-4 border-r py-2">{ post.title}</p>
-                                                <p className="text-sm font-regular w-40 px-4 border-r py-2 text-center">{ getUser(post.userId) && getUser(post.userId)!.name }</p>
-                                                <p className="text-sm font-regular w-44 px-4 py-2 text-center">{ getDateTimeStr(post.createdTime) }</p>
+                {
+                    isMobile !== null &&
+                        <>
+                            {
+                                isMobile === true ?
+                                    <div className="mt-40 mx-4">
+                                        <div>
+                                            <div className="mb-6 flex justify-between items-center">
+                                                <div className="flex items-end">
+                                                    <p className="border-l-5 px-3 border-gray-800 text-lg font-medium">Q&A</p>
+                                                    <p className="text-xs font-medium mb-1 text-gray-400">상품에 관한 질문 & 답변입니다.</p>
+                                                </div>
+                                                <button 
+                                                    onClick={() => startAddingPost()}
+                                                    className="px-4 py-1 bg-gray-800 text-white font-medium text-sm hover:opacity-80 rounded-lg"
+                                                >
+                                                    글쓰기
+                                                </button>
                                             </div>
-                                            {
-                                                getAdminPost(post.id) !== null &&
-                                                    <div 
-                                                        onClick={() => openAdminPost(post)}
-                                                        key={getAdminPost(post.id)!.id}
-                                                        className="flex border-b hover:bg-gray-50 cursor-pointer"
-                                                    >
-                                                        <p className="text-sm font-regular flex-1 px-4 border-r py-2">(답변) { post.title}</p>
-                                                        <p className="text-sm font-regular w-40 px-4 border-r py-2 text-center">관리자</p>
-                                                        <p className="text-sm font-regular w-44 px-4 py-2 text-center">{ getDateTimeStr(getAdminPost(post.id)!.createdTime) }</p>
-                                                    </div>
-                                            }
+                                            <div className="border-l border-t border-r">
+                                                <div className="flex bg-gray-100 border-b">
+                                                    <p className="text-xs font-medium flex-1 px-2 border-r py-1.5">제목</p>
+                                                    <p className="text-xs font-medium w-18 px-2 border-r py-1.5 text-center">작성자</p>
+                                                    <p className="text-xs font-medium w-24 px-2 py-1.5 text-center">작성일</p>
+                                                </div>
+                                                <div>
+                                                    {
+                                                        postList.map((post) => (
+                                                            <div key={post.id}>
+                                                                <div 
+                                                                    onClick={() => openPost(post)}
+                                                                    key={post.id}
+                                                                    className="flex border-b hover:bg-gray-50 cursor-pointer"
+                                                                >
+                                                                    <p className="text-xs font-regular flex-1 px-2 border-r py-2">{ post.title}</p>
+                                                                    <p className="text-xs font-regular w-18 px-2 border-r py-2 text-center">{ getUser(post.userId) && getUser(post.userId)!.name }</p>
+                                                                    <p className="text-xs font-regular w-24 px-2 py-2 text-center">{ getDateTimeStr(post.createdTime) }</p>
+                                                                </div>
+                                                                {
+                                                                    getAdminPost(post.id) !== null &&
+                                                                        <div 
+                                                                            onClick={() => openAdminPost(post)}
+                                                                            key={getAdminPost(post.id)!.id}
+                                                                            className="flex border-b hover:bg-gray-50 cursor-pointer"
+                                                                        >
+                                                                            <p className="text-xs font-regular flex-1 px-2 border-r py-2">(답변) { post.title}</p>
+                                                                            <p className="text-xs font-regular w-18 px-2 border-r py-2 text-center">관리자</p>
+                                                                            <p className="text-xs font-regular w-24 px-2 py-2 text-center">{ getDateTimeStr(getAdminPost(post.id)!.createdTime) }</p>
+                                                                        </div>
+                                                                }
+                                                            </div>
+                                                        ))
+                                                    }
+                                                </div>
+                                            </div>
                                         </div>
-                                    ))
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                    </div> :
+                                    <div className="mt-52 px-96">
+                                        <div>
+                                            <div className="mb-6 flex justify-between items-center">
+                                                <div className="flex items-end">
+                                                    <p className="border-l-5 px-3 border-gray-800 text-lg font-medium">Q&A</p>
+                                                    <p className="text-xs font-medium mb-1 text-gray-400">상품에 관한 질문 & 답변입니다.</p>
+                                                </div>
+                                                <button 
+                                                    onClick={() => startAddingPost()}
+                                                    className="px-4 py-1 bg-gray-800 text-white font-medium text-sm hover:opacity-80 rounded-lg"
+                                                >
+                                                    글쓰기
+                                                </button>
+                                            </div>
+                                            <div className="border">
+                                                <div className="flex bg-gray-100 border-b">
+                                                    <p className="text-sm font-medium flex-1 px-4 border-r py-1.5 text-center">제목</p>
+                                                    <p className="text-sm font-medium w-40 px-4 border-r py-1.5 text-center">작성자</p>
+                                                    <p className="text-sm font-medium w-44 px-4 py-1.5 text-center">작성일</p>
+                                                </div>
+                                                <div>
+                                                    {
+                                                        postList.map((post) => (
+                                                            <div key={post.id}>
+                                                                <div 
+                                                                    onClick={() => openPost(post)}
+                                                                    key={post.id}
+                                                                    className="flex border-b hover:bg-gray-50 cursor-pointer"
+                                                                >
+                                                                    <p className="text-sm font-regular flex-1 px-4 border-r py-2">{ post.title}</p>
+                                                                    <p className="text-sm font-regular w-40 px-4 border-r py-2 text-center">{ getUser(post.userId) && getUser(post.userId)!.name }</p>
+                                                                    <p className="text-sm font-regular w-44 px-4 py-2 text-center">{ getDateTimeStr(post.createdTime) }</p>
+                                                                </div>
+                                                                {
+                                                                    getAdminPost(post.id) !== null &&
+                                                                        <div 
+                                                                            onClick={() => openAdminPost(post)}
+                                                                            key={getAdminPost(post.id)!.id}
+                                                                            className="flex border-b hover:bg-gray-50 cursor-pointer"
+                                                                        >
+                                                                            <p className="text-sm font-regular flex-1 px-4 border-r py-2">(답변) { post.title}</p>
+                                                                            <p className="text-sm font-regular w-40 px-4 border-r py-2 text-center">관리자</p>
+                                                                            <p className="text-sm font-regular w-44 px-4 py-2 text-center">{ getDateTimeStr(getAdminPost(post.id)!.createdTime) }</p>
+                                                                        </div>
+                                                                }
+                                                            </div>
+                                                        ))
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            }
+                        </>
+                }
                 <MyFooter />
                 <AddPostModal 
                     isOpen={addPostModal.isOpen}
