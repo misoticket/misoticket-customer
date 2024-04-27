@@ -7,6 +7,7 @@ import Product from "@/models/Product";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { orderList } from "@/utils/RealTimePriceManager";
 
 export default function Page() {
     const router = useRouter();
@@ -40,7 +41,16 @@ export default function Page() {
         const catList = await fetchCategoryList();
         setCategoryList(catList);
 
-        setProductList(await fetchAllProductList());
+        const prodList = await fetchAllProductList();
+        const newList: Product[] = [];
+
+        for (const cat of orderList) {
+            for (const proId of cat.productIdList) {
+                newList.push(prodList.filter(p => p.id === proId)[0]);
+            }
+        }
+
+        setProductList(newList);
         setSelectedCategory(catList[0]);
     }
 
