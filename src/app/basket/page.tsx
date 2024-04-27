@@ -9,11 +9,12 @@ import Product from "@/models/Product";
 import ProductOrder from "@/models/ProductOrder";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 export default function Page() {
     const router = useRouter();
 
-    const [isMobile, setIsMobile] = useState(false);
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
     const [productList, setProductList] = useState<Product[]>([]);
     const [productOrderList, setProductOrderList] = useState<ProductOrder[]>([]);
@@ -21,16 +22,9 @@ export default function Page() {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        checkIsMobile();
         fetchProductList();
         fetchProductOrderList();
     }, []);
-
-    function checkIsMobile() {
-        if (window.innerWidth < 576) {
-            setIsMobile(true);
-        }
-    }
 
     async function fetchProductList() {
         setProductList(await fetchAllProductList());

@@ -12,24 +12,18 @@ import plusImg from "@/../public/images/plusFill.png";
 import minusImg from "@/../public/images/minusFill.png";
 import { NextUIProvider } from "@nextui-org/react";
 import ProductOrder from "@/models/ProductOrder";
+import { useMediaQuery } from "react-responsive";
 
 export default function Page({ params }: { params: { productId: string } }) {
     const router = useRouter();
 
-    const [isMobile, setIsMobile] = useState(false);
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
     const [product, setProduct] = useState<Product | null>(null);
     const [amount, setAmount] = useState(1);
 
     useEffect(() => {
-        checkIsMobile();
         fetchData();
     }, []);
-
-    function checkIsMobile() {
-        if (window.innerWidth < 576) {
-            setIsMobile(true);
-        }
-    }
 
     async function fetchData() {
         setProduct(await fetchProduct(params.productId));

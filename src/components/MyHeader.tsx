@@ -7,23 +7,17 @@ import { useEffect, useState } from "react";
 import giftCardImg from "@/../public/images/giftCardGradient.png";
 import hamburgerImg from "@/../public/images/hamburger.png";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
+import { useMediaQuery } from "react-responsive";
 
 export default function MyHeader() {
     const router = useRouter();
 
-    const [isMobile, setIsMobile] = useState(false);
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
     const [isLogIn, setIsLogIn] = useState(false);
 
     useEffect(() => {
-        checkIsMobile();
         checkIsLogIn();
     }, []);
-
-    function checkIsMobile() {
-        if (window.innerWidth < 576) {
-            setIsMobile(true);
-        }
-    }
 
     function checkIsLogIn() {
         const ili = localStorage.getItem("misoticket-isLogIn");

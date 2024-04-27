@@ -8,23 +8,17 @@ import MyHeader from "@/components/MyHeader";
 import Order from "@/models/Order";
 import Product from "@/models/Product";
 import { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 export default function Page({ params }: { params: { orderId: string } }) {
-    const [isMobile, setIsMobile] = useState(false);
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
     const [order, setOrder] = useState<Order | null>(null);
     const [productList, setProductList] = useState<Product[]>([]);
 
     useEffect(() => {
-        checkIsMobile();
         fetchData();
         window.scrollTo(0, 0);
     }, []);
-
-    function checkIsMobile() {
-        if (window.innerWidth < 576) {
-            setIsMobile(true);
-        }
-    }
 
     async function fetchData() {
         setProductList(await fetchAllProductList());

@@ -3,7 +3,6 @@
 import CategoryTabBar from "@/components/CategoryTabBar";
 import MyFooter from "@/components/MyFooter";
 import MyHeader from "@/components/MyHeader";
-import MySubFooter from "@/components/MySubFooter";
 import { useEffect, useState } from "react";
 import { fetchActiveBanner, fetchMainCategoryList, fetchAllProductList as fetchProductListFromServer } from "@/apis/FirestoreGET";
 import Product from "@/models/Product";
@@ -13,33 +12,25 @@ import ProductCell from "@/components/cells/ProductCell";
 import { Banner } from "@/models/Banner";
 import mainBanner from "@/../public/images/mainBanner.png";
 import mainBannerMobile from "@/../public/images/mainBannerMobile.png";
+import { useMediaQuery } from 'react-responsive'
 
 export default function Home() {
   const router = useRouter();
 
-  const [isMobile, setIsMobile] = useState(false);
-  const [isFetchDone, setIsFetchDone] = useState(false);
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
   const [mainCategoryList, setMainCategoryList] = useState<MainCategory[]>([]);
   const [productList, setProductList] = useState<Product[]>([]);
   const [banner, setBanner] = useState<Banner | null>(null);
 
   useEffect(() => {
-    checkIsMobile();
     fetchData();
     window.scrollTo(0, 0);
   }, []);
 
-  function checkIsMobile() {
-      if (window.innerWidth < 576) {
-          setIsMobile(true);
-      }
-  }
-
   async function fetchData() {
     setProductList(await fetchProductListFromServer());
-    setMainCategoryList(await fetchMainCategoryList());
     setBanner(await fetchActiveBanner());
-    setIsFetchDone(true);
+    setMainCategoryList(await fetchMainCategoryList());
   }
 
   function getProduct(id: string): Product {
@@ -53,42 +44,37 @@ export default function Home() {
       {
         isMobile ?
           <div>
-            <div>
-              <div className="flex justify-center">
-                {
-                  banner &&
-                    <div className="mt-28 bg-gray-100 w-full px-8 py-4">
-                      <p className="font-medium text-base mb-4 text-center">{banner.title}</p>
-                      <p className="font-medium text-xs whitespace-pre-line text-center">{banner.desc}</p>
-                    </div>
-
-                }
-              </div>
-              <img
-                className="mt-32"
-                src={mainBannerMobile.src}
-                alt=""
-              />
+            <div className="flex justify-center">
               {
-                !isFetchDone && <div className="h-80"></div>
+                banner &&
+                  <div className="mt-28 bg-gray-100 w-full px-8 py-4">
+                    <p className="font-medium text-base mb-4 text-center">{banner.title}</p>
+                    <p className="font-medium text-xs whitespace-pre-line text-center">{banner.desc}</p>
+                  </div>
+
               }
-              <div className={`${banner ? "mt-12" : "mt-10"} flex justify-center`}>
-                <div className="overflow-hidden">
-                  {
-                    mainCategoryList.map((mc) => (
-                      <div key={mc.id} className="mb-14">
-                        <p className="font-semibold text-2xl mb-6 px-6">{mc.name}</p>
-                        <div className="flex gap-4 overflow-scroll px-6 scrollbar-hide">
-                          {
-                            mc.productIdList.map((prodId) => (
-                              <ProductCell key={prodId} product={getProduct(prodId)} handleClick={() => router.push(`/product/${prodId}`)} />
-                            ))
-                          }
-                        </div>
+            </div>
+            <img
+              className="mt-32"
+              src={mainBannerMobile.src}
+              alt=""
+            />
+            <div className={`${banner ? "mt-12" : "mt-10"} flex justify-center`}>
+              <div className="overflow-hidden">
+                {
+                  mainCategoryList.map((mc) => (
+                    <div key={mc.id} className="mb-14">
+                      <p className="font-semibold text-2xl mb-6 px-6">{mc.name}</p>
+                      <div className="flex gap-4 overflow-scroll px-6 scrollbar-hide">
+                        {
+                          mc.productIdList.map((prodId) => (
+                            <ProductCell key={prodId} product={getProduct(prodId)} handleClick={() => router.push(`/product/${prodId}`)} />
+                          ))
+                        }
                       </div>
-                    ))
-                  }
-                </div>
+                    </div>
+                  ))
+                }
               </div>
             </div>
           </div> :
@@ -130,7 +116,6 @@ export default function Home() {
             </div>
           </div>
       }
-      <MySubFooter />
       <MyFooter />
     </main>
   );

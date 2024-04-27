@@ -15,11 +15,12 @@ import PostModal from "@/modals/PostModal";
 import { deletePost as deletePostFromServer } from "@/apis/FirestoreDELETE";
 import AdminPost from "@/models/AdminPost";
 import AdminPostModal from "@/modals/AdminPostModal";
+import { useMediaQuery } from "react-responsive";
 
 export default function Page() {
     const router = useRouter();
 
-    const [isMobile, setIsMobile] = useState<boolean | null>(null);
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
     
     const [postList, setPostList] = useState<Post[]>([]);
     const [adminPostList, setAdminPostList] = useState<AdminPost[]>([]);
@@ -33,16 +34,7 @@ export default function Page() {
 
     useEffect(() => {
         fetchData();
-        checkIsMobile();
     }, []);
-
-    function checkIsMobile() {
-        if (window.innerWidth < 576) {
-            setIsMobile(true);
-        } else {
-            setIsMobile(false);
-        }
-    }
 
     async function fetchData() {
         setUserList(await fetchUserList());

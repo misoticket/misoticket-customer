@@ -1,17 +1,8 @@
 import { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 export default function MyFooter() {
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-        checkIsMobile();
-    }, []);
-
-    function checkIsMobile() {
-        if (window.innerWidth < 576) {
-            setIsMobile(true);
-        }
-    }
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
     return (
         <>

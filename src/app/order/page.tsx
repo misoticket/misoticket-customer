@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from "react";
 import { OrderStatus } from "../constants/OrderStatus";
 import SearchAddressModal from "@/modals/SearchAddressModal";
 import { useDisclosure } from "@nextui-org/use-disclosure";
+import { useMediaQuery } from "react-responsive";
 
 const OrderFrom = {
     product: "product",
@@ -48,22 +49,13 @@ export default function Page() {
     const deliveryMessageRef = useRef<HTMLTextAreaElement>(null);
     const depositorNameRef = useRef<HTMLInputElement>(null);
 
-    const [isMobile, setIsMobile] = useState<boolean | null>(null);
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
     const [isOrdering, setIsOrdering] = useState(false);
     const searchAddressModal = useDisclosure();
 
     useEffect(() => {
         fetchData();
-        checkIsMobile();
     }, []);
-
-    function checkIsMobile() {
-        if (window.innerWidth < 576) {
-            setIsMobile(true);
-        } else {
-            setIsMobile(false);
-        }
-    }
 
     async function fetchData() {
         const from = searchParams.get("from");

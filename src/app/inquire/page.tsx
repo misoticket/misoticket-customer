@@ -6,25 +6,19 @@ import MyFooter from "@/components/MyFooter";
 import MyHeader from "@/components/MyHeader";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 export default function Page() {
     const router = useRouter();
 
-    const [isMobile, setIsMobile] = useState(false);
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
     const personNameRef = useRef<HTMLInputElement>(null);
     const personPhoneNumberRef = useRef<HTMLInputElement>(null);
     const orderPasswordRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        checkIsMobile();
         window.scrollTo(0, 0);
     }, []);
-
-    function checkIsMobile() {
-        if (window.innerWidth < 576) {
-            setIsMobile(true);
-        }
-    }
 
     async function search() {
         if (personNameRef.current && personPhoneNumberRef.current && orderPasswordRef.current) {

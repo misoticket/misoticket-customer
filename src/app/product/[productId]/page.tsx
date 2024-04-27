@@ -14,26 +14,20 @@ import { NextUIProvider } from "@nextui-org/react";
 import { addProductOrderWithNoneUserId, addProductOrderWithUserId } from "@/apis/FirestorePOST";
 import ProductOrder from "@/models/ProductOrder";
 import { v4 as uuidv4 } from 'uuid';
+import { useMediaQuery } from "react-responsive";
 
 export default function Page({ params }: { params: { productId: string } }) {
     const router = useRouter();
 
-    const [isMobile, setIsMobile] = useState(false);
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
     const [productOrderList, setProductOrderList] = useState<ProductOrder[]>([]);
     const [product, setProduct] = useState<Product | null>(null);
     const [amount, setAmount] = useState(1);
 
     useEffect(() => {
-        checkIsMobile();
         fetchProductOrderList();
         fetchData();
     }, []);
-
-    function checkIsMobile() {
-        if (window.innerWidth < 576) {
-            setIsMobile(true);
-        }
-    }
 
     async function fetchProductOrderList() {
         const isLogIn = localStorage.getItem("misoticket-isLogIn");

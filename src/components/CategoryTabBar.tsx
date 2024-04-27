@@ -4,6 +4,7 @@ import { fetchCategoryList } from "@/apis/FirestoreGET";
 import Category from "@/models/Category";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 interface CategoryTabBar {
     selectedCategoryId: string | null;
@@ -11,19 +12,12 @@ interface CategoryTabBar {
 
 export default function CategoryTabBar(props: CategoryTabBar) {
     const router = useRouter();
-    const [isMobile, setIsMobile] = useState(false);
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
     const [categoryList, setCategoryList] = useState<Category[]>([]);
 
     useEffect(() => {
-        checkIsMobile();
         fetchData();
     }, []);
-
-    function checkIsMobile() {
-        if (window.innerWidth < 576) {
-            setIsMobile(true);
-        }
-    }
 
     async function fetchData() {
         setCategoryList(await fetchCategoryList());

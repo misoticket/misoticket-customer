@@ -12,11 +12,12 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import rightArrowImg from '@/../public/images/rightTriangle.png';
 import Image from "next/image";
+import { useMediaQuery } from "react-responsive";
 
 export default function Page({ params }: { params: { categoryId: string } }) {
     const router = useRouter();
 
-    const [isMobile, setIsMobile] = useState(false);
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
     const [categoryList, setCategoryList] = useState<Category[]>([]);
     const [subCategoryList, setSubCategoryList] = useState<SubCategory[]>([]);
     const [productList, setProductList] = useState<Product[]>([]);
@@ -32,19 +33,12 @@ export default function Page({ params }: { params: { categoryId: string } }) {
     }, [selectedSubCategory]);
 
     useEffect(() => {
-        checkIsMobile();
         window.scrollTo(0, 0);
 
         if (showProductList.length === 0) {
             fetchData();
         }
     }, []);
-
-    function checkIsMobile() {
-        if (window.innerWidth < 576) {
-            setIsMobile(true);
-        }
-    }
 
     async function fetchData() {
         setCategoryList(await fetchCategoryList());

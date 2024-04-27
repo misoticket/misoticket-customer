@@ -8,18 +8,18 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { orderList } from "@/utils/RealTimePriceManager";
+import { useMediaQuery } from "react-responsive";
 
 export default function Page() {
     const router = useRouter();
 
-    const [isMobile, setIsMobile] = useState(false);
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
     const [categoryList, setCategoryList] = useState<Category[]>([]);
     const [productList, setProductList] = useState<Product[]>([]);
     const [showProductList, setShowProductList] = useState<Product[]>([]);
 
     useEffect(() => {
-        checkIsMobile();
         fetchData();
     }, []);
 
@@ -30,12 +30,6 @@ export default function Page() {
             setShowProductList(newProductList);
         }
     }, [selectedCategory]);
-
-    function checkIsMobile() {
-        if (window.innerWidth < 576) {
-            setIsMobile(true);
-        }
-    }
 
     async function fetchData() {
         const catList = await fetchCategoryList();

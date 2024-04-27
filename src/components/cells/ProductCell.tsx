@@ -1,5 +1,6 @@
 import Product from "@/models/Product";
 import { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 interface ProductCellProps {
     product: Product;
@@ -7,17 +8,8 @@ interface ProductCellProps {
 }
 
 export default function ProductCell(props: ProductCellProps) {
-  const [isMobile, setIsMobile] = useState(false);
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
-  useEffect(() => {
-    checkIsMobile();
-  }, []);
-
-  function checkIsMobile() {
-      if (window.innerWidth < 576) {
-          setIsMobile(true);
-      }
-  }
     return (
         <>
             {
