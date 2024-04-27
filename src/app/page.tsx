@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import MainCategory from "@/models/MainCategory";
 import ProductCell from "@/components/cells/ProductCell";
 import { Banner } from "@/models/Banner";
+import mainBanner from "@/../public/images/mainBanner.png";
 
 export default function Home() {
   const router = useRouter();
@@ -89,7 +90,12 @@ export default function Home() {
 
               }
             </div>
-            <div className={`${banner ? "mt-12" : "mt-56"} flex justify-center`}>
+            <img
+              className="mt-24"
+              src={mainBanner.src}
+              alt=""
+            />
+            <div className={`${banner ? "mt-12" : "mt-16"} flex justify-center`}>
               <div className="">
                 {
                   mainCategoryList.map((mc) => (
