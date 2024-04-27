@@ -65,7 +65,7 @@ export default function Home() {
                   mainCategoryList.map((mc) => (
                     <div key={mc.id} className="mb-14">
                       <p className="font-semibold text-2xl mb-6 px-6">{mc.name}</p>
-                      <div className="flex gap-4 overflow-scroll px-6 scrollbar-hide">
+                      <div className="flex gap-2 overflow-scroll px-6 scrollbar-hide">
                         {
                           mc.productIdList.map((prodId) => (
                             <ProductCell key={prodId} product={getProduct(prodId)} handleClick={() => router.push(`/product/${prodId}`)} />

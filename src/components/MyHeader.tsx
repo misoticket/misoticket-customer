@@ -69,8 +69,8 @@ export default function MyHeader() {
                                         <Image
                                             src={hamburgerImg}
                                             alt=""
-                                            width={22}
-                                            height={22}
+                                            width={28}
+                                            height={28}
                                         />
                                     </DropdownTrigger>
                                     <DropdownMenu>

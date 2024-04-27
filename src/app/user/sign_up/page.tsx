@@ -58,45 +58,45 @@ export default function Page() {
             <div>
                 <MyHeader />
                 <CategoryTabBar selectedCategoryId={null} />
-                <div className="flex justify-center items-center mt-56 flex-col">
+                <div className="flex justify-center items-center mt-40 flex-col">
                     <div className="w-96 p-6 bg-gray-100 border rounded-lg">
                         <p className="font-semibold text-base text-center">회원가입</p>
                         <p className="font-medium text-sm text-center text-gray-400 mt-1">환영합니다! 아래 정보를 입력해주세요.</p>
                         <div className="mt-8">
-                            <div className="flex items-center gap-4">
-                                <p className="font-medium text-sm w-24">아이디</p>
+                            <div className="mb-6">
+                                <p className="font-medium text-sm w-24 mb-2">아이디</p>
                                 <input
                                     ref={idRef}
                                     placeholder="4~12 글자"
-                                    className="flex-1 h-10 bg-white rounded border px-3 text-sm font-medium"
+                                    className="w-full h-10 bg-white rounded border px-3 text-sm font-medium"
                                 />
                             </div>
-                            <div className="flex items-center gap-4 mt-3">
-                                <p className="font-medium text-sm w-24">비밀번호</p>
+                            <div className="mb-6">
+                                <p className="font-medium text-sm w-24 mb-2">비밀번호</p>
                                 <input
                                     ref={pwRef}
                                     placeholder="6~20 글자"
                                     type="password"
-                                    className="flex-1 h-10 bg-white rounded border px-3 text-sm font-medium"
+                                    className="w-full h-10 bg-white rounded border px-3 text-sm font-medium"
                                 />
                             </div>
-                            <div className="flex items-center gap-4 mt-3">
-                                <p className="font-medium text-sm w-24">비밀번호 확인</p>
+                            <div className="mb-6">
+                                <p className="font-medium text-sm w-24 mb-2">비밀번호 확인</p>
                                 <input
                                     ref={pwConfirmRef}
                                     type="password"
-                                    className="flex-1 h-10 bg-white rounded border px-3 text-sm font-medium"
+                                    className="w-full h-10 bg-white rounded border px-3 text-sm font-medium"
                                 />
                             </div>
-                            <div className="flex items-center gap-4 mt-3">
-                                <p className="font-medium text-sm w-24">성함</p>
+                            <div className="mb-6">
+                                <p className="font-medium text-sm w-24 mb-2">성함</p>
                                 <input
                                     ref={nameRef}
-                                    className="flex-1 h-10 bg-white rounded border px-3 text-sm font-medium"
+                                    className="w-full h-10 bg-white rounded border px-3 text-sm font-medium"
                                 />
                             </div>
-                            <div className="flex items-center gap-4 mt-3">
-                                <p className="font-medium text-sm w-24">휴대폰 번호</p>
+                            <div className="mb-6">
+                                <p className="font-medium text-sm w-24 mb-2">휴대폰 번호</p>
                                 <div className="flex items-center gap-2">
                                     <input
                                         ref={phoneNumberRef1}
@@ -117,11 +117,11 @@ export default function Page() {
                                     />
                                 </div>
                             </div>
-                            <div className="flex items-center gap-4 mt-3">
-                                <p className="font-medium text-sm w-24">이메일</p>
+                            <div className="mb-4">
+                                <p className="font-medium text-sm w-24 mb-2">이메일</p>
                                 <input
                                     ref={emailRef}
-                                    className="flex-1 h-10 bg-white rounded border px-3 text-sm font-medium"
+                                    className="w-full h-10 bg-white rounded border px-3 text-sm font-medium"
                                 />
                             </div>
                             <button onClick={() => signUp()} className="w-full h-10 bg-gray-800 mt-6 rounded-lg text-white hover:opacity-80">가입하기</button>

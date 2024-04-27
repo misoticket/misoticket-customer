@@ -18,7 +18,7 @@ export default function ProductCell(props: ProductCellProps) {
                         className="cursor-pointer hover:bg-gray-100 border border-gray-100 w-56 flex flex-col items-center"
                         onClick={() => props.handleClick()}
                     >
-                        <div className="px-5 w-44 relative">
+                        <div className="px-5 w-40 relative">
                             <img 
                                 className="object-contain h-24"
                                 src={ props.product.mainImageUrl }
