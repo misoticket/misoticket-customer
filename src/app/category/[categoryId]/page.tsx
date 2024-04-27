@@ -27,7 +27,7 @@ export default function Page({ params }: { params: { categoryId: string } }) {
     useEffect(() => {
         if (selectedSubCategory) {
             let newProductList = [...productList]
-            newProductList = newProductList.filter(product => product.subCategoryId === selectedSubCategory.id);
+            newProductList = newProductList.filter(product => product.subCategoryId === selectedSubCategory.id).sort((a, b) => a.order - b.order);
             setShowProductList(newProductList);
         } 
     }, [selectedSubCategory]);
@@ -41,12 +41,23 @@ export default function Page({ params }: { params: { categoryId: string } }) {
     }, []);
 
     async function fetchData() {
-        setCategoryList(await fetchCategoryList());
-        setSubCategoryList(await fetchSubCategoryList(params.categoryId));
+        const catList = await fetchCategoryList();
+        setCategoryList(catList);
+
+        const subCatList = await fetchSubCategoryList(params.categoryId);
+        setSubCategoryList(subCatList);
 
         const prodList = await fetchProductListWithCategoryId(params.categoryId);
         setProductList(prodList);
-        setShowProductList(prodList);
+
+        const showList: Product[] = [];
+        for (const subCat of subCatList.sort((a, b) => a.order - b.order)) {
+            for (const prod of prodList.filter(p => p.subCategoryId === subCat.id)) {
+                showList.push(prod);
+            }
+        }
+
+        setShowProductList(showList);
     }
 
     function getCategoryName(): string {
