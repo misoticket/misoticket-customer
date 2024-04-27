@@ -24,13 +24,13 @@ export default function Home() {
 
   useEffect(() => {
     fetchData();
-    window.scrollTo(0, 0);
   }, []);
 
   async function fetchData() {
     setProductList(await fetchProductListFromServer());
     setBanner(await fetchActiveBanner());
     setMainCategoryList(await fetchMainCategoryList());
+    // window.scrollTo(0, 0);
   }
 
   function getProduct(id: string): Product {

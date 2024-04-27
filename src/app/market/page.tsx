@@ -67,7 +67,7 @@ export default function Page() {
                             alt="" width={80} 
                             className="cursor-pointer my-5 mx-6" 
                         />
-                        <div className="flex flex-col">
+                        <div className="flex flex-col mb-24">
                             <p className="mb-4 font-semibold text-xl text-center">상품권 시세</p>
                             <div className="flex flex-col">
                                 <div className="-hidden">
@@ -92,11 +92,11 @@ export default function Page() {
                                     <div className="h-14 w-full bg-gray-50 flex flex-col justify-center border-l border-r border-solid border-gray-200">
                                         <p className="font-semibold text-sm text-center">상품권</p>
                                     </div>
-                                    <div className="h-14 w-56 bg-gray-50 flex flex-col justify-center border-r border-solid border-gray-200">
+                                    <div className="h-14 w-48 bg-gray-50 flex flex-col justify-center border-r border-solid border-gray-200">
                                         <p className="font-semibold text-xs text-center">고객께서 파실때</p>
                                         <p className="font-medium text-xxs text-center text-gray-400 mt-0.5">(할인율 %)</p>
                                     </div>
-                                    <div className="h-14 w-56 bg-gray-50 flex flex-col justify-center border-r border-solid border-gray-200">
+                                    <div className="h-14 w-48 bg-gray-50 flex flex-col justify-center border-r border-solid border-gray-200">
                                         <p className="font-semibold text-xs text-center">고객께서 구매시</p>
                                         <p className="font-medium text-xxs text-center text-gray-400 mt-0.5">(할인율 %)</p>
                                     </div>
@@ -110,13 +110,13 @@ export default function Page() {
                                                 className="flex mx-4 border-b border-solid border-gray-200 cursor-pointer group"
                                             >
                                                 <div className="h-12 w-full flex flex-col justify-center border-l border-r border-solid border-gray-200 group-hover:bg-gray-100">
-                                                    <p className="font-medium text-xs mx-5">{ product.name }</p>
+                                                    <p className="font-medium text-xs mx-2">{ product.name }</p>
                                                 </div>
-                                                <div className="h-12 w-56 border-r border-solid border-gray-200 flex flex-col justify-center items-center group-hover:bg-gray-100 bg-yellow-100">
+                                                <div className="h-12 w-48 border-r border-solid border-gray-200 flex flex-col justify-center items-center group-hover:bg-gray-100 bg-yellow-100">
                                                     <p className="font-bold text-sm text-center">{ product.customerSellingPrice.toLocaleString() }<span className="font-medium">원</span></p>
                                                     <p className="font-medium text-xs text-center text-theme-sub mr-2">{ getCustomerSaleRatio(product) }%</p>
                                                 </div>
-                                                <div className="h-12 w-56 border-r border-solid border-gray-200 flex flex-col justify-center items-center group-hover:bg-gray-100">
+                                                <div className="h-12 w-48 border-r border-solid border-gray-200 flex flex-col justify-center items-center group-hover:bg-gray-100">
                                                     <p className="font-bold text-sm text-center">{ product.price.toLocaleString() }<span className="font-medium">원</span></p>
                                                     <p className="font-medium text-xs text-center text-theme mr-2">{ getSellerSaleRatio(product) }%</p>
                                                 </div>
