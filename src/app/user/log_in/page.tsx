@@ -47,14 +47,14 @@ export default function Page() {
                         <p className="font-semibold text-base text-center">로그인</p>
                         <div className="mt-8">
                             <div className="flex items-center gap-4">
-                                <p className="font-medium text-sm w-14">아이디</p>
+                                <p className="font-medium text-sm w-20">아이디</p>
                                 <input
                                     ref={idRef}
                                     className="flex-1 h-10 bg-white rounded border px-3 text-sm font-medium"
                                 />
                             </div>
                             <div className="flex items-center gap-4 mt-3">
-                                <p className="font-medium text-sm w-14">비밀번호</p>
+                                <p className="font-medium text-sm w-20">비밀번호</p>
                                 <input
                                     ref={pwRef}
                                     type="password"

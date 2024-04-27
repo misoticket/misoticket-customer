@@ -64,7 +64,7 @@ export default function Page() {
                         <p className="font-medium text-sm text-center text-gray-400 mt-1">환영합니다! 아래 정보를 입력해주세요.</p>
                         <div className="mt-8">
                             <div className="flex items-center gap-4">
-                                <p className="font-medium text-sm w-20">아이디</p>
+                                <p className="font-medium text-sm w-24">아이디</p>
                                 <input
                                     ref={idRef}
                                     placeholder="4~12 글자"
@@ -72,7 +72,7 @@ export default function Page() {
                                 />
                             </div>
                             <div className="flex items-center gap-4 mt-3">
-                                <p className="font-medium text-sm w-20">비밀번호</p>
+                                <p className="font-medium text-sm w-24">비밀번호</p>
                                 <input
                                     ref={pwRef}
                                     placeholder="6~20 글자"
@@ -81,7 +81,7 @@ export default function Page() {
                                 />
                             </div>
                             <div className="flex items-center gap-4 mt-3">
-                                <p className="font-medium text-sm w-20">비밀번호 확인</p>
+                                <p className="font-medium text-sm w-24">비밀번호 확인</p>
                                 <input
                                     ref={pwConfirmRef}
                                     type="password"
@@ -89,14 +89,14 @@ export default function Page() {
                                 />
                             </div>
                             <div className="flex items-center gap-4 mt-3">
-                                <p className="font-medium text-sm w-20">성함</p>
+                                <p className="font-medium text-sm w-24">성함</p>
                                 <input
                                     ref={nameRef}
                                     className="flex-1 h-10 bg-white rounded border px-3 text-sm font-medium"
                                 />
                             </div>
                             <div className="flex items-center gap-4 mt-3">
-                                <p className="font-medium text-sm w-20">휴대폰 번호</p>
+                                <p className="font-medium text-sm w-24">휴대폰 번호</p>
                                 <div className="flex items-center gap-2">
                                     <input
                                         ref={phoneNumberRef1}
@@ -118,7 +118,7 @@ export default function Page() {
                                 </div>
                             </div>
                             <div className="flex items-center gap-4 mt-3">
-                                <p className="font-medium text-sm w-20">이메일</p>
+                                <p className="font-medium text-sm w-24">이메일</p>
                                 <input
                                     ref={emailRef}
                                     className="flex-1 h-10 bg-white rounded border px-3 text-sm font-medium"
