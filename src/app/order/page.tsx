@@ -251,7 +251,7 @@ export default function Page() {
                                                                     <p className="font-medium text-xs">{ (4000).toLocaleString() }<span className="font-medium">원</span></p>
                                                                 </div>
                                                                 <p className="font-medium mx-4">=</p>
-                                                                <p className="font-bold text-base text-theme mr-5">{ (product.price*amount).toLocaleString() }<span className="font-medium">원</span></p>
+                                                                <p className="font-bold text-base text-theme mr-5">{ (product.price*amount + 4000).toLocaleString() }<span className="font-medium">원</span></p>
                                                             </div>
                                                         </div>
                                                         <p className="font-medium text-theme mt-4 text-xs mx-3">상품의 옵션 및 수량 변경은 상품상세 또는 장바구니에서 가능합니다.</p>
@@ -283,7 +283,7 @@ export default function Page() {
                                                                     <p className="font-medium text-xs">{ (4000).toLocaleString() }<span className="font-medium">원</span></p>
                                                                 </div>
                                                                 <p className="font-medium mx-4">=</p>
-                                                                <p className="font-bold text-base text-theme mr-5">{ getTotalPrice().toLocaleString() }<span className="font-medium">원</span></p>
+                                                                <p className="font-bold text-base text-theme mr-5">{ (getTotalPrice() + 4000).toLocaleString() }<span className="font-medium">원</span></p>
                                                             </div>
                                                         </div>
                                                         <p className="font-medium text-theme mt-4 text-xs mx-3">상품의 옵션 및 수량 변경은 상품상세 또는 장바구니에서 가능합니다.</p>
@@ -462,7 +462,61 @@ export default function Page() {
                                                             <div className="w-full bg-gray-100 px-5 py-8 h-full flex flex-col">
                                                                 <div>
                                                                     <p className="font-regular text-sm">무통장입금 최종결제 금액</p>
-                                                                    <p className="font-bold text-xl mt-1 text-theme">{ (product.price*amount).toLocaleString() }<span className="font-medium">원</span></p>
+                                                                    <p className="font-bold text-xl mt-1 text-theme">{ (product.price*amount + 4000).toLocaleString() }<span className="font-medium">원</span></p>
+                                                                </div>
+                                                                <div>
+                                                                    <p className="font-medium text-xs mt-8 mb-1">결제정보를 확인하였으며,<br/>구매진행에 동의합니다.</p>
+                                                                    <button 
+                                                                        onClick={() => order()}
+                                                                        className="font-medium w-full py-4 text-white bg-gray-900 mt-2 hover:opacity-70"
+                                                                    >
+                                                                        결제하기
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            }
+                                            {
+                                                from && from === OrderFrom.basket && 
+                                                    <div className="mt-10">
+                                                        <p className="font-medium text-sm mx-2">결제 정보</p>
+                                                        <div className="mt-4 border border-gray-200 flex flex-col rounded-lg bg-gray-50">
+                                                            <div className="w-full">
+                                                                <p className="my-4 mx-3 font-medium text-sm">무통장 입금</p>
+                                                                <div className="my-4">
+                                                                    <div className="flex flex-col mt-4">
+                                                                        <p className="w-full font-medium text-sm p-3">입금자명</p>
+                                                                        <div className="w-full flex items-center px-3">
+                                                                            <input 
+                                                                                ref={depositorNameRef}
+                                                                                className="w-2/3 rounded h-10 border px-2 text-sm font-regular" 
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="flex border-b border-t border-gray-200 mt-6 bg-gray-100">
+                                                                        <p className="w-40 font-regular text-sm p-4 border-r border-gray-200 mt-2">입금은행</p>
+                                                                        <div className="w-full flex items-center px-3 py-4">
+                                                                            <p className="w-full text-sm font-medium">국민은행 85250104084385<br/>백승헌(티켓나라잠실)</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="flex border-b border-gray-200 bg-gray-100">
+                                                                        <p className="w-40 font-regular text-sm p-4 border-r border-gray-200">안심구매<br/>(에스크로)</p>
+                                                                        <div className="w-full flex items-center px-3">
+                                                                            <button 
+                                                                                onClick={() => openEscrow()}
+                                                                                className="font-medium text-sm underline hover:opacity-50"
+                                                                            >
+                                                                                KB에스크로 바로가기
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="w-full bg-gray-100 px-5 py-8 h-full flex flex-col">
+                                                                <div>
+                                                                    <p className="font-regular text-sm">무통장입금 최종결제 금액</p>
+                                                                    <p className="font-bold text-xl mt-1 text-theme">{ (getTotalPrice() + 4000).toLocaleString() }<span className="font-medium">원</span></p>
                                                                 </div>
                                                                 <div>
                                                                     <p className="font-medium text-xs mt-8 mb-1">결제정보를 확인하였으며,<br/>구매진행에 동의합니다.</p>
@@ -522,7 +576,7 @@ export default function Page() {
                                                                     <p className="font-medium text-sm">{ (4000).toLocaleString() }<span className="font-medium">원</span></p>
                                                                 </div>
                                                                 <p className="font-medium mx-4">=</p>
-                                                                <p className="font-bold text-xl text-theme mr-5">{ (product.price*amount).toLocaleString() }<span className="font-medium">원</span></p>
+                                                                <p className="font-bold text-xl text-theme mr-5">{ (product.price*amount + 4000).toLocaleString() }<span className="font-medium">원</span></p>
                                                             </div>
                                                         </div>
                                                         <p className="font-medium text-theme mt-4 text-xs mx-5">상품의 옵션 및 수량 변경은 상품상세 또는 장바구니에서 가능합니다.</p>
@@ -556,7 +610,7 @@ export default function Page() {
                                                                     <p className="font-medium text-sm">{ (4000).toLocaleString() }<span className="font-medium">원</span></p>
                                                                 </div>
                                                                 <p className="font-medium mx-4">=</p>
-                                                                <p className="font-bold text-xl text-theme mr-5">{ getTotalPrice().toLocaleString() }<span className="font-medium">원</span></p>
+                                                                <p className="font-bold text-xl text-theme mr-5">{ (getTotalPrice() + 4000).toLocaleString() }<span className="font-medium">원</span></p>
                                                             </div>
                                                         </div>
                                                         <p className="font-medium text-theme mt-4 text-xs mx-5">상품의 옵션 및 수량 변경은 상품상세 또는 장바구니에서 가능합니다.</p>
@@ -731,11 +785,11 @@ export default function Page() {
                                                             <p className="font-regular text-sm">무통장입금 최종결제 금액</p>
                                                             {
                                                                 from && from === OrderFrom.product && product && amount &&
-                                                                    <p className="font-bold text-xl mt-1 text-theme">{ (product.price*amount).toLocaleString() }<span className="font-medium">원</span></p>
+                                                                    <p className="font-bold text-xl mt-1 text-theme">{ (product.price*amount + 4000).toLocaleString() }<span className="font-medium">원</span></p>
                                                             }
                                                             {
                                                                from && from === OrderFrom.basket &&
-                                                                    <p className="font-bold text-xl mt-1 text-theme">{ getTotalPrice().toLocaleString() }<span className="font-medium">원</span></p>
+                                                                    <p className="font-bold text-xl mt-1 text-theme">{ (getTotalPrice() + 4000).toLocaleString() }<span className="font-medium">원</span></p>
                                                             }
                                                         </div>
                                                         <div>
