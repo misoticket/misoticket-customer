@@ -9,6 +9,22 @@ export default function MyFooter() {
         window.open("http://escrow1.kbstar.com/quics?page=B009111&cc=b010807%3Ab008491&mHValue=034d60a69b928601e8ab5b534f1ca8a8", "_blank");
     }
 
+    function openCompany() {
+        window.open("/company", "_blank");
+    }
+
+    function openPolicy() {
+        window.open("/policy", "_blank");
+    }
+
+    function openPrivacy() {
+        window.open("/privacy", "_blank");
+    }
+
+    function openGuide() {
+        window.open("/guide", "_blank");
+    }
+
     return (
         <>
             {
@@ -43,21 +59,21 @@ export default function MyFooter() {
                         </div>
                         <div className="bg-gray-100 py-10 flex flex-col gap-6 w-full">
                             <div className="flex gap-5 px-4">
-                                <button className="font-medium text-xs text-gray-400">회사소개</button>
-                                <button className="font-medium text-xs text-gray-400">이용약관</button>
-                                <button className="font-medium text-xs text-gray-400">개인정보처리방침</button>
-                                <button className="font-medium text-xs text-gray-400">이용안내</button>
+                                <button onClick={() => openCompany()} className="font-medium text-xs text-gray-600">회사소개</button>
+                                <button onClick={() => openPolicy()} className="font-medium text-xs text-gray-600">이용약관</button>
+                                <button onClick={() => openPrivacy()} className="font-medium text-xs text-gray-600">개인정보처리방침</button>
+                                <button onClick={() => openGuide()} className="font-medium text-xs text-gray-600">이용안내</button>
                             </div>
                             <div className="flex flex-col gap-2 px-4">
-                                <p className="font-medium text-xs text-gray-400">상호: 티켓나라 잠실</p>
-                                <p className="font-medium text-xs text-gray-400">대표자: 백승헌</p>
-                                <p className="font-medium text-xs text-gray-400">사업자등록번호: 215-91-54203</p>
-                                <p className="font-medium text-xs text-gray-400">통신판매업: 제20080-서울송파-0565호</p>
-                                <p className="font-medium text-xs text-gray-400">전화번호: 02-421-6311</p>
-                                <p className="font-medium text-xs text-gray-400">팩스: 02-421-0911</p>
-                                <p className="font-medium text-xs text-gray-400">주소: 05510 서울특별시 송파구 올림픽로 289 (신천동)<br/>시그마타워 지하 1층 101호</p>
-                                <p className="font-medium text-xs text-gray-400 mt-4">개인정보보호책임자: 백승헌 (baerer@naver.com)</p>
-                                <p className="font-medium text-xs text-gray-400">Copyright © 2024 티켓나라 잠실. All rights reserved.</p>
+                                <p className="font-medium text-xs text-gray-600">상호: 티켓나라 잠실</p>
+                                <p className="font-medium text-xs text-gray-600">대표자: 백승헌</p>
+                                <p className="font-medium text-xs text-gray-600">사업자등록번호: 215-91-54203</p>
+                                <p className="font-medium text-xs text-gray-600">통신판매업: 제20080-서울송파-0565호</p>
+                                <p className="font-medium text-xs text-gray-600">전화번호: 02-421-6311</p>
+                                <p className="font-medium text-xs text-gray-600">팩스: 02-421-0911</p>
+                                <p className="font-medium text-xs text-gray-600">주소: 05510 서울특별시 송파구 올림픽로 289 (신천동)<br/>시그마타워 지하 1층 101호</p>
+                                <p className="font-medium text-xs text-gray-600 mt-4">개인정보보호책임자: 백승헌 (baerer@naver.com)</p>
+                                <p className="font-medium text-xs text-gray-600">Copyright © 2024 티켓나라 잠실. All rights reserved.</p>
                             </div>
                         </div>
                     </div> :
@@ -91,25 +107,25 @@ export default function MyFooter() {
                         </div>
                         <div className="bg-gray-100 py-10 px-56 flex flex-col gap-6">
                             <div className="flex gap-5">
-                                <button className="font-medium text-xs text-gray-400">회사소개</button>
-                                <button className="font-medium text-xs text-gray-400">이용약관</button>
-                                <button className="font-medium text-xs text-gray-400">개인정보처리방침</button>
-                                <button className="font-medium text-xs text-gray-400">이용안내</button>
+                                <button onClick={() => openCompany()} className="font-medium text-xs text-gray-600 hover:opacity-70">회사소개</button>
+                                <button onClick={() => openPolicy()} className="font-medium text-xs text-gray-600 hover:opacity-70">이용약관</button>
+                                <button onClick={() => openPrivacy()} className="font-medium text-xs text-gray-600 hover:opacity-70">개인정보처리방침</button>
+                                <button onClick={() => openGuide()} className="font-medium text-xs text-gray-600 hover:opacity-70">이용안내</button>
                             </div>
                             <div className="flex flex-col gap-2">
                                 <div className="flex gap-8">
-                                    <p className="font-medium text-xs text-gray-400">상호: 티켓나라 잠실</p>
-                                    <p className="font-medium text-xs text-gray-400">대표자: 백승헌</p>
-                                    <p className="font-medium text-xs text-gray-400">사업자등록번호: 215-91-54203</p>
-                                    <p className="font-medium text-xs text-gray-400">통신판매업: 제20080-서울송파-0565호</p>
+                                    <p className="font-medium text-xs text-gray-600">상호: 티켓나라 잠실</p>
+                                    <p className="font-medium text-xs text-gray-600">대표자: 백승헌</p>
+                                    <p className="font-medium text-xs text-gray-600">사업자등록번호: 215-91-54203</p>
+                                    <p className="font-medium text-xs text-gray-600">통신판매업: 제20080-서울송파-0565호</p>
                                 </div>
                                 <div className="flex gap-8">
-                                    <p className="font-medium text-xs text-gray-400">전화번호: 02-421-6311</p>
-                                    <p className="font-medium text-xs text-gray-400">팩스: 02-421-0911</p>
-                                    <p className="font-medium text-xs text-gray-400">주소: 05510 서울특별시 송파구 올림픽로 289 (신천동) 시그마타워 지하 1층 101호</p>
+                                    <p className="font-medium text-xs text-gray-600">전화번호: 02-421-6311</p>
+                                    <p className="font-medium text-xs text-gray-600">팩스: 02-421-0911</p>
+                                    <p className="font-medium text-xs text-gray-600">주소: 05510 서울특별시 송파구 올림픽로 289 (신천동) 시그마타워 지하 1층 101호</p>
                                 </div>
-                                <p className="font-medium text-xs text-gray-400">개인정보보호책임자: 백승헌 (baerer@naver.com)</p>
-                                <p className="font-medium text-xs text-gray-400">Copyright © 2024 티켓나라 잠실. All rights reserved.</p>
+                                <p className="font-medium text-xs text-gray-600">개인정보보호책임자: 백승헌 (baerer@naver.com)</p>
+                                <p className="font-medium text-xs text-gray-600">Copyright © 2024 티켓나라 잠실. All rights reserved.</p>
                             </div>
                         </div>
                     </div>
