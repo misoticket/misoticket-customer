@@ -47,15 +47,15 @@ export default function Home() {
             <div className="flex justify-center">
               {
                 banner &&
-                  <div className="mt-28 bg-gray-100 w-full px-8 py-4">
-                    <p className="font-medium text-base mb-4 text-center">{banner.title}</p>
-                    <p className="font-medium text-xs whitespace-pre-line text-center">{banner.desc}</p>
+                  <div className="mt-28 bg-gray-100 w-full mx-4 px-8 py-4 rounded-lg">
+                    <p className="font-medium text-base mb-4">{banner.title}</p>
+                    <p className="font-medium text-xs whitespace-pre-line">{banner.desc}</p>
                   </div>
 
               }
             </div>
             <img
-              className="mt-32"
+              className={`${banner !== null ? "mt-4" : "mt-32"}`}
               src={mainBannerMobile.src}
               alt=""
             />
@@ -80,22 +80,24 @@ export default function Home() {
           </div> :
           <div>
             <div>
+              <div className="relative">
               <div className="flex justify-center">
                 {
                   banner &&
-                    <div className="mt-32 bg-gray-100 w-full px-8 py-6">
-                      <p className="font-medium text-base mb-4 text-center">{banner.title}</p>
-                      <p className="font-medium text-xs whitespace-pre-line text-center">{banner.desc}</p>
+                    <div className="mt-40 bg-gray-100 w-1/2 px-8 py-4 rounded-lg border">
+                      <p className="font-medium text-base mb-4">{banner.title}</p>
+                      <p className="font-medium text-sm whitespace-pre-line">{banner.desc}</p>
                     </div>
 
                 }
               </div>
               <img
-                className="mt-24"
+                className={`${banner !== null ? "mt-4" : "mt-12"}`}
                 src={mainBanner.src}
                 alt=""
               />
-              <div className={`${banner ? "mt-12" : "mt-16"} flex justify-center`}>
+              </div>
+              <div className="mt-16 flex justify-center">
                 <div className="">
                   {
                     mainCategoryList.map((mc) => (
