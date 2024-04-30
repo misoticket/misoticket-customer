@@ -49,6 +49,11 @@ export default function Page() {
     const deliveryMessageRef = useRef<HTMLTextAreaElement>(null);
     const depositorNameRef = useRef<HTMLInputElement>(null);
 
+    const [deliPersonName, setDeliPersonName] = useState("");
+    const [deliPhoneNumber1, setDeliPhoneNumeber1] = useState("");
+    const [deliPhoneNumber2, setDeliPhoneNumeber2] = useState("");
+    const [deliPhoneNumber3, setDeliPhoneNumeber3] = useState("");
+
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
     const [isOrdering, setIsOrdering] = useState(false);
     const searchAddressModal = useDisclosure();
@@ -103,7 +108,6 @@ export default function Page() {
             orderEmail2.trim().length === 0 ||
             orderPassword.trim().length === 0 ||
             orderPasswordConfirm.trim().length === 0 ||
-            address.trim().length === 0 ||
             deliveryPersonName.trim().length === 0 ||
             deliveryPhoneNumber1.trim().length === 0 ||
             deliveryPhoneNumber2.trim().length === 0 ||
@@ -114,6 +118,8 @@ export default function Page() {
             alert("주문조회 비밀번호가 일치하지 않습니다.");
         } else if (orderPassword.length < 4 || orderPassword.length > 12) {
             alert("주문조회 비밀번호는 4~12자로 입력해주세요.");
+        } else if (address.trim().length === 0) {
+            alert("주소를 입력해주세요.");
         } else {
             if (from && product && amount && from === OrderFrom.product) {
                 setIsOrdering(true);
@@ -200,6 +206,26 @@ export default function Page() {
         }
 
         return sum;
+    }
+
+    function putAutoDeliInfo() {
+        if (orderPersonNameRef.current && orderPhoneNumber1Ref.current && orderPhoneNumber2Ref.current && orderPhoneNumber3Ref.current) {
+            if (orderPersonNameRef.current.value.length !== 0) {
+                setDeliPersonName(orderPersonNameRef.current.value);
+            }
+
+            if (orderPhoneNumber1Ref.current.value.length !== 0) {
+                setDeliPhoneNumeber1(orderPhoneNumber1Ref.current.value);
+            }
+
+            if (orderPhoneNumber2Ref.current.value.length !== 0) {
+                setDeliPhoneNumeber2(orderPhoneNumber2Ref.current.value);
+            }
+
+            if (orderPhoneNumber3Ref.current.value.length !== 0) {
+                setDeliPhoneNumeber3(orderPhoneNumber3Ref.current.value);
+            }
+        }
     }
 
     return (
@@ -382,9 +408,19 @@ export default function Page() {
                                                         </div>
                                                     </div>
                                                     <div className="flex flex-col mt-5">
-                                                        <p className="w-full font-medium text-sm p-3">받으시는 분 <span className="font-medium text-theme">*</span></p>
+                                                        <div className="flex gap-2 items-center">
+                                                            <p className="font-medium text-sm p-3">받으시는 분 <span className="font-medium text-theme">*</span></p>
+                                                            <button 
+                                                                onClick={() => putAutoDeliInfo()}
+                                                                className="font-medium text-sm px-3 py-1 bg-gray-200 rounded"
+                                                            >
+                                                                주문 정보와 동일
+                                                            </button>
+                                                        </div>
                                                         <div className="w-full flex items-center px-3">
                                                             <input 
+                                                                value={deliPersonName}
+                                                                onChange={(e) => setDeliPersonName(e.target.value)}
                                                                 ref={deliveryPersonNameRef}
                                                                 className="w-2/3 rounded h-10 border px-2 text-sm font-regular" 
                                                             />
@@ -394,18 +430,24 @@ export default function Page() {
                                                         <p className="w-full font-medium text-sm p-3">휴대폰 번호 <span className="font-medium text-theme">*</span></p>
                                                         <div className="w-full flex items-center px-3">
                                                             <input 
+                                                                value={deliPhoneNumber1}
+                                                                onChange={(e) => setDeliPhoneNumeber1(e.target.value)}
                                                                 ref={deliveryPhoneNumber1Ref}
                                                                 type="number"
                                                                 className="w-16 rounded h-10 border px-2 py-1 text-sm font-regular [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
                                                             />
                                                             <p className="font-medium text-sm mx-2">-</p>
                                                             <input 
+                                                                value={deliPhoneNumber2}
+                                                                onChange={(e) => setDeliPhoneNumeber2(e.target.value)}
                                                                 ref={deliveryPhoneNumber2Ref}
                                                                 type="number"
                                                                 className="w-20 rounded h-10 border px-2 py-1 text-sm font-regular [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
                                                             />
                                                             <p className="font-medium text-sm mx-2">-</p>
                                                             <input 
+                                                                value={deliPhoneNumber3}
+                                                                onChange={(e) => setDeliPhoneNumeber3(e.target.value)}
                                                                 ref={deliveryPhoneNumber3Ref}
                                                                 type="number"
                                                                 className="w-20 rounded h-10 border px-2 py-1 text-sm font-regular [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
@@ -687,7 +729,15 @@ export default function Page() {
                                                 </div>
                                             </div>
                                             <div className="mt-10">
-                                                <p className="font-medium text-sm mx-2">배송 정보</p>
+                                                <div className="flex gap-2 items-center">
+                                                    <p className="font-medium text-sm mx-2">배송 정보</p>
+                                                    <button 
+                                                        onClick={() => putAutoDeliInfo()}
+                                                        className="font-medium text-sm px-3 py-1 bg-gray-200 rounded hover:opacity-70"
+                                                    >
+                                                        주문 정보와 동일
+                                                    </button>
+                                                </div>
                                                 <div className="flex border-l border-r border-t border-gray-200 mt-4">
                                                     <p className="w-56 font-regular text-sm p-4 bg-gray-50 border-r border-gray-200">주소<span className="font-medium text-theme">*</span></p>
                                                     <div className="w-full flex items-center px-5 py-3">
@@ -709,6 +759,8 @@ export default function Page() {
                                                     <p className="w-56 font-regular text-sm p-4 bg-gray-50 border-r border-gray-200">받으시는 분 <span className="font-medium text-theme">*</span></p>
                                                     <div className="w-full flex items-center px-5">
                                                         <input 
+                                                            value={deliPersonName}
+                                                            onChange={(e) => setDeliPersonName(e.target.value)}
                                                             ref={deliveryPersonNameRef}
                                                             className="w-64 border border-gray-300 px-2 py-1 text-sm font-regular" 
                                                         />
@@ -718,18 +770,24 @@ export default function Page() {
                                                     <p className="w-56 font-regular text-sm p-4 bg-gray-50 border-r border-gray-200">휴대폰 번호 <span className="font-medium text-theme">*</span></p>
                                                     <div className="w-full flex items-center px-5">
                                                         <input 
+                                                            value={deliPhoneNumber1}
+                                                            onChange={(e) => setDeliPhoneNumeber1(e.target.value)}
                                                             ref={deliveryPhoneNumber1Ref}
                                                             type="number"
                                                             className="w-16 border border-gray-300 px-2 py-1 text-sm font-regular [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
                                                         />
                                                         <p className="font-medium text-sm mx-2">-</p>
                                                         <input 
+                                                            value={deliPhoneNumber2}
+                                                            onChange={(e) => setDeliPhoneNumeber2(e.target.value)}
                                                             ref={deliveryPhoneNumber2Ref}
                                                             type="number"
                                                             className="w-20 border border-gray-300 px-2 py-1 text-sm font-regular [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
                                                         />
                                                         <p className="font-medium text-sm mx-2">-</p>
                                                         <input 
+                                                            value={deliPhoneNumber3}
+                                                            onChange={(e) => setDeliPhoneNumeber3(e.target.value)}
                                                             ref={deliveryPhoneNumber3Ref}
                                                             type="number"
                                                             className="w-20 border border-gray-300 px-2 py-1 text-sm font-regular [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
