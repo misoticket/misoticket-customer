@@ -97,7 +97,7 @@ export default function Page({ params }: { params: { orderId: string } }) {
                                         {
                                             order && order.productList.map((prod) => (
                                                 <li key={prod.productId}>
-                                                    <div className="flex justify-between items-center">
+                                                    <div className="flex justify-between items-center mb-2">
                                                         <div className="flex gap-3">
                                                             <p className="font-medium text-xs">● { getProduct(prod.productId).name }</p>
                                                             <p className="font-medium text-xs text-gray-400">x { prod.amount }개</p>
@@ -108,10 +108,14 @@ export default function Page({ params }: { params: { orderId: string } }) {
                                             ))
                                         }
                                     </ul>
+                                    <div className="flex justify-between items-center">
+                                        <p className="font-medium text-xs">● 배송비</p>
+                                        <p className="font-semibold text-xs mt-1 ml-4 text-theme">{ (4000).toLocaleString() }원</p>
+                                    </div>
                                 </div>
-                                <div className="border-t flex gap-3 mt-3 pt-12 justify-end">
+                                <div className="border-t flex gap-3 mt-3 pt-12 justify-end items-center">
                                     <p className="font-medium text-sm">총</p>
-                                    <p className="font-semibold text-xl text-theme">{ order && getTotalPrice(order).toLocaleString() }원</p>
+                                    <p className="font-semibold text-xl text-theme">{ order && (getTotalPrice(order) + 4000).toLocaleString() }원</p>
                                 </div>
                             </div>
                         </div>
@@ -166,7 +170,7 @@ export default function Page({ params }: { params: { orderId: string } }) {
                                         {
                                             order && order.productList.map((prod) => (
                                                 <li key={prod.productId}>
-                                                    <div className="flex justify-between">
+                                                    <div className="flex justify-between mb-3">
                                                         <div className="flex gap-3">
                                                             <p className="font-medium text-sm">● { getProduct(prod.productId).name }</p>
                                                             <p className="font-medium text-sm text-gray-400">x { prod.amount }개</p>
@@ -177,10 +181,14 @@ export default function Page({ params }: { params: { orderId: string } }) {
                                             ))
                                         }
                                     </ul>
+                                    <div className="flex justify-between items-center mt-3">
+                                        <p className="font-medium text-sm">● 배송비</p>
+                                        <p className="font-semibold text-xs mt-1 ml-4 text-theme">{ (4000).toLocaleString() }원</p>
+                                    </div>
                                 </div>
                                 <div className="border-t flex gap-3 mt-3 pt-12 justify-end">
                                     <p className="font-medium text-sm">총</p>
-                                    <p className="font-semibold text-sm text-theme">{ order && getTotalPrice(order).toLocaleString() }원</p>
+                                    <p className="font-semibold text-sm text-theme">{ order && (getTotalPrice(order) + 4000).toLocaleString() }원</p>
                                 </div>
                             </div>
                         </div>
