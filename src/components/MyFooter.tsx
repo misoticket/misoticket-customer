@@ -1,8 +1,13 @@
-import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
+import escroImg from '@/../public/images/escro.png';
+import Image from "next/image";
 
 export default function MyFooter() {
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+
+    function openEscrow() {
+        window.open("http://escrow1.kbstar.com/quics?page=B009111&cc=b010807%3Ab008491&mHValue=034d60a69b928601e8ab5b534f1ca8a8", "_blank");
+    }
 
     return (
         <>
@@ -18,12 +23,22 @@ export default function MyFooter() {
                                     <p className="font-medium text-xs">일요일 : 휴무</p>
                                 </div>
                             </div>
-                            <div className="rounded-lg py-4 border border-solid border-gray-200 pl-4 pr-10">
-                                <p className="font-medium text-xs text-gray-400 mb-4">BANK INFO</p>
-                                <div className="flex h-full flex-col justify-center">
-                                    <p className="font-medium text-sm">국민 852501-04-084385</p>
-                                    <p className="font-medium text-sm">예금주 : 백승헌 (티켓나라 잠실)</p>
+                            <div className="flex rounded-lg py-4 border border-solid border-gray-200 pl-4 pr-10 items-center">
+                                <div>
+                                    <p className="font-medium text-xs text-gray-400 mb-4">BANK INFO</p>
+                                    <div className="flex h-full flex-col justify-center">
+                                        <p className="font-medium text-sm">국민 852501-04-084385</p>
+                                        <p className="font-medium text-sm">예금주 : 백승헌 (티켓나라 잠실)</p>
+                                    </div>
                                 </div>
+                                <Image 
+                                    onClick={() => openEscrow()}
+                                    className="object-contain ml-4 cursor-pointer"
+                                    src={escroImg.src}
+                                    alt=""
+                                    width={70}
+                                    height={60}
+                                />
                             </div>
                         </div>
                         <div className="bg-gray-100 py-10 flex flex-col gap-6 w-full">
@@ -56,12 +71,22 @@ export default function MyFooter() {
                                     <p className="font-medium text-xs">일요일 : 휴무</p>
                                 </div>
                             </div>
-                            <div className="rounded-lg py-4 border border-solid border-gray-200 pl-4 pr-16">
-                                <p className="font-medium text-xs text-gray-400">BANK INFO</p>
-                                <div className="flex h-full flex-col justify-center">
-                                    <p className="font-medium text-base">국민 852501-04-084385</p>
-                                    <p className="font-medium text-base">예금주 : 백승헌 (티켓나라 잠실)</p>
+                            <div className="flex rounded-lg py-4 border border-solid border-gray-200 pl-4 pr-10 items-center">
+                                <div>
+                                    <p className="font-medium text-xs text-gray-400 mb-4">BANK INFO</p>
+                                    <div className="flex h-full flex-col justify-center">
+                                        <p className="font-medium text-sm">국민 852501-04-084385</p>
+                                        <p className="font-medium text-sm">예금주 : 백승헌 (티켓나라 잠실)</p>
+                                    </div>
                                 </div>
+                                <Image 
+                                    onClick={() => openEscrow()}
+                                    className="object-contain ml-4 cursor-pointer"
+                                    src={escroImg.src}
+                                    alt=""
+                                    width={70}
+                                    height={60}
+                                />
                             </div>
                         </div>
                         <div className="bg-gray-100 py-10 px-56 flex flex-col gap-6">

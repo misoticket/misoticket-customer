@@ -1,6 +1,7 @@
 import { Button } from "@nextui-org/button";
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/modal";
 import { useRef } from "react";
+import { useMediaQuery } from "react-responsive";
 
 interface AddPostModalProps {
     isOpen: boolean,
@@ -11,6 +12,8 @@ interface AddPostModalProps {
 export default function AddPostModal(props: AddPostModalProps) {
     const titleRef = useRef<HTMLInputElement>(null);
     const contentRef = useRef<HTMLTextAreaElement>(null);
+
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
     async function addPost() {
         if (titleRef.current && contentRef.current) {
@@ -27,7 +30,11 @@ export default function AddPostModal(props: AddPostModalProps) {
 
     return (
         <>
-            <Modal isOpen={props.isOpen} onOpenChange={props.onOpenChange}>
+            <Modal 
+                placement={`${isMobile ? "top-center" : "center"}`}
+                isOpen={props.isOpen} 
+                onOpenChange={props.onOpenChange}
+            >
                 <ModalContent>
                     {(onClose) => (
                         <>
@@ -47,7 +54,7 @@ export default function AddPostModal(props: AddPostModalProps) {
                                         <p className="font-meium text-sm mb-2">내용</p>
                                         <textarea 
                                             ref={contentRef}
-                                            className="font-medium text-sm border h-40 w-full rounded p-3"
+                                            className={`font-medium text-sm border w-full rounded p-3 ${isMobile ? "h-32" : "h-40"}`}
                                         />
                                     </div>
                                 </div>
