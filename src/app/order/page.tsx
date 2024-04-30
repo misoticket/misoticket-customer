@@ -15,6 +15,7 @@ import { OrderStatus } from "../constants/OrderStatus";
 import SearchAddressModal from "@/modals/SearchAddressModal";
 import { useDisclosure } from "@nextui-org/use-disclosure";
 import { useMediaQuery } from "react-responsive";
+import { Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger } from "@nextui-org/react";
 
 const OrderFrom = {
     product: "product",
@@ -38,7 +39,6 @@ export default function Page() {
     const orderPhoneNumber2Ref = useRef<HTMLInputElement>(null);
     const orderPhoneNumber3Ref = useRef<HTMLInputElement>(null);
     const orderEmail1Ref = useRef<HTMLInputElement>(null);
-    const orderEmail2Ref = useRef<HTMLInputElement>(null);
     const orderPasswordRef = useRef<HTMLInputElement>(null);
     const orderPasswordConfirmRef = useRef<HTMLInputElement>(null);
     const addressDeatailRef = useRef<HTMLInputElement>(null);
@@ -49,6 +49,7 @@ export default function Page() {
     const deliveryMessageRef = useRef<HTMLTextAreaElement>(null);
     const depositorNameRef = useRef<HTMLInputElement>(null);
 
+    const [orderEmail2, setOrderEmail2] = useState("naver.com");
     const [deliPersonName, setDeliPersonName] = useState("");
     const [deliPhoneNumber1, setDeliPhoneNumeber1] = useState("");
     const [deliPhoneNumber2, setDeliPhoneNumeber2] = useState("");
@@ -90,7 +91,6 @@ export default function Page() {
         const orderPhoneNumber2 = orderPhoneNumber2Ref.current!.value;
         const orderPhoneNumber3 = orderPhoneNumber3Ref.current!.value;
         const orderEmail1 = orderEmail1Ref.current!.value;
-        const orderEmail2 = orderEmail2Ref.current!.value;
         const orderPassword = orderPasswordRef.current!.value;
         const orderPasswordConfirm = orderPasswordConfirmRef.current!.value;
         const deliveryPersonName = deliveryPersonNameRef.current!.value;
@@ -105,7 +105,6 @@ export default function Page() {
             orderPhoneNumber2.trim().length === 0 ||
             orderPhoneNumber3.trim().length === 0 ||
             orderEmail1.trim().length === 0 ||
-            orderEmail2.trim().length === 0 ||
             orderPassword.trim().length === 0 ||
             orderPasswordConfirm.trim().length === 0 ||
             deliveryPersonName.trim().length === 0 ||
@@ -129,7 +128,7 @@ export default function Page() {
                                             [new ProductOrder(product.id, amount)],
                                             orderPersonName,
                                             orderPhoneNumber1 + orderPhoneNumber2 + orderPhoneNumber3,
-                                            orderEmail1 + orderEmail2,
+                                            orderEmail1 + "@" + orderEmail2,
                                             orderPassword,
                                             address,
                                             addressDeatailRef.current!.value,
@@ -149,7 +148,7 @@ export default function Page() {
                                             productOrderList,
                                             orderPersonName,
                                             orderPhoneNumber1 + orderPhoneNumber2 + orderPhoneNumber3,
-                                            orderEmail1 + orderEmail2,
+                                            orderEmail1 + "@" + orderEmail2,
                                             orderPassword,
                                             address,
                                             addressDeatailRef.current!.value,
@@ -358,10 +357,19 @@ export default function Page() {
                                                                 className="w-32 border rounded h-10 px-2 py-1 text-sm font-regular" 
                                                             />
                                                             <p className="font-medium text-sm mx-2">@</p>
-                                                            <input 
-                                                                ref={orderEmail2Ref}
-                                                                className="w-32 border rounded h-10 px-2 py-1 text-sm font-regular" 
-                                                            />
+                                                            <Dropdown>
+                                                                <DropdownTrigger>
+                                                                    <p className="font-medium text-sm bg-gray-200 py-1.5 px-3 rounded cursor-pointer hover:opacity-70">{orderEmail2}</p>
+                                                                </DropdownTrigger>
+                                                                <DropdownMenu>
+                                                                    <DropdownItem onPress={() => setOrderEmail2("naver.com")}>naver.com</DropdownItem>
+                                                                    <DropdownItem onPress={() => setOrderEmail2("hanmail.net")}>hanmail.net</DropdownItem>
+                                                                    <DropdownItem onPress={() => setOrderEmail2("google.com")}>google.com</DropdownItem>
+                                                                    <DropdownItem onPress={() => setOrderEmail2("daum.net")}>daum.net</DropdownItem>
+                                                                    <DropdownItem onPress={() => setOrderEmail2("nate.com")}>nate.com</DropdownItem>
+                                                                    <DropdownItem onPress={() => setOrderEmail2("kakao.com")}>kakao.com</DropdownItem>
+                                                                </DropdownMenu>
+                                                            </Dropdown>
                                                         </div>
                                                     </div>
                                                     <div className="flex mt-5 flex-col">
@@ -700,10 +708,19 @@ export default function Page() {
                                                             className="w-36 border border-gray-300 px-2 py-1 text-sm font-regular" 
                                                         />
                                                         <p className="font-medium text-sm mx-2">@</p>
-                                                        <input 
-                                                            ref={orderEmail2Ref}
-                                                            className="w-36 border border-gray-300 px-2 py-1 text-sm font-regular" 
-                                                        />
+                                                        <Dropdown>
+                                                            <DropdownTrigger>
+                                                                <p className="font-medium text-sm bg-gray-200 py-1.5 px-3 rounded cursor-pointer hover:opacity-70">{orderEmail2}</p>
+                                                            </DropdownTrigger>
+                                                            <DropdownMenu>
+                                                                <DropdownItem onPress={() => setOrderEmail2("naver.com")}>naver.com</DropdownItem>
+                                                                <DropdownItem onPress={() => setOrderEmail2("hanmail.net")}>hanmail.net</DropdownItem>
+                                                                <DropdownItem onPress={() => setOrderEmail2("google.com")}>google.com</DropdownItem>
+                                                                <DropdownItem onPress={() => setOrderEmail2("daum.net")}>daum.net</DropdownItem>
+                                                                <DropdownItem onPress={() => setOrderEmail2("nate.com")}>nate.com</DropdownItem>
+                                                                <DropdownItem onPress={() => setOrderEmail2("kakao.com")}>kakao.com</DropdownItem>
+                                                            </DropdownMenu>
+                                                        </Dropdown>
                                                     </div>
                                                 </div>
                                                 <div className="flex border-l border-r border-b border-gray-200">
