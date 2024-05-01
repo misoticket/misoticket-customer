@@ -5,13 +5,17 @@ export default class User {
     pw: string;
     name: string;
     phoneNumber: string;
+    address: string;
+    addressDetail: string;
     email: string;
 
-    constructor (id: string, pw: string, name: string, phoneNumber: string, email: string) {
+    constructor (id: string, pw: string, name: string, phoneNumber: string, address: string, addressDetail: string, email: string) {
         this.id = id;
         this.pw = pw;
         this.name = name;
         this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.addressDetail = addressDetail;
         this.email = email;
     }
 
@@ -20,6 +24,8 @@ export default class User {
             pw: this.pw,
             name: this.name,
             phoneNumber: this.phoneNumber,
+            address: this.address,
+            addressDetail: this.addressDetail,
             email: this.email
         };
     }
@@ -32,6 +38,8 @@ export function convertDocSnapToUser(docSnap: DocumentSnapshot): User {
         data.pw,
         data.name,
         data.phoneNumber,
+        data.address,
+        data.addressDetail,
         data.email
     );
 }

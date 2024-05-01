@@ -5,8 +5,10 @@ import { removeProductOrderListWithNoneUserId, removeProductOrderListWithUserId 
 import CategoryTabBar from "@/components/CategoryTabBar";
 import MyFooter from "@/components/MyFooter";
 import MyHeader from "@/components/MyHeader";
+import SelectOrderStyleModal from "@/modals/SelectOrderStyleModal";
 import Product from "@/models/Product";
 import ProductOrder from "@/models/ProductOrder";
+import { useDisclosure } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
@@ -16,9 +18,13 @@ export default function Page() {
 
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
+    const [currentProductOrderList, setCurrentProductOrderList] = useState<ProductOrder[]>([]);
+
     const [productList, setProductList] = useState<Product[]>([]);
     const [productOrderList, setProductOrderList] = useState<ProductOrder[]>([]);
     const [selectProductOrderList, setSelectProductOrderList] = useState<ProductOrder[]>([]);
+
+    const selectOrderStyleModalDiscolure = useDisclosure();
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -70,7 +76,7 @@ export default function Page() {
         }
     }
 
-    function moveToOrder(prodOrderList: ProductOrder[]) {
+    function handlePurchaseButton(prodOrderList: ProductOrder[]) {
         if (prodOrderList.length === 0) {
             alert("주문하실 상품을 선택해주세요.");
         } else {
@@ -80,8 +86,29 @@ export default function Page() {
                 query += `&prod_order=${po.productId}_${po.amount}`;
             }
 
-            router.push(`/order?from=basket${query}`);
+            const isLogIn = localStorage.getItem("misoticket-isLogIn");
+            if (isLogIn === "y") {
+                const userId = localStorage.getItem("misoticket-userId")!;
+                router.push(`/order?from=basket${query}&userId=${userId}`);
+            } else {
+                setCurrentProductOrderList(prodOrderList);
+                selectOrderStyleModalDiscolure.onOpen();
+            }
         }
+    }
+
+    function moveToLogIn() {
+        router.push("/user/log_in");
+    }
+
+    function moveToOrderWithNoneUser() {
+        let query = "";
+
+        for (const po of currentProductOrderList) {
+            query += `&prod_order=${po.productId}_${po.amount}`;
+        }
+
+        router.push(`/order?from=basket${query}`);
     }
 
     async function updateProductOrderList() {
@@ -161,13 +188,13 @@ export default function Page() {
                         <div className="mt-8 flex justify-center gap-3">
                             <button 
                                 className="px-6 py-2 border border-gray-400 font-medium text-base hover:bg-gray-200"
-                                onClick={() => moveToOrder(selectProductOrderList)}
+                                onClick={() => handlePurchaseButton(selectProductOrderList)}
                             >
                                 선택 주문하기
                             </button>
                             <button 
                                 className="px-6 py-2 border bg-gray-800 text-white border-gray-400 font-medium text-base hover:opacity-70"
-                                onClick={() => moveToOrder(productOrderList)}
+                                onClick={() => handlePurchaseButton(productOrderList)}
                             >
                                 전체 주문하기
                             </button>
@@ -217,19 +244,25 @@ export default function Page() {
                         <div className="mt-8 flex justify-center gap-3">
                             <button 
                                 className="px-6 py-2 border border-gray-400 font-medium text-base hover:bg-gray-200"
-                                onClick={() => moveToOrder(selectProductOrderList)}
+                                onClick={() => handlePurchaseButton(selectProductOrderList)}
                             >
                                 선택 주문하기
                             </button>
                             <button 
                                 className="px-6 py-2 border bg-gray-800 text-white border-gray-400 font-medium text-base hover:opacity-70"
-                                onClick={() => moveToOrder(productOrderList)}
+                                onClick={() => handlePurchaseButton(productOrderList)}
                             >
                                 전체 주문하기
                             </button>
                         </div>
                     </div>
             }
+            <SelectOrderStyleModal
+                isOpen={selectOrderStyleModalDiscolure.isOpen}
+                onOpenChange={selectOrderStyleModalDiscolure.onOpenChange}
+                handleLogIn={() => moveToLogIn()}
+                handleNoneUserOrder={() => moveToOrderWithNoneUser()}
+            />
             <MyFooter />
         </>
     );

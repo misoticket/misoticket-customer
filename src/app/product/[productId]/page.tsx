@@ -10,11 +10,12 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import plusImg from "@/../public/images/plusFill.png";
 import minusImg from "@/../public/images/minusFill.png";
-import { NextUIProvider } from "@nextui-org/react";
+import { NextUIProvider, useDisclosure } from "@nextui-org/react";
 import { addProductOrderWithNoneUserId, addProductOrderWithUserId } from "@/apis/FirestorePOST";
 import ProductOrder from "@/models/ProductOrder";
 import { v4 as uuidv4 } from 'uuid';
 import { useMediaQuery } from "react-responsive";
+import SelectOrderStyleModal from "@/modals/SelectOrderStyleModal";
 
 export default function Page({ params }: { params: { productId: string } }) {
     const router = useRouter();
@@ -23,6 +24,8 @@ export default function Page({ params }: { params: { productId: string } }) {
     const [productOrderList, setProductOrderList] = useState<ProductOrder[]>([]);
     const [product, setProduct] = useState<Product | null>(null);
     const [amount, setAmount] = useState(1);
+
+    const selectOrderStyleModalDiscolure = useDisclosure();
 
     useEffect(() => {
         fetchProductOrderList();
@@ -61,6 +64,29 @@ export default function Page({ params }: { params: { productId: string } }) {
             }
         } else {
             setAmount(amount+1);
+        }
+    }
+
+    function handlePurchaseButton() {
+        if (product) {
+            const isLogIn = localStorage.getItem("misoticket-isLogIn");
+
+            if (isLogIn === "y") {
+                const userId = localStorage.getItem("misoticket-userId")!;
+                router.push(`/order?from=product&productId=${product.id}&amount=${amount}&userId=${userId}`);
+            } else {
+                selectOrderStyleModalDiscolure.onOpen();
+            }
+        }
+    }
+
+    function moveToLogIn() {
+        router.push("/user/log_in");
+    }
+
+    function moveToOrderWithNoneUser() {
+        if (product) {
+            router.push(`/order?from=product&productId=${product.id}&amount=${amount}`);
         }
     }
 
@@ -175,7 +201,7 @@ export default function Page({ params }: { params: { productId: string } }) {
                                                                 </p> :
                                                                 <div>
                                                                     <button 
-                                                                        onClick={() => router.push(`/order?from=product&productId=${product.id}&amount=${amount}`)}
+                                                                        onClick={() => handlePurchaseButton()}
                                                                         className="w-full py-5 border-2 border-solid border-black font-semibold mt-10 hover:bg-gray-100"
                                                                     >
                                                                         구매하기
@@ -274,7 +300,7 @@ export default function Page({ params }: { params: { productId: string } }) {
                                                                 </p> :
                                                                 <div>
                                                                     <button 
-                                                                        onClick={() => router.push(`/order?from=product&productId=${product.id}&amount=${amount}`)}
+                                                                        onClick={() => handlePurchaseButton()}
                                                                         className="w-full py-5 border-2 border-solid border-black font-semibold mt-10 hover:bg-gray-100"
                                                                     >
                                                                         구매하기
@@ -303,6 +329,12 @@ export default function Page({ params }: { params: { productId: string } }) {
                             <MyFooter />
                         </div>
                     }
+            <SelectOrderStyleModal
+                isOpen={selectOrderStyleModalDiscolure.isOpen}
+                onOpenChange={selectOrderStyleModalDiscolure.onOpenChange}
+                handleLogIn={() => moveToLogIn()}
+                handleNoneUserOrder={() => moveToOrderWithNoneUser()}
+            />
             </NextUIProvider>
         </>
     );

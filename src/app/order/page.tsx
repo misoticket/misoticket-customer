@@ -15,7 +15,9 @@ import { OrderStatus } from "../constants/OrderStatus";
 import SearchAddressModal from "@/modals/SearchAddressModal";
 import { useDisclosure } from "@nextui-org/use-disclosure";
 import { useMediaQuery } from "react-responsive";
-import { Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger } from "@nextui-org/react";
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
+import User from "@/models/User";
+import { fetchUser as fetchUserFromServer } from "@/apis/FirestoreGET";
 
 const OrderFrom = {
     product: "product",
@@ -25,6 +27,8 @@ const OrderFrom = {
 export default function Page() {
     const searchParams = useSearchParams();
     const router = useRouter();
+
+    const [user, setUser] = useState<User | null>(null);
 
     const [from, setFrom] = useState<string | null>(null);
     const [amount, setAmount] = useState<number | null>(null);
@@ -49,6 +53,11 @@ export default function Page() {
     const deliveryMessageRef = useRef<HTMLTextAreaElement>(null);
     const depositorNameRef = useRef<HTMLInputElement>(null);
 
+    const [orderPersonName, setOrderPersonName] = useState("");
+    const [orderPhoneNumber1, setOrderPhonNumber1] = useState("");
+    const [orderPhoneNumber2, setOrderPhonNumber2] = useState("");
+    const [orderPhoneNumber3, setOrderPhonNumber3] = useState("");
+    const [orderEmail, setOrderEmail] = useState("");
     const [orderEmail2, setOrderEmail2] = useState("naver.com");
     const [deliPersonName, setDeliPersonName] = useState("");
     const [deliPhoneNumber1, setDeliPhoneNumeber1] = useState("");
@@ -61,7 +70,20 @@ export default function Page() {
 
     useEffect(() => {
         fetchData();
+        fetchUser();
     }, []);
+
+    useEffect(() => {
+        if (user) {
+            setOrderPersonName(user.name);
+            setOrderPhonNumber1(user.phoneNumber);
+            setOrderPhonNumber2(user.phoneNumber);
+            setOrderPhonNumber3(user.phoneNumber);
+            setOrderEmail(user.email.split("@")[0]);
+            setOrderEmail2(user.email.split("@")[1]);
+            setAddress(user.address);
+        }
+    }, [user]);
 
     async function fetchData() {
         const from = searchParams.get("from");
@@ -82,6 +104,15 @@ export default function Page() {
             }
 
             setProductOrderList(pList);
+        }
+    }
+
+    async function fetchUser() {
+        const isLogIn = localStorage.getItem("misoticket-isLogIn");
+
+        if (isLogIn === "y") {
+            const userId = localStorage.getItem("misoticket-userId");
+            setUser(await fetchUserFromServer(userId!));
         }
     }
 
@@ -673,6 +704,8 @@ export default function Page() {
                                                     <p className="w-56 font-regular text-sm p-4 bg-gray-50 border-r border-gray-200">주문하시는 분 <span className="font-medium text-theme">*</span></p>
                                                     <div className="w-full flex items-center px-5">
                                                         <input 
+                                                            value={orderPersonName}
+                                                            onChange={(e) => setOrderPersonName(e.target.value)}
                                                             ref={orderPersonNameRef}
                                                             className="w-64 border border-gray-300 px-2 py-1 text-sm font-regular" 
                                                         />
@@ -682,18 +715,24 @@ export default function Page() {
                                                     <p className="w-56 font-regular text-sm p-4 bg-gray-50 border-r border-gray-200">휴대폰 번호 <span className="font-medium text-theme">*</span></p>
                                                     <div className="w-full flex items-center px-5">
                                                         <input 
+                                                            value={orderPhoneNumber1}
+                                                            onChange={(e) => setOrderPhonNumber1(e.target.value)}
                                                             ref={orderPhoneNumber1Ref}
                                                             type="number"
                                                             className="w-16 border border-gray-300 px-2 py-1 text-sm font-regular [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
                                                         />
                                                         <p className="font-medium text-sm mx-2">-</p>
                                                         <input 
+                                                            value={orderPhoneNumber2}
+                                                            onChange={(e) => setOrderPhonNumber2(e.target.value)}
                                                             ref={orderPhoneNumber2Ref}
                                                             type="number"
                                                             className="w-20 border border-gray-300 px-2 py-1 text-sm font-regular [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
                                                         />
                                                         <p className="font-medium text-sm mx-2">-</p>
                                                         <input 
+                                                            value={orderPhoneNumber3}
+                                                            onChange={(e) => setOrderPhonNumber3(e.target.value)}
                                                             ref={orderPhoneNumber3Ref}
                                                             type="number"
                                                             className="w-20 border border-gray-300 px-2 py-1 text-sm font-regular [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
@@ -704,6 +743,8 @@ export default function Page() {
                                                     <p className="w-56 font-regular text-sm p-4 bg-gray-50 border-r border-gray-200">이메일 <span className="font-medium text-theme">*</span></p>
                                                     <div className="w-full flex items-center px-5">
                                                         <input 
+                                                            value={orderEmail}
+                                                            onChange={(e) => setOrderEmail(e.target.value)}
                                                             ref={orderEmail1Ref}
                                                             className="w-36 border border-gray-300 px-2 py-1 text-sm font-regular" 
                                                         />

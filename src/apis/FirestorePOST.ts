@@ -14,12 +14,14 @@ export async function uploadOrder(order: Order): Promise<string> {
     return doc.id;
 }
 
-export async function makeUser(id: string, pw: string, name: string, phoneNumber: string, email: string) {
+export async function makeUser(id: string, pw: string, name: string, phoneNumber: string, address: string, addressDetail: string, email: string) {
     const user = new User(
         "",
         pw,
         name,
         phoneNumber,
+        address,
+        addressDetail,
         email
     );
 

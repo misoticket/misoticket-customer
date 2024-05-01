@@ -106,6 +106,11 @@ export async function fetchUserList(): Promise<User[]> {
     return querySnapshot.docs.map(doc => convertDocSnapToUser(doc));
 }
 
+export async function fetchUser(userId: string): Promise<User> {
+    const docRef = await getDoc(doc(db, `users/${userId}`));
+    return convertDocSnapToUser(docRef);
+}
+
 export async function fetchPostList(): Promise<Post[]> {
     const querySnapshot = await getDocs(collection(db, "posts"));
     return querySnapshot.docs.map(doc => convertDocSnapToPost(doc)).sort((a, b) => b.createdTime.getTime() - a.createdTime.getTime());
