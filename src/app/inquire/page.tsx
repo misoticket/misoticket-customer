@@ -1,6 +1,6 @@
 'use client';
 
-import { searchOrderList } from "@/apis/FirestoreGET";
+import { searchOrder} from "@/apis/FirestoreGET";
 import CategoryTabBar from "@/components/CategoryTabBar";
 import MyFooter from "@/components/MyFooter";
 import MyHeader from "@/components/MyHeader";
@@ -13,7 +13,7 @@ export default function Page() {
 
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
     const personNameRef = useRef<HTMLInputElement>(null);
-    const personPhoneNumberRef = useRef<HTMLInputElement>(null);
+    const orderCodeRef = useRef<HTMLInputElement>(null);
     const orderPasswordRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -21,29 +21,29 @@ export default function Page() {
     }, []);
 
     async function search() {
-        if (personNameRef.current && personPhoneNumberRef.current && orderPasswordRef.current) {
+        if (personNameRef.current && orderCodeRef.current && orderPasswordRef.current) {
             const personName = personNameRef.current.value;
-            const personPhoneNumber = personPhoneNumberRef.current.value;
+            const orderCode = orderCodeRef.current.value;
             const orderPassword = orderPasswordRef.current.value;
 
             if (personName.trim().length === 0) {
                 alert("주문자명을 입력해주세요.");
-            } else if (personPhoneNumber.trim().length === 0) {
-                alert("휴대폰 번호를 입력해주세요.");
+            } else if (orderCode.trim().length === 0) {
+                alert("주문 코드를 입력해주세요.");
             } else if (orderPassword.trim().length === 0) {
                 alert("주문 비밀번호를 입력해주세요.");
             } else {
-                const orderList = await searchOrderList(personName);
-                const myOrder = orderList.filter(od => od.orderPhoneNumber === personPhoneNumber && od.orderPassword === orderPassword);
-
-                if (myOrder.length === 0) {
-                    if (orderList.filter(od => od.orderPhoneNumber === personPhoneNumber).length > 0) {
-                        alert("주문 비밀번호가 일치하지 않습니다.");
-                    } else {
-                        alert("조회된 결과가 없습니다.");
-                    }
+                const order = await searchOrder(orderCode);
+                if (order === null) {
+                    alert("조회된 결과가 없습니다.");
                 } else {
-                    router.push(`/order/${myOrder[0].id}`);
+                    if (order.orderPassword !== orderPassword) {
+                        alert("주문 비밀번호가 일치하지 않습니다.");
+                    } else if (order.orderPersonName !== personName) {
+                        alert("주문자명이 올바르지 않습니다.");
+                    } else {
+                        router.push(`/order/${order.id}`);
+                    }
                 }
             }
         }
@@ -68,12 +68,10 @@ export default function Page() {
                                 />
                             </div>
                             <div className="flex gap-3 items-center mb-3">
-                                <p className="font-medium text-sm w-20">휴대폰번호</p>
+                                <p className="font-medium text-sm w-20">주문 코드</p>
                                 <input 
-                                    placeholder="숫자만 입력해주세요."
-                                    type="number"
-                                    className="flex-1 border font-medium text-sm h-8 px-3 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                    ref={personPhoneNumberRef}
+                                    className="flex-1 border font-medium text-sm h-8 px-3"
+                                    ref={orderCodeRef}
                                 />
                             </div>
                             <div className="flex gap-3 items-center">
@@ -107,12 +105,10 @@ export default function Page() {
                                 />
                             </div>
                             <div className="flex gap-3 items-center mb-3">
-                                <p className="font-medium text-sm w-20">휴대폰번호</p>
+                                <p className="font-medium text-sm w-20">주문 코드</p>
                                 <input 
-                                    placeholder="숫자만 입력해주세요."
-                                    type="number"
-                                    className="flex-1 border font-medium text-sm h-8 px-3 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                    ref={personPhoneNumberRef}
+                                    className="flex-1 border font-medium text-sm h-8 px-3"
+                                    ref={orderCodeRef}
                                 />
                             </div>
                             <div className="flex gap-3 items-center">

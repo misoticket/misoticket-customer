@@ -49,7 +49,14 @@ export default function Page({ params }: { params: { orderId: string } }) {
                 isMobile ?
                     <div className="mt-44 flex justify-center">
                         <div className="w-full px-8">
-                            <p className="font-medium text-xs mx-2 mb-4 text-gray-400">주문코드 { order && order.id }</p>
+                            {
+                                order !== null &&  order.userId.length === 0 &&
+                                    <div className="bg-gray-100 px-4 py-4 rounded-lg mb-10">
+                                        <p className="font-medium text-xs mx-2 mb-1 text-gray-500">비회원 주문은 조회를 위해 주문코드가 필요하기 때문에</p>
+                                        <p className="font-medium text-xs mx-2 text-gray-500">기록해두시는걸 권장합니다.</p>
+                                    </div>
+                            }
+                            <p className="font-medium text-sm mx-2 mb-4 text-gray-400">주문코드 { order && order.id }</p>
                             <div className="bg-gray-100 px-6 py-6 rounded-lg flex justify-center flex-col">
                                 {
                                     order &&
@@ -122,7 +129,14 @@ export default function Page({ params }: { params: { orderId: string } }) {
                     </div> :
                     <div className="mt-56 flex justify-center">
                         <div className="w-96">
-                            <p className="font-medium text-xs mx-2 mb-4 text-gray-400">주문코드 { order && order.id }</p>
+                            {
+                                order !== null &&  order.userId.length === 0 &&
+                                    <div className="bg-gray-100 px-4 py-4 rounded-lg mb-10">
+                                        <p className="font-medium text-xs mx-2 mb-1 text-gray-500">비회원 주문은 조회를 위해 주문코드가 필요하기 때문에</p>
+                                        <p className="font-medium text-xs mx-2 text-gray-500">기록해두시는걸 권장합니다.</p>
+                                    </div>
+                            }
+                            <p className="font-medium text-sm mx-2 mb-4 text-gray-400">주문코드 { order && order.id }</p>
                             <div className="bg-gray-100 px-6 py-6 rounded-lg flex justify-center flex-col">
                                 {
                                     order &&

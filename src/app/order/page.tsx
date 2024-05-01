@@ -34,6 +34,7 @@ export default function Page() {
     const [amount, setAmount] = useState<number | null>(null);
     const [product, setProduct] = useState<Product | null>(null);
     const [address, setAddress] = useState("");
+    const [addressDetail, setAddressDetail] = useState("");
 
     const [productOrderList, setProductOrderList] = useState<ProductOrder[]>([]);
     const [productList, setProductList] = useState<Product[]>([]);
@@ -76,12 +77,13 @@ export default function Page() {
     useEffect(() => {
         if (user) {
             setOrderPersonName(user.name);
-            setOrderPhonNumber1(user.phoneNumber);
-            setOrderPhonNumber2(user.phoneNumber);
-            setOrderPhonNumber3(user.phoneNumber);
+            setOrderPhonNumber1(user.phoneNumber.split("-")[0]);
+            setOrderPhonNumber2(user.phoneNumber.split("-")[1]);
+            setOrderPhonNumber3(user.phoneNumber.split("-")[2]);
             setOrderEmail(user.email.split("@")[0]);
             setOrderEmail2(user.email.split("@")[1]);
             setAddress(user.address);
+            setAddressDetail(user.addressDetail);
         }
     }, [user]);
 
@@ -156,15 +158,16 @@ export default function Page() {
                 const orderId = await uploadOrder(new Order(
                                             "",
                                             new Date(),
+                                            user === null ? "" : user.id,
                                             [new ProductOrder(product.id, amount)],
                                             orderPersonName,
-                                            orderPhoneNumber1 + orderPhoneNumber2 + orderPhoneNumber3,
+                                            orderPhoneNumber1 + "-" + orderPhoneNumber2 + "-" + orderPhoneNumber3,
                                             orderEmail1 + "@" + orderEmail2,
                                             orderPassword,
                                             address,
                                             addressDeatailRef.current!.value,
                                             deliveryPersonName,
-                                            deliveryPhoneNumber1 + deliveryPhoneNumber2 + deliveryPhoneNumber3,
+                                            deliveryPhoneNumber1 + "-" + deliveryPhoneNumber2 + "-" + deliveryPhoneNumber3,
                                             deliveryMessage,
                                             depositorName,
                                             OrderStatus.WAITING_PAYMENT,
@@ -176,15 +179,16 @@ export default function Page() {
                 const orderId = await uploadOrder(new Order(
                                             "",
                                             new Date(),
+                                            user === null ? "" : user.id,
                                             productOrderList,
                                             orderPersonName,
-                                            orderPhoneNumber1 + orderPhoneNumber2 + orderPhoneNumber3,
+                                            orderPhoneNumber1 + "-" + orderPhoneNumber2 + "-" + orderPhoneNumber3,
                                             orderEmail1 + "@" + orderEmail2,
                                             orderPassword,
                                             address,
                                             addressDeatailRef.current!.value,
                                             deliveryPersonName,
-                                            deliveryPhoneNumber1 + deliveryPhoneNumber2 + deliveryPhoneNumber3,
+                                            deliveryPhoneNumber1 + "-" + deliveryPhoneNumber2 + "-" + deliveryPhoneNumber3,
                                             deliveryMessage,
                                             depositorName,
                                             OrderStatus.WAITING_PAYMENT,
@@ -438,6 +442,8 @@ export default function Page() {
                                                                     <div className="w-full">
                                                                         <p onClick={() => searchAddressModal.onOpen()} className="font-medium text-sm mb-2 cursor-pointer hover:opacity-60">{address}</p>
                                                                         <input 
+                                                                            value={addressDetail}
+                                                                            onChange={(e) => setAddressDetail(e.target.value)}
                                                                             ref={addressDeatailRef}
                                                                             placeholder="상세주소 입력"
                                                                             className="border rounded h-10 text-regualr text-sm px-2 mt-1 w-2/3 border-gray-200"
@@ -805,6 +811,8 @@ export default function Page() {
                                                                 <div className="w-full">
                                                                     <p onClick={() => searchAddressModal.onOpen()} className="font-medium text-sm mb-2 cursor-pointer hover:opacity-60">{address}</p>
                                                                     <input 
+                                                                        value={addressDetail}
+                                                                        onChange={(e) => setAddressDetail(e.target.value)}
                                                                         ref={addressDeatailRef}
                                                                         placeholder="상세주소 입력"
                                                                         className="border text-regualr text-sm px-2 h-8 w-1/3 border-gray-200"

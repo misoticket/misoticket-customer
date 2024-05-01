@@ -51,10 +51,13 @@ export async function fetchOrder(orderId: string): Promise<Order> {
     return convertDocSnapToOrder(await getDoc(docRef));
 }
 
-export async function searchOrderList(personName: string): Promise<Order[]> {
-    const q = query(collection(db, "orders/"), where("orderPersonName", "==", personName));
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(docSnap => convertDocSnapToOrder(docSnap));
+export async function searchOrder(orderCode: string): Promise<Order | null> {
+    const docRef = await getDoc(doc(db, `orders/${orderCode}`));
+    if (docRef.exists()) {
+        return convertDocSnapToOrder(docRef);
+    } else {
+        return null;
+    }
 }
 
 export async function fetchMainCategoryList(): Promise<MainCategory[]> {

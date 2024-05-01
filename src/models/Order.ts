@@ -4,6 +4,7 @@ import ProductOrder from "./ProductOrder";
 export default class Order {
     id: string;
     createdTime: Date;
+    userId: string;
     productList: ProductOrder[];
     orderPersonName: string;
     orderPhoneNumber: string;
@@ -18,9 +19,10 @@ export default class Order {
     status: string;
     deliveryInvoiceNumber: string;
 
-    constructor (id: string, createdTime: Date, productList: ProductOrder[], orderPersonName: string, orderPhoneNumber: string, orderEmail: string, orderPassword: string, address: string, addressDetail: string, deliveryPersonName: string, deliveryPhoneNumber: string, deliveryMessage: string, depositorName: string, status: string, deliveryInvoiceNumber: string) {
+    constructor (id: string, createdTime: Date, userId: string, productList: ProductOrder[], orderPersonName: string, orderPhoneNumber: string, orderEmail: string, orderPassword: string, address: string, addressDetail: string, deliveryPersonName: string, deliveryPhoneNumber: string, deliveryMessage: string, depositorName: string, status: string, deliveryInvoiceNumber: string) {
         this.id = id;
         this.createdTime = createdTime;
+        this.userId = userId;
         this.productList = productList;
         this.orderPersonName = orderPersonName;
         this.orderPhoneNumber = orderPhoneNumber;
@@ -39,6 +41,7 @@ export default class Order {
     toFirebaseObjectWithoutId() {
         return {
             createdTime: Timestamp.fromDate(this.createdTime),
+            userId: this.userId,
             productList: this.productList.map(prod => prod.toFirebaseObject()),
             orderPersonName: this.orderPersonName,
             orderPhoneNumber: this.orderPhoneNumber,
@@ -61,6 +64,7 @@ export function convertDocSnapToOrder(docSnap: DocumentSnapshot): Order {
     return new Order(
         docSnap.id,
         (data.createdTime as Timestamp).toDate(),
+        data.userId,
         data.productList,
         data.orderPersonName,
         data.orderPhoneNumber,

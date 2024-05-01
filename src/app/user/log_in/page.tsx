@@ -4,7 +4,7 @@ import CategoryTabBar from "@/components/CategoryTabBar";
 import MyFooter from "@/components/MyFooter";
 import MyHeader from "@/components/MyHeader";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { logIn as logInToServer } from "@/apis/FirestoreGET";
 
 export default function Page() {
@@ -12,6 +12,10 @@ export default function Page() {
 
     const idRef = useRef<HTMLInputElement>(null);
     const pwRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     async function logIn() {
         if (idRef.current && pwRef.current) {
