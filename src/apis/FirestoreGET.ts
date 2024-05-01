@@ -60,6 +60,12 @@ export async function searchOrder(orderCode: string): Promise<Order | null> {
     }
 }
 
+export async function fetchOrderList(userId: string): Promise<Order[]> {
+    const q = query(collection(db, "orders/"), where("userId", "==", userId));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(docSnap => convertDocSnapToOrder(docSnap)).sort((a, b) => b.createdTime.getTime() - a.createdTime.getTime());
+}
+
 export async function fetchMainCategoryList(): Promise<MainCategory[]> {
     const collectionRef = collection(db, "mainCategories/");
     const querySnapshot = await getDocs(collectionRef);
