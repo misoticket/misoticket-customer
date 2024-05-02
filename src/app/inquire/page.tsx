@@ -189,9 +189,9 @@ export default function Page() {
                                                         <div className="my-4">
                                                             <p className="font-medium text-base">배송이 진행중입니다.</p>
                                                             <p className="font-medium text-sm text-gray-400 mt-2">송장번호 { order && order.deliveryInvoiceNumber }</p>
-                                                            <div className="mt-6">
-                                                                <p className="font-medium text-xs text-center">{ order && order.address }</p>
-                                                                <p className="font-medium text-xs text-center mt-1">{ order && order.addressDetail }</p>
+                                                            <div className="mt-4">
+                                                                <p className="font-medium text-xs">{ order && order.address }</p>
+                                                                <p className="font-medium text-xs mt-1">{ order && order.addressDetail }</p>
                                                             </div>
                                                         </div>
                                                 }
@@ -200,9 +200,9 @@ export default function Page() {
                                                         <div className="my-4">
                                                             <p className="font-medium text-base">배송이 완료되었어요.</p>
                                                             <p className="font-medium text-sm text-gray-400 mt-2">송장번호 { order && order.deliveryInvoiceNumber }</p>
-                                                            <div className="mt-6">
-                                                                <p className="font-medium text-xs text-center">{ order && order.address }</p>
-                                                                <p className="font-medium text-xs text-center mt-1">{ order && order.addressDetail }</p>
+                                                            <div className="mt-4">
+                                                                <p className="font-medium text-xs">{ order && order.address }</p>
+                                                                <p className="font-medium text-xs mt-1">{ order && order.addressDetail }</p>
                                                             </div>
                                                         </div>
                                                 }
