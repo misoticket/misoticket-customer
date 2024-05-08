@@ -1,12 +1,12 @@
 'use client';
 
-import Image from "next/image";
-import logoImg from "@/../public/images/logo.png";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import giftCardImg from "@/../public/images/giftCardGradient.png";
 import hamburgerImg from "@/../public/images/hamburger.png";
+import logoImg from "@/../public/images/logo.png";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 export default function MyHeader() {
@@ -14,6 +14,7 @@ export default function MyHeader() {
 
     const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
     const [isLogIn, setIsLogIn] = useState(false);
+    const [userName, setUserName] = useState("로그인");
 
     useEffect(() => {
         checkIsLogIn();
@@ -24,8 +25,15 @@ export default function MyHeader() {
 
         if (ili === null) {
             setIsLogIn(false);
+            setUserName("로그인");
         } else {
             setIsLogIn(ili === "y");
+
+            if (ili === "y") {
+                setUserName(localStorage.getItem("misoticket-userName")! + " 님");
+            } else {
+                setUserName("로그인");
+            }
         }
     }
 
@@ -84,7 +92,7 @@ export default function MyHeader() {
                                             <p className="font-medium text-xs" onClick={() => router.push("/qna")}>Q&A</p>
                                         </DropdownItem>
                                         <DropdownItem>
-                                            <p className="font-medium text-xs" onClick={() => logInAction()}>{`${isLogIn ? "로그아웃" : "로그인"}`}</p>
+                                            <p className="font-medium text-xs" onClick={() => logInAction()}>{`${isLogIn ? "마이페이지" : "로그인"}`}</p>
                                         </DropdownItem>
                                     </DropdownMenu>
                                 </Dropdown>
@@ -96,7 +104,7 @@ export default function MyHeader() {
                         <div className="mx-10 py-3 flex justify-between items-center">
                             <Image onClick={() => router.push("/")} src={logoImg} alt="" width={120} className="cursor-pointer" />
                             <div className="flex items-center gap-6">
-                                <p className="font-medium text-sm cursor-pointer hover:opacity-50" onClick={() => logInAction()}>{`${isLogIn ? "로그아웃" : "로그인"}`}</p>
+                                <p className="font-medium text-sm cursor-pointer hover:opacity-50" onClick={() => logInAction()}>{userName}</p>
                                 <p className="font-medium text-sm cursor-pointer hover:opacity-50" onClick={() => router.push("/basket")}>장바구니</p>
                                 <p className="font-medium text-sm cursor-pointer hover:opacity-50" onClick={() => router.push("/qna")}>Q&A</p>
                                 <p className="font-medium text-sm cursor-pointer hover:opacity-50" onClick={() => router.push("/inquire")}>주문조회</p>

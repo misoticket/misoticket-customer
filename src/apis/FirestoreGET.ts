@@ -97,16 +97,26 @@ export async function checkUserExist(id: string): Promise<boolean> {
     return docSnap.exists();
 }
 
-export async function logIn(id: string, pw: string): Promise<boolean> {
+export async function logIn(id: string): Promise<User | null> {
     const docRef = doc(db, `users/${id}`);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-        const user = convertDocSnapToUser(docSnap);
-
-        return user.pw === pw;
+        return convertDocSnapToUser(docSnap);
     } else {
-        return false;
+        return null;
+    }
+}
+
+export async function searchUser(name: string, phoneNumber: string): Promise<User | null> {
+    const collectionRef = collection(db, "users/");
+    const q = query(collectionRef, where("name", "==", name), where("phoneNumber", "==", phoneNumber));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.docs.length === 0) {
+        return null;
+    } else {
+        return convertDocSnapToUser(querySnapshot.docs[0]);
     }
 }
 
