@@ -12,10 +12,22 @@ export default class Product {
     originalPrice: number;
     price: number;
     customerSellingPrice: number;
-    code: string;
     desc: string;
 
-    constructor (id: string, name: string, mainImageUrl: string, categoryId: string, subCategoryId: string, order: number, isPopular: boolean, isSoldOut: boolean, originalPrice: number, price: number, customerSellingPrice: number, code: string, desc: string) {
+    constructor(
+        id: string,
+        name: string,
+        mainImageUrl: string,
+        categoryId: string,
+        subCategoryId: string,
+        order: number,
+        isPopular: boolean,
+        isSoldOut: boolean,
+        originalPrice: number,
+        price: number,
+        customerSellingPrice: number,
+        desc: string
+    ) {
         this.id = id;
         this.name = name;
         this.mainImageUrl = mainImageUrl;
@@ -27,12 +39,13 @@ export default class Product {
         this.originalPrice = originalPrice;
         this.price = price;
         this.customerSellingPrice = customerSellingPrice;
-        this.code = code;
         this.desc = desc;
     }
 }
 
-export function convertFirebaseObjectToProduct(docSnap: DocumentSnapshot): Product {
+export function convertFirebaseObjectToProduct(
+    docSnap: DocumentSnapshot
+): Product {
     const data = docSnap.data()!;
     return new Product(
         docSnap.id,
@@ -46,7 +59,6 @@ export function convertFirebaseObjectToProduct(docSnap: DocumentSnapshot): Produ
         data.originalPrice,
         data.price,
         data.customerSellingPrice,
-        data.code,
-        data.desc
+        data.code
     );
 }
