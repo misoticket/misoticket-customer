@@ -59,6 +59,6 @@ export function convertFirebaseObjectToProduct(
         data.originalPrice,
         data.price,
         data.customerSellingPrice,
-        data.code
+        data.desc
     );
 }
