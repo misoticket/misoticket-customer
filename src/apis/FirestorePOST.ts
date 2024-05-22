@@ -187,3 +187,43 @@ export async function removeProductOrderListWithUserId(
         await updateDoc(doc.ref, { productOrderList: newList });
     }
 }
+
+export async function updateProductOrderListWithUserId(
+    userId: string,
+    productOrderList: ProductOrder[]
+) {
+    const q = query(
+        collection(db, "productOrders/"),
+        where("userId", "==", userId)
+    );
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.docs.length > 0) {
+        const doc = querySnapshot.docs[0];
+        await updateDoc(doc.ref, {
+            productOrderList: productOrderList.map(
+                (productOrder: ProductOrder) => productOrder.toObject()
+            ),
+        });
+    }
+}
+
+export async function updateProductOrderListWithNoneUserId(
+    noneUserId: string,
+    productOrderList: ProductOrder[]
+) {
+    const q = query(
+        collection(db, "productOrders/"),
+        where("noneUserId", "==", noneUserId)
+    );
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.docs.length > 0) {
+        const doc = querySnapshot.docs[0];
+        await updateDoc(doc.ref, {
+            productOrderList: productOrderList.map(
+                (productOrder: ProductOrder) => productOrder.toObject()
+            ),
+        });
+    }
+}
