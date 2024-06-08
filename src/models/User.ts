@@ -8,8 +8,18 @@ export default class User {
     address: string;
     addressDetail: string;
     email: string;
+    isOriginalUser: boolean;
 
-    constructor (id: string, pw: string, name: string, phoneNumber: string, address: string, addressDetail: string, email: string) {
+    constructor(
+        id: string,
+        pw: string,
+        name: string,
+        phoneNumber: string,
+        address: string,
+        addressDetail: string,
+        email: string,
+        isOriginalUser: boolean
+    ) {
         this.id = id;
         this.pw = pw;
         this.name = name;
@@ -17,6 +27,7 @@ export default class User {
         this.address = address;
         this.addressDetail = addressDetail;
         this.email = email;
+        this.isOriginalUser = isOriginalUser;
     }
 
     toFirebaseObjectWithoutId() {
@@ -26,7 +37,8 @@ export default class User {
             phoneNumber: this.phoneNumber,
             address: this.address,
             addressDetail: this.addressDetail,
-            email: this.email
+            email: this.email,
+            isOriginalUser: this.isOriginalUser,
         };
     }
 }
@@ -40,6 +52,7 @@ export function convertDocSnapToUser(docSnap: DocumentSnapshot): User {
         data.phoneNumber,
         data.address,
         data.addressDetail,
-        data.email
+        data.email,
+        data.isOriginalUser
     );
 }

@@ -135,6 +135,11 @@ export default function Page() {
                                 </button>
                             </div>
                             <div>
+                                {orderList.length === 0 && (
+                                    <p className="font-medium text-sm text-gray-400 text-center mt-24 mb-16">
+                                        아직 주문하신 내역이 없어요.
+                                    </p>
+                                )}
                                 {orderList.map((order) => (
                                     <div
                                         key={order.id}
@@ -355,6 +360,11 @@ export default function Page() {
                                 </button>
                             </div>
                             <div>
+                                {orderList.length === 0 && (
+                                    <p className="font-medium text-sm text-gray-400 text-center mt-24 mb-16">
+                                        아직 주문하신 내역이 없어요.
+                                    </p>
+                                )}
                                 {orderList.map((order) => (
                                     <div
                                         key={order.id}

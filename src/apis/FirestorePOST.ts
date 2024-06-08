@@ -3,18 +3,38 @@ import Post from "@/models/Post";
 import ProductOrder, {
     convertObjectToProductOrder,
 } from "@/models/ProductOrder";
-import User from "@/models/User";
+import User, { convertDocSnapToUser } from "@/models/User";
 import db from "@/utils/FirebaseDB";
 import {
     addDoc,
     collection,
     doc,
+    getDoc,
     getDocs,
     query,
     setDoc,
     updateDoc,
     where,
 } from "firebase/firestore";
+
+export async function changePassword(
+    id: string,
+    password: string
+): Promise<User | null> {
+    const docRef = doc(db, `users/${id}`);
+    const docSnap = await getDoc(docRef);
+
+    await updateDoc(docRef, {
+        pw: password,
+        isOriginalUser: false,
+    });
+
+    if (docSnap.exists()) {
+        return convertDocSnapToUser(docSnap);
+    } else {
+        return null;
+    }
+}
 
 export async function uploadOrder(order: Order): Promise<string> {
     const orderNumber = generateRandomNumberUUID(10);
@@ -51,7 +71,8 @@ export async function makeUser(
         phoneNumber,
         address,
         addressDetail,
-        email
+        email,
+        false
     );
 
     await setDoc(doc(db, "users", id), user.toFirebaseObjectWithoutId());
