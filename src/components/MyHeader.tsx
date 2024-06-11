@@ -52,6 +52,13 @@ export default function MyHeader() {
         }
     }
 
+    const customStyles = {
+        dropdown: {
+            fontSize: "20px", // Increase font size
+            padding: "10px 20px", // Increase padding
+        },
+    };
+
     return (
         <>
             {isMobile ? (
@@ -62,12 +69,12 @@ export default function MyHeader() {
                                 onClick={() => router.push("/")}
                                 src={logoImg}
                                 alt=""
-                                width={80}
+                                width={90}
                                 className="cursor-pointer"
                             />
                             <div
                                 onClick={() => router.push("/market")}
-                                className="bg-gray-200 rounded-lg relative w-30 h-8 cursor-pointer hover:opacity-70"
+                                className="bg-gray-200 rounded-lg relative w-28 h-8 cursor-pointer hover:opacity-70"
                             >
                                 <Image
                                     className="w-full h-full rounded-lg"
@@ -87,14 +94,14 @@ export default function MyHeader() {
                                     <Image
                                         src={hamburgerImg}
                                         alt=""
-                                        width={28}
-                                        height={28}
+                                        width={32}
+                                        height={32}
                                     />
                                 </DropdownTrigger>
                                 <DropdownMenu>
                                     <DropdownItem>
                                         <p
-                                            className="font-medium text-xs"
+                                            className="font-medium text-sm py-1"
                                             onClick={() =>
                                                 router.push("/inquire")
                                             }
@@ -104,7 +111,7 @@ export default function MyHeader() {
                                     </DropdownItem>
                                     <DropdownItem>
                                         <p
-                                            className="font-medium text-xs"
+                                            className="font-medium text-sm py-1"
                                             onClick={() =>
                                                 router.push("/basket")
                                             }
@@ -114,7 +121,7 @@ export default function MyHeader() {
                                     </DropdownItem>
                                     <DropdownItem>
                                         <p
-                                            className="font-medium text-xs"
+                                            className="font-medium text-sm py-1"
                                             onClick={() => router.push("/qna")}
                                         >
                                             Q&A
@@ -122,7 +129,7 @@ export default function MyHeader() {
                                     </DropdownItem>
                                     <DropdownItem>
                                         <p
-                                            className="font-medium text-xs"
+                                            className="font-medium text-sm py-1"
                                             onClick={() => logInAction()}
                                         >{`${
                                             isLogIn ? "마이페이지" : "로그인"

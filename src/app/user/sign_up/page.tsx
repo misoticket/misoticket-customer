@@ -14,7 +14,7 @@ import {
     useDisclosure,
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { KeyboardEvent, useRef, useState } from "react";
 
 export default function Page() {
     const router = useRouter();
@@ -33,6 +33,43 @@ export default function Page() {
     const emailRef = useRef<HTMLInputElement>(null);
 
     const searchAddressModal = useDisclosure();
+
+    const handleIdKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            pwRef.current?.focus();
+        }
+    };
+
+    const handlePwKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            pwConfirmRef.current?.focus();
+        }
+    };
+
+    const handlePwConfirmKeyPress = (
+        event: KeyboardEvent<HTMLInputElement>
+    ) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            nameRef.current?.focus();
+        }
+    };
+
+    const handleNameKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            phoneNumberRef1.current?.focus();
+        }
+    };
+
+    const handleEmailKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            signUp();
+        }
+    };
 
     async function signUp() {
         if (
@@ -121,6 +158,7 @@ export default function Page() {
                                     아이디
                                 </p>
                                 <input
+                                    onKeyDown={handleIdKeyPress}
                                     ref={idRef}
                                     placeholder="4~12 글자"
                                     className="w-full h-10 bg-white rounded border px-3 text-sm font-medium"
@@ -131,6 +169,7 @@ export default function Page() {
                                     비밀번호
                                 </p>
                                 <input
+                                    onKeyDown={handlePwKeyPress}
                                     ref={pwRef}
                                     placeholder="6~20 글자"
                                     type="password"
@@ -142,6 +181,7 @@ export default function Page() {
                                     비밀번호 확인
                                 </p>
                                 <input
+                                    onKeyDown={handlePwConfirmKeyPress}
                                     ref={pwConfirmRef}
                                     type="password"
                                     className="w-full h-10 bg-white rounded border px-3 text-sm font-medium"
@@ -152,6 +192,7 @@ export default function Page() {
                                     성함
                                 </p>
                                 <input
+                                    onKeyDown={handleNameKeyPress}
                                     ref={nameRef}
                                     className="w-full h-10 bg-white rounded border px-3 text-sm font-medium"
                                 />
@@ -217,6 +258,7 @@ export default function Page() {
                                 </p>
                                 <div className="flex gap-2 items-center">
                                     <input
+                                        onKeyDown={handleEmailKeyPress}
                                         ref={emailRef}
                                         className="w-32 h-10 bg-white rounded border px-3 text-sm font-medium"
                                     />

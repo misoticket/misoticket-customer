@@ -13,7 +13,7 @@ import Order from "@/models/Order";
 import Product from "@/models/Product";
 import User from "@/models/User";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { OrderStatus } from "../constants/OrderStatus";
 
@@ -40,6 +40,33 @@ export default function Page() {
     useEffect(() => {
         fetchOrderList();
     }, [user]);
+
+    const handlePersonNameKeyPress = (
+        event: KeyboardEvent<HTMLInputElement>
+    ) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            orderCodeRef.current?.focus();
+        }
+    };
+
+    const handleOrderCodeKeyPress = (
+        event: KeyboardEvent<HTMLInputElement>
+    ) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            orderPasswordRef.current?.focus();
+        }
+    };
+
+    const handleOrderPasswordKeyPress = (
+        event: KeyboardEvent<HTMLInputElement>
+    ) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            search();
+        }
+    };
 
     async function fetchUser() {
         const isLogIn = localStorage.getItem("misoticket-isLogIn");
@@ -310,6 +337,7 @@ export default function Page() {
                                         주문자명
                                     </p>
                                     <input
+                                        onKeyDown={handlePersonNameKeyPress}
                                         className="flex-1 border font-medium text-sm h-8 px-3"
                                         ref={personNameRef}
                                     />
@@ -319,6 +347,7 @@ export default function Page() {
                                         주문번호
                                     </p>
                                     <input
+                                        onKeyDown={handleOrderCodeKeyPress}
                                         className="flex-1 border font-medium text-sm h-8 px-3"
                                         ref={orderCodeRef}
                                     />
@@ -328,6 +357,7 @@ export default function Page() {
                                         주문 비밀번호
                                     </p>
                                     <input
+                                        onKeyDown={handleOrderPasswordKeyPress}
                                         type="password"
                                         placeholder="4~12자"
                                         className="flex-1 border font-medium text-sm h-8 px-3"
@@ -535,6 +565,7 @@ export default function Page() {
                                         주문자명
                                     </p>
                                     <input
+                                        onKeyDown={handlePersonNameKeyPress}
                                         className="flex-1 border font-medium text-sm h-8 px-3"
                                         ref={personNameRef}
                                     />
@@ -544,6 +575,7 @@ export default function Page() {
                                         주문번호
                                     </p>
                                     <input
+                                        onKeyDown={handleOrderCodeKeyPress}
                                         className="flex-1 border font-medium text-sm h-8 px-3"
                                         ref={orderCodeRef}
                                     />
@@ -553,6 +585,7 @@ export default function Page() {
                                         주문 비밀번호
                                     </p>
                                     <input
+                                        onKeyDown={handleOrderPasswordKeyPress}
                                         type="password"
                                         placeholder="4~12자"
                                         className="flex-1 border font-medium text-sm h-8 px-3"

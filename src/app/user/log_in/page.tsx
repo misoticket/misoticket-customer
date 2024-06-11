@@ -8,7 +8,7 @@ import MyHeader from "@/components/MyHeader";
 import SetNewPasswordModal from "@/modals/SetNewPasswordModal";
 import { useDisclosure } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { KeyboardEvent, useEffect, useRef } from "react";
 
 export default function Page() {
     const router = useRouter();
@@ -21,6 +21,20 @@ export default function Page() {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    const handleEmailKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            pwRef.current?.focus();
+        }
+    };
+
+    const handlePasswordKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            logIn();
+        }
+    };
 
     async function logIn() {
         if (idRef.current && pwRef.current) {
@@ -90,6 +104,7 @@ export default function Page() {
                                     아이디
                                 </p>
                                 <input
+                                    onKeyDown={handleEmailKeyPress}
                                     ref={idRef}
                                     className="w-full h-10 bg-white rounded border px-3 text-sm font-medium"
                                 />
@@ -99,6 +114,7 @@ export default function Page() {
                                     비밀번호
                                 </p>
                                 <input
+                                    onKeyDown={handlePasswordKeyPress}
                                     ref={pwRef}
                                     type="password"
                                     className="w-full h-10 bg-white rounded border px-3 text-sm font-medium"

@@ -12,7 +12,8 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@fingerprintjs/fingerprintjs": "^4.3.0",
-    "@mui/material": "^5.15.15",
+    "@mui/material": "^5.15.19",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "@nextui-org/react": "^2.2.10",
     "@reduxjs/toolkit": "^2.2.3",
     "firebase": "^10.11.0",
@@ -25,6 +26,7 @@
     "react-redux": "^9.1.1",
     "react-responsive": "^10.0.0",
     "redux": "^5.0.1",
+    "styled-components": "^6.1.11",
     "uuid": "^9.0.1",
     "uuidv4": "^6.2.13",
     "v4": "^0.0.1"
