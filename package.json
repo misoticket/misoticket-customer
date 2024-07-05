@@ -16,7 +16,7 @@
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "@nextui-org/react": "^2.2.10",
     "@reduxjs/toolkit": "^2.2.3",
-    "firebase": "^10.10.0",
+    "firebase": "^10.12.3",
     "framer-motion": "^11.0.28",
     "material": "^0.9.9",
     "next": "14.2.1",
