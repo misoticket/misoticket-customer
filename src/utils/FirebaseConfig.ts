@@ -10,16 +10,6 @@ const firebaseConfig = {
     measurementId: "G-6CW035WS70",
 };
 
-// const firebaseConfig = {
-//     apiKey: "AIzaSyB0H92Iss_x73Kg5MsTszB6tO28bdRPa0U",
-//     authDomain: "misoticket-3d072.firebaseapp.com",
-//     projectId: "misoticket-3d072",
-//     storageBucket: "misoticket-3d072.appspot.com",
-//     messagingSenderId: "418213438875",
-//     appId: "1:418213438875:web:8581b3f9ee2a9050e2ed3e",
-//     measurementId: "G-B1LDCSL11Q",
-// };
-
 export default function initFirebase() {
     return initializeApp(firebaseConfig);
 }
