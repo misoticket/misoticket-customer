@@ -1,6 +1,10 @@
-import { getFirestore } from "firebase/firestore";
+import { FirebaseApp, getApp, getApps } from "firebase/app";
+import { Firestore, initializeFirestore } from "firebase/firestore";
 import initFirebase from "./FirebaseConfig";
 
-const app = initFirebase();
-const db = getFirestore(app);
+const app: FirebaseApp = !getApps().length ? initFirebase() : getApp();
+const db: Firestore = initializeFirestore(app, {
+    experimentalForceLongPolling: true,
+});
+
 export default db;
