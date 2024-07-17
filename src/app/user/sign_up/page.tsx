@@ -21,6 +21,8 @@ export default function Page() {
 
     const [address, setAddress] = useState("");
     const [orderEmail2, setOrderEmail2] = useState("naver.com");
+    const [showEmailAddress, setShowEmailAddress] = useState("naver.com");
+    const [isCustomEmail, setIsCustomEmail] = useState(false);
 
     const idRef = useRef<HTMLInputElement>(null);
     const pwRef = useRef<HTMLInputElement>(null);
@@ -263,59 +265,117 @@ export default function Page() {
                                         className="w-32 h-10 bg-white rounded border px-3 text-sm font-medium"
                                     />
                                     <p>@</p>
-                                    <Dropdown>
-                                        <DropdownTrigger>
-                                            <p className="font-medium text-sm bg-gray-200 py-1.5 px-3 rounded cursor-pointer hover:opacity-70">
-                                                {orderEmail2}
-                                            </p>
-                                        </DropdownTrigger>
-                                        <DropdownMenu>
-                                            <DropdownItem
-                                                onPress={() =>
-                                                    setOrderEmail2("naver.com")
-                                                }
-                                            >
-                                                naver.com
-                                            </DropdownItem>
-                                            <DropdownItem
-                                                onPress={() =>
+                                    <div className="flex flex-col gap-2">
+                                        <Dropdown>
+                                            <DropdownTrigger>
+                                                <p className="font-medium text-sm bg-gray-200 py-1.5 px-3 rounded cursor-pointer hover:opacity-70">
+                                                    {showEmailAddress}
+                                                </p>
+                                            </DropdownTrigger>
+                                            <DropdownMenu>
+                                                <DropdownItem
+                                                    onPress={() => {
+                                                        setIsCustomEmail(false);
+                                                        setShowEmailAddress(
+                                                            "naver.com"
+                                                        );
+                                                        setOrderEmail2(
+                                                            "naver.com"
+                                                        );
+                                                    }}
+                                                >
+                                                    naver.com
+                                                </DropdownItem>
+                                                <DropdownItem
+                                                    onPress={() => {
+                                                        setIsCustomEmail(false);
+                                                        setShowEmailAddress(
+                                                            "hanmail.net"
+                                                        );
+                                                        setOrderEmail2(
+                                                            "hanmail.net"
+                                                        );
+                                                    }}
+                                                >
+                                                    hanmail.net
+                                                </DropdownItem>
+                                                <DropdownItem
+                                                    onPress={() => {
+                                                        setIsCustomEmail(false);
+                                                        setShowEmailAddress(
+                                                            "google.com"
+                                                        );
+                                                        setOrderEmail2(
+                                                            "google.com"
+                                                        );
+                                                    }}
+                                                >
+                                                    google.com
+                                                </DropdownItem>
+                                                <DropdownItem
+                                                    onPress={() => {
+                                                        setIsCustomEmail(false);
+                                                        setShowEmailAddress(
+                                                            "daum.net"
+                                                        );
+                                                        setOrderEmail2(
+                                                            "daum.net"
+                                                        );
+                                                    }}
+                                                >
+                                                    daum.net
+                                                </DropdownItem>
+                                                <DropdownItem
+                                                    onPress={() => {
+                                                        setIsCustomEmail(false);
+                                                        setShowEmailAddress(
+                                                            "nate.com"
+                                                        );
+                                                        setOrderEmail2(
+                                                            "nate.com"
+                                                        );
+                                                    }}
+                                                >
+                                                    nate.com
+                                                </DropdownItem>
+                                                <DropdownItem
+                                                    onPress={() => {
+                                                        setIsCustomEmail(false);
+                                                        setShowEmailAddress(
+                                                            "kakao.com"
+                                                        );
+                                                        setOrderEmail2(
+                                                            "kakao.com"
+                                                        );
+                                                    }}
+                                                >
+                                                    kakao.com
+                                                </DropdownItem>
+                                                <DropdownItem
+                                                    onPress={() => {
+                                                        setIsCustomEmail(true);
+                                                        setShowEmailAddress(
+                                                            "직접입력"
+                                                        );
+                                                        setOrderEmail2("");
+                                                    }}
+                                                >
+                                                    직접 입력
+                                                </DropdownItem>
+                                            </DropdownMenu>
+                                        </Dropdown>
+                                        {isCustomEmail && (
+                                            <input
+                                                className="w-full h-10 font-regular text-black text-sm rounded border px-3"
+                                                placeholder="이메일 주소 입력"
+                                                onChange={(e) =>
                                                     setOrderEmail2(
-                                                        "hanmail.net"
+                                                        e.target.value
                                                     )
                                                 }
-                                            >
-                                                hanmail.net
-                                            </DropdownItem>
-                                            <DropdownItem
-                                                onPress={() =>
-                                                    setOrderEmail2("google.com")
-                                                }
-                                            >
-                                                google.com
-                                            </DropdownItem>
-                                            <DropdownItem
-                                                onPress={() =>
-                                                    setOrderEmail2("daum.net")
-                                                }
-                                            >
-                                                daum.net
-                                            </DropdownItem>
-                                            <DropdownItem
-                                                onPress={() =>
-                                                    setOrderEmail2("nate.com")
-                                                }
-                                            >
-                                                nate.com
-                                            </DropdownItem>
-                                            <DropdownItem
-                                                onPress={() =>
-                                                    setOrderEmail2("kakao.com")
-                                                }
-                                            >
-                                                kakao.com
-                                            </DropdownItem>
-                                        </DropdownMenu>
-                                    </Dropdown>
+                                            />
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                             <button
