@@ -104,6 +104,14 @@ export default function Page() {
                         </div>
                         <div className="flex flex-col gap-4">
                             <button
+                                onClick={() =>
+                                    router.push(`/user/change_info/${user!.id}`)
+                                }
+                                className="font-medium text-sm text-black"
+                            >
+                                회원정보 변경하기
+                            </button>
+                            <button
                                 onClick={() => logOut()}
                                 className="font-medium text-sm text-red-500"
                             >

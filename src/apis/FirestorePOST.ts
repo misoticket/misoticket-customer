@@ -17,6 +17,24 @@ import {
     where,
 } from "firebase/firestore";
 
+export async function updateUserInfo(
+    userId: string,
+    name: string,
+    phoneNumber: string,
+    address: string,
+    addressDetail: string,
+    email: string
+) {
+    const docRef = doc(db, `users/${userId}`);
+    await updateDoc(docRef, {
+        name: name,
+        phoneNumber: phoneNumber,
+        address: address,
+        addressDetail: addressDetail,
+        email: email,
+    });
+}
+
 export async function changePassword(
     id: string,
     password: string
