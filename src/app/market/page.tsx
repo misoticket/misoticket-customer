@@ -39,7 +39,11 @@ export default function Page() {
                     prodOrderList.categoryId === selectedCategory.id
             )) {
                 for (const proId of cat.productIdList) {
-                    newList.push(productList.filter((p) => p.id === proId)[0]);
+                    const prod = productList.find((p) => p.id === proId);
+
+                    if (prod !== undefined) {
+                        newList.push(prod);
+                    }
                 }
             }
 

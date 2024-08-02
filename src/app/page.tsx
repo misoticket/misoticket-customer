@@ -46,13 +46,7 @@ export default function Home() {
     }
 
     function getProduct(id: string): Product {
-        const prod = productList.filter((prod) => prod.id === id)[0];
-
-        if (prod === undefined) {
-            console.log(id);
-        }
-
-        return prod;
+        return productList.filter((prod) => prod.id === id)[0];
     }
 
     return (
