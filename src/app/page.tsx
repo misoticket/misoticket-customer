@@ -92,22 +92,15 @@ export default function Home() {
                                         </p>
                                         <div className="flex gap-2 overflow-scroll px-6 scrollbar-hide">
                                             {mc.productIdList.map((prodId) => (
-                                                <>
-                                                    {getProduct(prodId) !==
-                                                        undefined && (
-                                                        <ProductCell
-                                                            key={prodId}
-                                                            product={getProduct(
-                                                                prodId
-                                                            )}
-                                                            handleClick={() =>
-                                                                router.push(
-                                                                    `/product/${prodId}`
-                                                                )
-                                                            }
-                                                        />
-                                                    )}
-                                                </>
+                                                <ProductCell
+                                                    key={prodId}
+                                                    product={getProduct(prodId)}
+                                                    handleClick={() =>
+                                                        router.push(
+                                                            `/product/${prodId}`
+                                                        )
+                                                    }
+                                                />
                                             ))}
                                         </div>
                                     </div>
@@ -149,23 +142,17 @@ export default function Home() {
                                             <div className="grid grid-cols-4 gap-4">
                                                 {mc.productIdList.map(
                                                     (prodId) => (
-                                                        <>
-                                                            {getProduct(
+                                                        <ProductCell
+                                                            key={prodId}
+                                                            product={getProduct(
                                                                 prodId
-                                                            ) !== undefined && (
-                                                                <ProductCell
-                                                                    key={prodId}
-                                                                    product={getProduct(
-                                                                        prodId
-                                                                    )}
-                                                                    handleClick={() =>
-                                                                        router.push(
-                                                                            `/product/${prodId}`
-                                                                        )
-                                                                    }
-                                                                />
                                                             )}
-                                                        </>
+                                                            handleClick={() =>
+                                                                router.push(
+                                                                    `/product/${prodId}`
+                                                                )
+                                                            }
+                                                        />
                                                     )
                                                 )}
                                             </div>
