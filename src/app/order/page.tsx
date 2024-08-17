@@ -276,7 +276,7 @@ export default function Page() {
 
     function openEscrow() {
         window.open(
-            "http://escrow1.kbstar.com/quics?page=B009111&cc=b010807%3Ab008491&mHValue=034d60a69b928601e8ab5b534f1ca8a8",
+            "https://okbfex.kbstar.com/quics?page=C016760&mHValue=034d60a69b928601e8ab5b534f1ca8a8#loading",
             "_blank"
         );
     }
