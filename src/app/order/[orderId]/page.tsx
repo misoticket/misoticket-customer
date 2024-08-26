@@ -7,6 +7,7 @@ import CategoryTabBar from "@/components/CategoryTabBar";
 import MyFooter from "@/components/MyFooter";
 import MyHeader from "@/components/MyHeader";
 import DeleteOrderModal from "@/modals/DeleteOrderModal";
+import UpdateAddressModal from "@/modals/UpdateAddressModal";
 import Order from "@/models/Order";
 import Product from "@/models/Product";
 import { useDisclosure } from "@nextui-org/react";
@@ -19,6 +20,7 @@ export default function Page({ params }: { params: { orderId: string } }) {
     const [productList, setProductList] = useState<Product[]>([]);
 
     const deleteOrderDisclosure = useDisclosure();
+    const updateAddressModal = useDisclosure();
 
     useEffect(() => {
         fetchData();
@@ -147,9 +149,25 @@ export default function Page({ params }: { params: { orderId: string } }) {
                                         </div>
                                     )}
                                     <div className="bg-gray-200 rounded p-2 mt-8">
-                                        <p className="font-medium text-xs mb-4">
-                                            배송지 정보
-                                        </p>
+                                        <div className="flex justify-between items-center">
+                                            <p className="font-medium text-xs mb-4">
+                                                배송지 정보
+                                            </p>
+                                            {((order &&
+                                                order.status ===
+                                                    OrderStatus.WAITING_PAYMENT) ||
+                                                order.status ===
+                                                    OrderStatus.PREPARE_DELIVERY) && (
+                                                <button
+                                                    onClick={() => {
+                                                        updateAddressModal.onOpen();
+                                                    }}
+                                                    className="font-medium text-xs text-gray-500 bg-gray-300 px-3 py-1 rounded mb-2"
+                                                >
+                                                    변경
+                                                </button>
+                                            )}
+                                        </div>
                                         <p className="font-regular text-xs">
                                             {order.address}
                                         </p>
@@ -322,9 +340,25 @@ export default function Page({ params }: { params: { orderId: string } }) {
                                         </div>
                                     )}
                                     <div className="bg-gray-200 rounded p-2 mt-8">
-                                        <p className="font-medium text-xs mb-4">
-                                            배송지 정보
-                                        </p>
+                                        <div className="flex justify-between items-center">
+                                            <p className="font-medium text-xs mb-4">
+                                                배송지 정보
+                                            </p>
+                                            {((order &&
+                                                order.status ===
+                                                    OrderStatus.WAITING_PAYMENT) ||
+                                                order.status ===
+                                                    OrderStatus.PREPARE_DELIVERY) && (
+                                                <button
+                                                    onClick={() => {
+                                                        updateAddressModal.onOpen();
+                                                    }}
+                                                    className="font-medium text-xs text-gray-500 bg-gray-300 px-3 py-1 rounded mb-2"
+                                                >
+                                                    변경
+                                                </button>
+                                            )}
+                                        </div>
                                         <p className="font-regular text-xs">
                                             {order.address}
                                         </p>
@@ -415,6 +449,12 @@ export default function Page({ params }: { params: { orderId: string } }) {
                 isOpen={deleteOrderDisclosure.isOpen}
                 onOpenChange={deleteOrderDisclosure.onOpenChange}
                 handleDelete={() => cancelOrder()}
+            />
+            <UpdateAddressModal
+                order={order}
+                isOpen={updateAddressModal.isOpen}
+                onOpenChange={updateAddressModal.onOpenChange}
+                handleDone={() => window.location.reload()}
             />
             <MyFooter />
         </>

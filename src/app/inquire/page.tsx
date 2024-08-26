@@ -11,6 +11,7 @@ import CategoryTabBar from "@/components/CategoryTabBar";
 import MyFooter from "@/components/MyFooter";
 import MyHeader from "@/components/MyHeader";
 import DeleteOrderModal from "@/modals/DeleteOrderModal";
+import UpdateAddressModal from "@/modals/UpdateAddressModal";
 import Order from "@/models/Order";
 import Product from "@/models/Product";
 import User from "@/models/User";
@@ -30,7 +31,7 @@ export default function Page() {
 
     const [productList, setProductList] = useState<Product[]>([]);
     const [orderList, setOrderList] = useState<Order[]>([]);
-    const [orderWillBeDeleted, setOrderWillBeDeleted] = useState<Order | null>(
+    const [orderWillBeUpdated, setOrderWillBeUpdated] = useState<Order | null>(
         null
     );
 
@@ -39,6 +40,7 @@ export default function Page() {
     const orderPasswordRef = useRef<HTMLInputElement>(null);
 
     const deleteOrderDisclosure = useDisclosure();
+    const updateAddressModal = useDisclosure();
 
     useEffect(() => {
         fetchUser();
@@ -151,8 +153,8 @@ export default function Page() {
     }
 
     async function cancelOrder() {
-        if (orderWillBeDeleted !== null) {
-            await deleteOrder(orderWillBeDeleted.id);
+        if (orderWillBeUpdated !== null) {
+            await deleteOrder(orderWillBeUpdated.id);
             window.location.reload();
         }
     }
@@ -211,7 +213,7 @@ export default function Page() {
                                                     OrderStatus.WAITING_PAYMENT && (
                                                     <button
                                                         onClick={() => {
-                                                            setOrderWillBeDeleted(
+                                                            setOrderWillBeUpdated(
                                                                 order
                                                             );
                                                             deleteOrderDisclosure.onOpen();
@@ -272,9 +274,28 @@ export default function Page() {
                                             </div>
                                         )}
                                         <div className="bg-gray-100 p-2 rounded my-2">
-                                            <p className="font-medium text-xs mb-2">
-                                                배송지 정보
-                                            </p>
+                                            <div className="flex justify-between items-center">
+                                                <p className="font-medium text-xs mb-2">
+                                                    배송지 정보
+                                                </p>
+                                                {order &&
+                                                    (order.status ===
+                                                        OrderStatus.WAITING_PAYMENT ||
+                                                        order.status ===
+                                                            OrderStatus.PREPARE_DELIVERY) && (
+                                                        <button
+                                                            onClick={() => {
+                                                                setOrderWillBeUpdated(
+                                                                    order
+                                                                );
+                                                                updateAddressModal.onOpen();
+                                                            }}
+                                                            className="font-medium text-xs text-gray-500 bg-gray-200 px-3 py-1 rounded hover:bg-gray-300 duration-200 mb-2"
+                                                        >
+                                                            변경
+                                                        </button>
+                                                    )}
+                                            </div>
                                             <div>
                                                 <p className="font-regular text-gray-500 text-xs">
                                                     {order.address}
@@ -462,7 +483,7 @@ export default function Page() {
                                                     OrderStatus.WAITING_PAYMENT && (
                                                     <button
                                                         onClick={() => {
-                                                            setOrderWillBeDeleted(
+                                                            setOrderWillBeUpdated(
                                                                 order
                                                             );
                                                             deleteOrderDisclosure.onOpen();
@@ -523,9 +544,28 @@ export default function Page() {
                                             </div>
                                         )}
                                         <div className="bg-gray-100 p-2 rounded my-2">
-                                            <p className="font-medium text-sm mb-2">
-                                                배송지 정보
-                                            </p>
+                                            <div className="flex justify-between items-center">
+                                                <p className="font-medium text-sm">
+                                                    배송지 정보
+                                                </p>
+                                                {order &&
+                                                    (order.status ===
+                                                        OrderStatus.WAITING_PAYMENT ||
+                                                        order.status ===
+                                                            OrderStatus.PREPARE_DELIVERY) && (
+                                                        <button
+                                                            onClick={() => {
+                                                                setOrderWillBeUpdated(
+                                                                    order
+                                                                );
+                                                                updateAddressModal.onOpen();
+                                                            }}
+                                                            className="font-medium text-sm text-gray-500 bg-gray-200 px-3 py-1 rounded hover:bg-gray-300 duration-200 mb-2"
+                                                        >
+                                                            변경
+                                                        </button>
+                                                    )}
+                                            </div>
                                             <div>
                                                 <p className="font-regular text-gray-500 text-sm">
                                                     {order.address}
@@ -668,6 +708,12 @@ export default function Page() {
                 isOpen={deleteOrderDisclosure.isOpen}
                 onOpenChange={deleteOrderDisclosure.onOpenChange}
                 handleDelete={() => cancelOrder()}
+            />
+            <UpdateAddressModal
+                order={orderWillBeUpdated}
+                isOpen={updateAddressModal.isOpen}
+                onOpenChange={updateAddressModal.onOpenChange}
+                handleDone={() => window.location.reload()}
             />
             <MyFooter />
         </>
