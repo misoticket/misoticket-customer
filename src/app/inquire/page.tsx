@@ -213,15 +213,6 @@ export default function Page() {
                                                     {order &&
                                                         order.deliveryInvoiceNumber}
                                                 </p>
-                                                <div className="mt-4">
-                                                    <p className="font-medium text-xs">
-                                                        {order && order.address}
-                                                    </p>
-                                                    <p className="font-medium text-xs mt-1">
-                                                        {order &&
-                                                            order.addressDetail}
-                                                    </p>
-                                                </div>
                                             </div>
                                         )}
                                         {order.status ===
@@ -235,17 +226,21 @@ export default function Page() {
                                                     {order &&
                                                         order.deliveryInvoiceNumber}
                                                 </p>
-                                                <div className="mt-4">
-                                                    <p className="font-medium text-xs">
-                                                        {order && order.address}
-                                                    </p>
-                                                    <p className="font-medium text-xs mt-1">
-                                                        {order &&
-                                                            order.addressDetail}
-                                                    </p>
-                                                </div>
                                             </div>
                                         )}
+                                        <div className="bg-gray-100 p-2 rounded my-2">
+                                            <p className="font-medium text-xs mb-2">
+                                                배송지 정보
+                                            </p>
+                                            <div>
+                                                <p className="font-regular text-gray-500 text-xs">
+                                                    {order.address}
+                                                </p>
+                                                <p className="font-regular text-gray-500 text-xs">
+                                                    {order.addressDetail}
+                                                </p>
+                                            </div>
+                                        </div>
                                         <div className="border-t mt-4 pt-4 gap-3">
                                             <ul>
                                                 {order.productList.map(
@@ -441,15 +436,6 @@ export default function Page() {
                                                     {order &&
                                                         order.deliveryInvoiceNumber}
                                                 </p>
-                                                <div className="mt-4">
-                                                    <p className="font-medium text-xs">
-                                                        {order && order.address}
-                                                    </p>
-                                                    <p className="font-medium text-xs mt-1">
-                                                        {order &&
-                                                            order.addressDetail}
-                                                    </p>
-                                                </div>
                                             </div>
                                         )}
                                         {order.status ===
@@ -463,17 +449,21 @@ export default function Page() {
                                                     {order &&
                                                         order.deliveryInvoiceNumber}
                                                 </p>
-                                                <div className="mt-4">
-                                                    <p className="font-medium text-xs">
-                                                        {order && order.address}
-                                                    </p>
-                                                    <p className="font-medium text-xs mt-1">
-                                                        {order &&
-                                                            order.addressDetail}
-                                                    </p>
-                                                </div>
                                             </div>
                                         )}
+                                        <div className="bg-gray-100 p-2 rounded my-2">
+                                            <p className="font-medium text-sm mb-2">
+                                                배송지 정보
+                                            </p>
+                                            <div>
+                                                <p className="font-regular text-gray-500 text-sm">
+                                                    {order.address}
+                                                </p>
+                                                <p className="font-regular text-gray-500 text-sm">
+                                                    {order.addressDetail}
+                                                </p>
+                                            </div>
+                                        </div>
                                         <div className="border-t mt-4 pt-4 gap-3">
                                             <ul>
                                                 {order.productList.map(
