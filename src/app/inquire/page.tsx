@@ -1,5 +1,6 @@
 "use client";
 
+import { deleteOrder } from "@/apis/FirestoreDELETE";
 import {
     fetchAllProductList,
     fetchOrderList as fetchOrderListFromServer,
@@ -9,9 +10,11 @@ import {
 import CategoryTabBar from "@/components/CategoryTabBar";
 import MyFooter from "@/components/MyFooter";
 import MyHeader from "@/components/MyHeader";
+import DeleteOrderModal from "@/modals/DeleteOrderModal";
 import Order from "@/models/Order";
 import Product from "@/models/Product";
 import User from "@/models/User";
+import { useDisclosure } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
@@ -27,10 +30,15 @@ export default function Page() {
 
     const [productList, setProductList] = useState<Product[]>([]);
     const [orderList, setOrderList] = useState<Order[]>([]);
+    const [orderWillBeDeleted, setOrderWillBeDeleted] = useState<Order | null>(
+        null
+    );
 
     const personNameRef = useRef<HTMLInputElement>(null);
     const orderCodeRef = useRef<HTMLInputElement>(null);
     const orderPasswordRef = useRef<HTMLInputElement>(null);
+
+    const deleteOrderDisclosure = useDisclosure();
 
     useEffect(() => {
         fetchUser();
@@ -142,6 +150,13 @@ export default function Page() {
         return sum;
     }
 
+    async function cancelOrder() {
+        if (orderWillBeDeleted !== null) {
+            await deleteOrder(orderWillBeDeleted.id);
+            window.location.reload();
+        }
+    }
+
     return (
         <>
             <MyHeader />
@@ -150,6 +165,14 @@ export default function Page() {
                 <div className="justify-center flex w-full mt-40 px-6">
                     {isLogIn ? (
                         <div className="w-full">
+                            <div className="flex">
+                                <div className="bg-gray-100 rounded px-4 py-2 mb-10">
+                                    <p className="font-medium text-gray-400 text-xs">
+                                        💡 주문은 입금확인 전까지만 취소할 수
+                                        있습니다.
+                                    </p>
+                                </div>
+                            </div>
                             <div className="flex justify-between items-center mb-6">
                                 <p className="font-medium text-base border-black border-l-4 pl-2">
                                     주문내역
@@ -172,14 +195,34 @@ export default function Page() {
                                         key={order.id}
                                         className="flex flex-col bg-gray-50 p-4 rounded-lg border mb-6"
                                     >
-                                        <p className="font-medium text-base">
-                                            주문번호 {order.id}
-                                        </p>
-                                        <p className="font-regular text-sm text-gray-400">
-                                            {order.createdTime.toLocaleDateString() +
-                                                " " +
-                                                order.createdTime.toLocaleTimeString()}
-                                        </p>
+                                        <div className="flex justify-between">
+                                            <div>
+                                                <p className="font-medium text-base">
+                                                    주문번호 {order.id}
+                                                </p>
+                                                <p className="font-regular text-sm text-gray-400">
+                                                    {order.createdTime.toLocaleDateString() +
+                                                        " " +
+                                                        order.createdTime.toLocaleTimeString()}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                {order.status ===
+                                                    OrderStatus.WAITING_PAYMENT && (
+                                                    <button
+                                                        onClick={() => {
+                                                            setOrderWillBeDeleted(
+                                                                order
+                                                            );
+                                                            deleteOrderDisclosure.onOpen();
+                                                        }}
+                                                        className="font-medium text-red-500 text-xs hover:text-red-600"
+                                                    >
+                                                        주문 취소
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
                                         {order.status ===
                                             OrderStatus.WAITING_PAYMENT && (
                                             <div className="my-6">
@@ -373,6 +416,14 @@ export default function Page() {
                 <div className="justify-center flex w-full mt-56">
                     {isLogIn ? (
                         <div className="w-full mx-80">
+                            <div className="flex">
+                                <div className="bg-gray-100 rounded px-4 py-2 mb-10">
+                                    <p className="font-medium text-gray-400 text-sm">
+                                        💡 주문은 입금확인 전까지만 취소할 수
+                                        있습니다.
+                                    </p>
+                                </div>
+                            </div>
                             <div className="flex justify-between items-center mb-6">
                                 <p className="font-medium text-base border-black border-l-4 pl-2">
                                     주문내역
@@ -395,14 +446,34 @@ export default function Page() {
                                         key={order.id}
                                         className="flex flex-col bg-gray-50 p-4 rounded-lg border mb-6"
                                     >
-                                        <p className="font-medium text-lg">
-                                            주문번호 {order.id}
-                                        </p>
-                                        <p className="font-regular text-sm text-gray-400">
-                                            {order.createdTime.toLocaleDateString() +
-                                                " " +
-                                                order.createdTime.toLocaleTimeString()}
-                                        </p>
+                                        <div className="flex justify-between">
+                                            <div>
+                                                <p className="font-medium text-lg">
+                                                    주문번호 {order.id}
+                                                </p>
+                                                <p className="font-regular text-sm text-gray-400">
+                                                    {order.createdTime.toLocaleDateString() +
+                                                        " " +
+                                                        order.createdTime.toLocaleTimeString()}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                {order.status ===
+                                                    OrderStatus.WAITING_PAYMENT && (
+                                                    <button
+                                                        onClick={() => {
+                                                            setOrderWillBeDeleted(
+                                                                order
+                                                            );
+                                                            deleteOrderDisclosure.onOpen();
+                                                        }}
+                                                        className="font-medium text-red-500 text-sm hover:text-red-600"
+                                                    >
+                                                        주문 취소
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
                                         {order.status ===
                                             OrderStatus.WAITING_PAYMENT && (
                                             <div className="my-6">
@@ -593,6 +664,11 @@ export default function Page() {
                     )}
                 </div>
             )}
+            <DeleteOrderModal
+                isOpen={deleteOrderDisclosure.isOpen}
+                onOpenChange={deleteOrderDisclosure.onOpenChange}
+                handleDelete={() => cancelOrder()}
+            />
             <MyFooter />
         </>
     );

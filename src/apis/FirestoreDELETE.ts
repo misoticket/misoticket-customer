@@ -9,3 +9,7 @@ export async function deleteUser(userId: string) {
     const docRef = doc(db, `users/${userId}`);
     await deleteDoc(docRef);
 }
+
+export async function deleteOrder(orderId: string) {
+    await deleteDoc(doc(db, `orders/${orderId}`));
+}

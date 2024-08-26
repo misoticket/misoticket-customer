@@ -1,12 +1,15 @@
 "use client";
 
+import { deleteOrder } from "@/apis/FirestoreDELETE";
 import { fetchAllProductList, fetchOrder } from "@/apis/FirestoreGET";
 import { OrderStatus } from "@/app/constants/OrderStatus";
 import CategoryTabBar from "@/components/CategoryTabBar";
 import MyFooter from "@/components/MyFooter";
 import MyHeader from "@/components/MyHeader";
+import DeleteOrderModal from "@/modals/DeleteOrderModal";
 import Order from "@/models/Order";
 import Product from "@/models/Product";
+import { useDisclosure } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
@@ -14,6 +17,8 @@ export default function Page({ params }: { params: { orderId: string } }) {
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
     const [order, setOrder] = useState<Order | null>(null);
     const [productList, setProductList] = useState<Product[]>([]);
+
+    const deleteOrderDisclosure = useDisclosure();
 
     useEffect(() => {
         fetchData();
@@ -41,6 +46,14 @@ export default function Page({ params }: { params: { orderId: string } }) {
         }
 
         return amount;
+    }
+
+    async function cancelOrder() {
+        if (order !== null) {
+            await deleteOrder(order.id);
+            alert("주문이 취소되었습니다.");
+            window.location.href = "/";
+        }
     }
 
     return (
@@ -133,6 +146,17 @@ export default function Page({ params }: { params: { orderId: string } }) {
                                             </div>
                                         </div>
                                     )}
+                                    <div className="bg-gray-200 rounded p-2 mt-8">
+                                        <p className="font-medium text-xs mb-4">
+                                            배송지 정보
+                                        </p>
+                                        <p className="font-regular text-xs">
+                                            {order.address}
+                                        </p>
+                                        <p className="font-regular text-xs">
+                                            {order.addressDetail}
+                                        </p>
+                                    </div>
                                 </>
                             )}
                             <div className="border-t mt-8 pt-8 pb-4 gap-3">
@@ -186,6 +210,28 @@ export default function Page({ params }: { params: { orderId: string } }) {
                                     원
                                 </p>
                             </div>
+                        </div>
+                        <div className="mt-10 flex flex-col items-center gap-4">
+                            <div className="flex">
+                                <div className="bg-gray-100 rounded px-4 py-2">
+                                    <p className="font-medium text-gray-400 text-xs">
+                                        💡 주문은 입금확인 전까지만 취소할 수
+                                        있습니다.
+                                    </p>
+                                </div>
+                            </div>
+                            {order &&
+                                order.status ===
+                                    OrderStatus.WAITING_PAYMENT && (
+                                    <button
+                                        className="font-medium text-red-500 text-sm"
+                                        onClick={() =>
+                                            deleteOrderDisclosure.onOpen()
+                                        }
+                                    >
+                                        주문 취소
+                                    </button>
+                                )}
                         </div>
                     </div>
                 </div>
@@ -275,6 +321,17 @@ export default function Page({ params }: { params: { orderId: string } }) {
                                             </div>
                                         </div>
                                     )}
+                                    <div className="bg-gray-200 rounded p-2 mt-8">
+                                        <p className="font-medium text-xs mb-4">
+                                            배송지 정보
+                                        </p>
+                                        <p className="font-regular text-xs">
+                                            {order.address}
+                                        </p>
+                                        <p className="font-regular text-xs">
+                                            {order.addressDetail}
+                                        </p>
+                                    </div>
                                 </>
                             )}
                             <div className="border-t mt-8 pt-8 pb-4 gap-3">
@@ -329,9 +386,36 @@ export default function Page({ params }: { params: { orderId: string } }) {
                                 </p>
                             </div>
                         </div>
+                        <div className="mt-10 flex flex-col items-center gap-4">
+                            <div className="flex">
+                                <div className="bg-gray-100 rounded px-4 py-2">
+                                    <p className="font-medium text-gray-400 text-xs">
+                                        💡 주문은 입금확인 전까지만 취소할 수
+                                        있습니다.
+                                    </p>
+                                </div>
+                            </div>
+                            {order &&
+                                order.status ===
+                                    OrderStatus.WAITING_PAYMENT && (
+                                    <button
+                                        className="font-medium text-red-500 text-sm"
+                                        onClick={() =>
+                                            deleteOrderDisclosure.onOpen()
+                                        }
+                                    >
+                                        주문 취소
+                                    </button>
+                                )}
+                        </div>
                     </div>
                 </div>
             )}
+            <DeleteOrderModal
+                isOpen={deleteOrderDisclosure.isOpen}
+                onOpenChange={deleteOrderDisclosure.onOpenChange}
+                handleDelete={() => cancelOrder()}
+            />
             <MyFooter />
         </>
     );
