@@ -85,6 +85,11 @@ export default function Page({ params }: { params: { productId: string } }) {
     }
 
     function handlePurchaseButton() {
+        if (Number.isNaN(amount) || amount === 0) {
+            alert("올바른 수량을 입력해주세요.");
+            return;
+        }
+
         if (product) {
             const isLogIn = localStorage.getItem("misoticket-isLogIn");
 
@@ -235,9 +240,19 @@ export default function Page({ params }: { params: { productId: string } }) {
                                                     width={20}
                                                     height={20}
                                                 />
-                                                <p className="font-semibold text-base w-5 text-center">
-                                                    {amount}
-                                                </p>
+                                                <input
+                                                    type="number"
+                                                    min={1}
+                                                    className="w-16 h-8 bg-gray-100 outline-none rounded text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                                    value={amount}
+                                                    onChange={(e) =>
+                                                        setAmount(
+                                                            parseInt(
+                                                                e.target.value
+                                                            )
+                                                        )
+                                                    }
+                                                />
                                                 <Image
                                                     onClick={() =>
                                                         adjustAmount(1)
@@ -251,14 +266,20 @@ export default function Page({ params }: { params: { productId: string } }) {
                                             </div>
                                             <div className="flex flex-col items-end">
                                                 <p className="font-regular text-xs text-gray-400">
-                                                    총 수량 {amount}개
+                                                    총 수량{" "}
+                                                    {Number.isNaN(amount)
+                                                        ? 0
+                                                        : amount}
+                                                    개
                                                 </p>
                                                 <p className="font-bold text-lg text-theme">
                                                     {product &&
-                                                        (
-                                                            product.price *
-                                                            amount
-                                                        ).toLocaleString()}
+                                                        (Number.isNaN(amount)
+                                                            ? 0
+                                                            : (
+                                                                  product.price *
+                                                                  amount
+                                                              ).toLocaleString())}
                                                     <span className="font-medium">
                                                         원
                                                     </span>
@@ -368,9 +389,19 @@ export default function Page({ params }: { params: { productId: string } }) {
                                                     width={20}
                                                     height={20}
                                                 />
-                                                <p className="font-semibold text-base w-5 text-center">
-                                                    {amount}
-                                                </p>
+                                                <input
+                                                    type="number"
+                                                    min={1}
+                                                    className="w-16 h-8 bg-gray-100 outline-none rounded text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                                    value={amount}
+                                                    onChange={(e) =>
+                                                        setAmount(
+                                                            parseInt(
+                                                                e.target.value
+                                                            )
+                                                        )
+                                                    }
+                                                />
                                                 <Image
                                                     onClick={() =>
                                                         adjustAmount(1)
@@ -384,14 +415,20 @@ export default function Page({ params }: { params: { productId: string } }) {
                                             </div>
                                             <div className="flex flex-col items-end">
                                                 <p className="font-regular text-xs text-gray-400">
-                                                    총 수량 {amount}개
+                                                    총 수량{" "}
+                                                    {Number.isNaN(amount)
+                                                        ? 0
+                                                        : amount}
+                                                    개
                                                 </p>
                                                 <p className="font-bold text-lg text-theme">
                                                     {product &&
-                                                        (
-                                                            product.price *
-                                                            amount
-                                                        ).toLocaleString()}
+                                                        (Number.isNaN(amount)
+                                                            ? 0
+                                                            : (
+                                                                  product.price *
+                                                                  amount
+                                                              ).toLocaleString())}
                                                     <span className="font-medium">
                                                         원
                                                     </span>
