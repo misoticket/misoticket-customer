@@ -115,15 +115,6 @@ export default function Page({ params }: { params: { orderId: string } }) {
                                                 {order &&
                                                     order.deliveryInvoiceNumber}
                                             </p>
-                                            <div className="mt-6">
-                                                <p className="font-medium text-xs text-center">
-                                                    {order && order.address}
-                                                </p>
-                                                <p className="font-medium text-xs text-center mt-1">
-                                                    {order &&
-                                                        order.addressDetail}
-                                                </p>
-                                            </div>
                                         </div>
                                     )}
                                     {order.status ===
@@ -137,15 +128,19 @@ export default function Page({ params }: { params: { orderId: string } }) {
                                                 {order &&
                                                     order.deliveryInvoiceNumber}
                                             </p>
-                                            <div className="mt-6">
-                                                <p className="font-medium text-xs text-center">
-                                                    {order && order.address}
-                                                </p>
-                                                <p className="font-medium text-xs text-center mt-1">
-                                                    {order &&
-                                                        order.addressDetail}
-                                                </p>
-                                            </div>
+                                        </div>
+                                    )}
+                                    {order.status === OrderStatus.CANCELLED && (
+                                        <div className="flex flex-col items-center">
+                                            <p className="font-medium text-lg text-red-500">
+                                                주문이 취소되었어요.
+                                            </p>
+                                            <p className="font-medium text-xs text-gray-500 mt-2 leading-5 text-center">
+                                                유가증권은 주문 후 1일동안
+                                                입금이 안될 시 주문이
+                                                취소됩니다. 시세변동이 있음으로
+                                                다시 주문해주시기 바랍니다.
+                                            </p>
                                         </div>
                                     )}
                                     <div className="bg-gray-200 rounded p-2 mt-8">
@@ -306,15 +301,6 @@ export default function Page({ params }: { params: { orderId: string } }) {
                                                 {order &&
                                                     order.deliveryInvoiceNumber}
                                             </p>
-                                            <div className="mt-6">
-                                                <p className="font-medium text-xs text-center">
-                                                    {order && order.address}
-                                                </p>
-                                                <p className="font-medium text-xs text-center mt-1">
-                                                    {order &&
-                                                        order.addressDetail}
-                                                </p>
-                                            </div>
                                         </div>
                                     )}
                                     {order.status ===
@@ -328,15 +314,20 @@ export default function Page({ params }: { params: { orderId: string } }) {
                                                 {order &&
                                                     order.deliveryInvoiceNumber}
                                             </p>
-                                            <div className="mt-6">
-                                                <p className="font-medium text-xs text-center">
-                                                    {order && order.address}
-                                                </p>
-                                                <p className="font-medium text-xs text-center mt-1">
-                                                    {order &&
-                                                        order.addressDetail}
-                                                </p>
-                                            </div>
+                                        </div>
+                                    )}
+                                    {order.status === OrderStatus.CANCELLED && (
+                                        <div className="flex flex-col items-center">
+                                            <p className="font-medium text-lg text-red-500">
+                                                주문이 취소되었어요.
+                                            </p>
+                                            <p className="font-medium text-xs text-gray-500 mt-2 leading-5 text-center">
+                                                유가증권은 주문 후 1일동안
+                                                입금이 안될 시 주문이
+                                                취소됩니다. <br />
+                                                시세변동이 있음으로 다시
+                                                주문해주시기 바랍니다.
+                                            </p>
                                         </div>
                                     )}
                                     <div className="bg-gray-200 rounded p-2 mt-8">

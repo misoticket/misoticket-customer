@@ -13,6 +13,7 @@ export default class Product {
     price: number;
     customerSellingPrice: number;
     desc: string;
+    isDeleted: boolean;
 
     constructor(
         id: string,
@@ -26,7 +27,8 @@ export default class Product {
         originalPrice: number,
         price: number,
         customerSellingPrice: number,
-        desc: string
+        desc: string,
+        isDeleted: boolean
     ) {
         this.id = id;
         this.name = name;
@@ -40,6 +42,7 @@ export default class Product {
         this.price = price;
         this.customerSellingPrice = customerSellingPrice;
         this.desc = desc;
+        this.isDeleted = isDeleted;
     }
 }
 
@@ -59,6 +62,7 @@ export function convertFirebaseObjectToProduct(
         data.originalPrice,
         data.price,
         data.customerSellingPrice,
-        data.desc
+        data.desc,
+        data.isDeleted
     );
 }

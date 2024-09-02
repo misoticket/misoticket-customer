@@ -3,4 +3,5 @@ export const OrderStatus = {
     PREPARE_DELIVERY: "prepare_delivery",
     DELIVERY_IN_PROGRESS: "delivery_in_progress",
     DELIVERY_DONE: "delivery_done",
-}
+    CANCELLED: "cancelled",
+};

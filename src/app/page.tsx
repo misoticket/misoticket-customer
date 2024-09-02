@@ -40,7 +40,7 @@ export default function Home() {
             fetchMainCategoryList(),
         ]);
 
-        setProductList(products);
+        setProductList(products.filter((prod) => prod.isDeleted === false));
         setBanner(banners);
         setMainCategoryList(categories);
     }

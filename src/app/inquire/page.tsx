@@ -273,6 +273,21 @@ export default function Page() {
                                                 </p>
                                             </div>
                                         )}
+                                        {order.status ===
+                                            OrderStatus.CANCELLED && (
+                                            <div className="my-8">
+                                                <p className="font-medium text-base text-red-500">
+                                                    주문이 취소되었어요.
+                                                </p>
+                                                <p className="font-medium text-xs text-gray-500 mt-2 leading-5">
+                                                    유가증권은 주문 후 1일동안
+                                                    입금이 안될 시 주문이
+                                                    취소됩니다. <br />
+                                                    시세변동이 있음으로 다시
+                                                    주문해주시기 바랍니다.
+                                                </p>
+                                            </div>
+                                        )}
                                         <div className="bg-gray-100 p-2 rounded my-2">
                                             <div className="flex justify-between items-center">
                                                 <p className="font-medium text-xs mb-2">
@@ -540,6 +555,21 @@ export default function Page() {
                                                     송장번호{" "}
                                                     {order &&
                                                         order.deliveryInvoiceNumber}
+                                                </p>
+                                            </div>
+                                        )}
+                                        {order.status ===
+                                            OrderStatus.CANCELLED && (
+                                            <div className="my-8">
+                                                <p className="font-medium text-base text-red-500">
+                                                    주문이 취소되었어요.
+                                                </p>
+                                                <p className="font-medium text-xs text-gray-500 mt-2 leading-5">
+                                                    유가증권은 주문 후 1일동안
+                                                    입금이 안될 시 주문이
+                                                    취소됩니다. <br />
+                                                    시세변동이 있음으로 다시
+                                                    주문해주시기 바랍니다.
                                                 </p>
                                             </div>
                                         )}
