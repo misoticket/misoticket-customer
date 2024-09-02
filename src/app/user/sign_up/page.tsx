@@ -387,7 +387,7 @@ export default function Page() {
                         </div>
                     </div>
                 </div>
-                <MyFooter />
+                <MyFooter isShow={true} />
             </div>
             <SearchAddressModal
                 isOpen={searchAddressModal.isOpen}

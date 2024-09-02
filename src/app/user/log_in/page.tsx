@@ -148,7 +148,7 @@ export default function Page() {
                     onOpenChange={newPasswordDisclosure.onOpenChange}
                     handleDone={(newPassword) => setNewPassword(newPassword)}
                 />
-                <MyFooter />
+                <MyFooter isShow={true} />
             </div>
         </>
     );

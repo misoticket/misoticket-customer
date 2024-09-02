@@ -17,6 +17,8 @@ export default function Page({ params }: { params: { productId: string } }) {
     const router = useRouter();
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+
+    const [isFetchDone, setIsFetchDone] = useState(false);
     const [product, setProduct] = useState<Product | null>(null);
     const [amount, setAmount] = useState(1);
 
@@ -26,6 +28,7 @@ export default function Page({ params }: { params: { productId: string } }) {
 
     async function fetchData() {
         setProduct(await fetchProduct(params.productId));
+        setIsFetchDone(true);
     }
 
     function adjustAmount(input: number) {
@@ -149,7 +152,7 @@ export default function Page({ params }: { params: { productId: string } }) {
                                 </div>
                             </div>
                         </div>
-                        <MyFooter />
+                        <MyFooter isShow={isFetchDone} />
                     </div>
                 ) : (
                     <div>
@@ -259,7 +262,7 @@ export default function Page({ params }: { params: { productId: string } }) {
                                 </div>
                             </div>
                         </div>
-                        <MyFooter />
+                        <MyFooter isShow={isFetchDone} />
                     </div>
                 )}
             </NextUIProvider>

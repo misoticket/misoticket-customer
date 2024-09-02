@@ -122,6 +122,16 @@ export default function MyHeader() {
                                     <DropdownItem>
                                         <p
                                             className="font-medium text-sm py-1"
+                                            onClick={() =>
+                                                router.push("/notice")
+                                            }
+                                        >
+                                            공지사항
+                                        </p>
+                                    </DropdownItem>
+                                    <DropdownItem>
+                                        <p
+                                            className="font-medium text-sm py-1"
                                             onClick={() => router.push("/qna")}
                                         >
                                             Q&A
@@ -180,6 +190,12 @@ export default function MyHeader() {
                                 onClick={() => router.push("/basket")}
                             >
                                 장바구니
+                            </p>
+                            <p
+                                className="font-medium text-sm cursor-pointer hover:opacity-50"
+                                onClick={() => router.push("/notice")}
+                            >
+                                공지사항
                             </p>
                             <p
                                 className="font-medium text-sm cursor-pointer hover:opacity-50"

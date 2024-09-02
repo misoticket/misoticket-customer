@@ -29,6 +29,7 @@ export default function Page() {
     const [isLogIn, setIsLogIn] = useState(false);
     const [user, setUser] = useState<User | null>(null);
 
+    const [isFetchDone, setIsFetchDone] = useState(false);
     const [productList, setProductList] = useState<Product[]>([]);
     const [orderList, setOrderList] = useState<Order[]>([]);
     const [orderWillBeUpdated, setOrderWillBeUpdated] = useState<Order | null>(
@@ -93,6 +94,7 @@ export default function Page() {
         if (user) {
             setProductList(await fetchAllProductList());
             setOrderList(await fetchOrderListFromServer(user.id));
+            setIsFetchDone(true);
         }
     }
 
@@ -745,7 +747,7 @@ export default function Page() {
                 onOpenChange={updateAddressDisclosure.onOpenChange}
                 handleDone={() => window.location.reload()}
             />
-            <MyFooter />
+            <MyFooter isShow={isFetchDone} />
         </>
     );
 }

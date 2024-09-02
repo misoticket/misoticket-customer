@@ -13,6 +13,8 @@ import { useEffect, useState } from "react";
 
 export default function Page() {
     const router = useRouter();
+
+    const [isFetchDone, setIsFetchDone] = useState(false);
     const [user, setUser] = useState<User | null>(null);
 
     const deleteAccountDisclosure = useDisclosure();
@@ -28,6 +30,7 @@ export default function Page() {
             if (isLogIn === "y") {
                 const userId = localStorage.getItem("misoticket-userId")!;
                 setUser(await fetchUser(userId));
+                setIsFetchDone(true);
             } else {
                 router.push("/");
             }
@@ -126,7 +129,7 @@ export default function Page() {
                         </div>
                     </div>
                 </div>
-                <MyFooter />
+                <MyFooter isShow={isFetchDone} />
             </div>
             <DeleteAccountModal
                 isOpen={deleteAccountDisclosure.isOpen}

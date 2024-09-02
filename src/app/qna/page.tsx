@@ -26,6 +26,7 @@ export default function Page() {
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
+    const [isFetchDone, setIsFetchDone] = useState(false);
     const [postList, setPostList] = useState<Post[]>([]);
     const [adminPostList, setAdminPostList] = useState<AdminPost[]>([]);
     const [userList, setUserList] = useState<User[]>([]);
@@ -46,6 +47,7 @@ export default function Page() {
         setUserList(await fetchUserList());
         setAdminPostList(await fetchAdminPostList());
         setPostList(await fetchPostList());
+        setIsFetchDone(true);
     }
 
     async function addPost(title: string, content: string) {
@@ -391,7 +393,9 @@ export default function Page() {
                         )}
                     </>
                 )}
-                <MyFooter />
+                <div className="mt-40">
+                    <MyFooter isShow={isFetchDone} />
+                </div>
                 <AddPostModal
                     isOpen={addPostModal.isOpen}
                     onOpenChange={addPostModal.onOpenChange}

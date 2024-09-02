@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { searchUser } from "@/apis/FirestoreGET";
 import CategoryTabBar from "@/components/CategoryTabBar";
@@ -22,16 +22,31 @@ export default function Page() {
     }, []);
 
     async function logIn() {
-        if (nameRef.current && phoneNumberRef1.current && phoneNumberRef2.current && phoneNumberRef3.current) {
+        if (
+            nameRef.current &&
+            phoneNumberRef1.current &&
+            phoneNumberRef2.current &&
+            phoneNumberRef3.current
+        ) {
             const name = nameRef.current.value;
             const phoneNumber1 = phoneNumberRef1.current.value;
             const phoneNumber2 = phoneNumberRef1.current.value;
             const phoneNumber3 = phoneNumberRef1.current.value;
 
-            if (name.length === 0 || phoneNumber1.length === 0 || phoneNumber2.length === 0 || phoneNumber3.length === 0) {
+            if (
+                name.length === 0 ||
+                phoneNumber1.length === 0 ||
+                phoneNumber2.length === 0 ||
+                phoneNumber3.length === 0
+            ) {
                 alert("항목을 모두 입력해주세요.");
             } else {
-                const phoneNumber = phoneNumberRef1.current.value + "-" + phoneNumberRef2.current.value + "-" + phoneNumberRef3.current.value;
+                const phoneNumber =
+                    phoneNumberRef1.current.value +
+                    "-" +
+                    phoneNumberRef2.current.value +
+                    "-" +
+                    phoneNumberRef3.current.value;
                 const user = await searchUser(name, phoneNumber);
 
                 if (user === null) {
@@ -50,17 +65,23 @@ export default function Page() {
                 <CategoryTabBar selectedCategoryId={null} />
                 <div className="flex justify-center items-center mt-56 flex-col">
                     <div className="w-80 p-6 bg-gray-100 border rounded-lg">
-                        <p className="font-semibold text-base text-center">아이디 찾기</p>
+                        <p className="font-semibold text-base text-center">
+                            아이디 찾기
+                        </p>
                         <div className="mt-8">
                             <div className="mb-4">
-                                <p className="font-medium text-sm w-20 mb-2">성함</p>
+                                <p className="font-medium text-sm w-20 mb-2">
+                                    성함
+                                </p>
                                 <input
                                     ref={nameRef}
                                     className="w-full h-10 bg-white rounded border px-3 text-sm font-medium"
                                 />
                             </div>
                             <div className="mb-2">
-                                <p className="font-medium text-sm w-20 mb-2">휴대폰번호</p>
+                                <p className="font-medium text-sm w-20 mb-2">
+                                    휴대폰번호
+                                </p>
                                 <div className="flex gap-2 items-center">
                                     <input
                                         ref={phoneNumberRef1}
@@ -78,22 +99,35 @@ export default function Page() {
                                     />
                                 </div>
                             </div>
-                            {
-                                userId.length === 0 ?
-                                    <button onClick={() => logIn()} className="w-full h-10 bg-gray-800 mt-6 rounded-lg text-white hover:opacity-80">검색하기</button>
-                                :
-                                    <div className="mt-16">
-                                        <p className="font-regular text-sm text-gray-400 text-center mb-1">검색된 아이디입니다.</p>
-                                        <p className="font-medium text-md text-black text-center">{userId}</p>
-                                    </div>
-                            }
+                            {userId.length === 0 ? (
+                                <button
+                                    onClick={() => logIn()}
+                                    className="w-full h-10 bg-gray-800 mt-6 rounded-lg text-white hover:opacity-80"
+                                >
+                                    검색하기
+                                </button>
+                            ) : (
+                                <div className="mt-16">
+                                    <p className="font-regular text-sm text-gray-400 text-center mb-1">
+                                        검색된 아이디입니다.
+                                    </p>
+                                    <p className="font-medium text-md text-black text-center">
+                                        {userId}
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="w-80 mt-2 flex justify-end px-3">
-                        <button onClick={() => router.push("/user/inquire_pw")} className="text-sm font-regular hover:opacity-60 text-gray-400">비밀번호 찾기</button>
+                        <button
+                            onClick={() => router.push("/user/inquire_pw")}
+                            className="text-sm font-regular hover:opacity-60 text-gray-400"
+                        >
+                            비밀번호 찾기
+                        </button>
                     </div>
                 </div>
-                <MyFooter />
+                <MyFooter isShow={true} />
             </div>
         </>
     );

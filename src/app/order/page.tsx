@@ -40,6 +40,7 @@ export default function Page() {
     const searchParams = useSearchParams();
     const router = useRouter();
 
+    const [isFetchDone, setIsFetchDone] = useState(false);
     const [user, setUser] = useState<User | null>(null);
 
     const [from, setFrom] = useState<string | null>(null);
@@ -121,6 +122,8 @@ export default function Page() {
 
             setProductOrderList(pList);
         }
+
+        setIsFetchDone(true);
     }
 
     async function fetchUser() {
@@ -1841,7 +1844,7 @@ export default function Page() {
                         )}
                     </>
                 )}
-                <MyFooter />
+                <MyFooter isShow={isFetchDone} />
             </div>
             <ProgressModal inProgress={isOrdering} />
             <SearchAddressModal

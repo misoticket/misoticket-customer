@@ -164,7 +164,7 @@ export default function Page({ params }: { params: { categoryId: string } }) {
                             </p>
                         )}
                     </div>
-                    <MyFooter />
+                    <MyFooter isShow={true} />
                 </div>
             ) : (
                 <div>
@@ -234,7 +234,7 @@ export default function Page({ params }: { params: { categoryId: string } }) {
                             </p>
                         )}
                     </div>
-                    <MyFooter />
+                    <MyFooter isShow={true} />
                 </div>
             )}
         </>

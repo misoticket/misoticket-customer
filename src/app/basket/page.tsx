@@ -34,6 +34,7 @@ export default function Page() {
         ProductOrder[]
     >([]);
 
+    const [isFetchDone, setIsFetchDone] = useState(false);
     const [productList, setProductList] = useState<Product[]>([]);
     const [productOrderList, setProductOrderList] = useState<ProductOrder[]>(
         []
@@ -81,6 +82,8 @@ export default function Page() {
                 );
             }
         }
+
+        setIsFetchDone(true);
     }
 
     function getProduct(id: string): Product {
@@ -458,7 +461,7 @@ export default function Page() {
                 handleLogIn={() => moveToLogIn()}
                 handleNoneUserOrder={() => moveToOrderWithNoneUser()}
             />
-            <MyFooter />
+            <MyFooter isShow={isFetchDone} />
         </>
     );
 }

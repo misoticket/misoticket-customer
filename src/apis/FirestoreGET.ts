@@ -6,6 +6,7 @@ import Category, { convertFirebaseObjectToCategory } from "@/models/Category";
 import MainCategory, {
     convertDocSnapToMainCategory,
 } from "@/models/MainCategory";
+import Notice, { convertDocSnapToNotice } from "@/models/Notice";
 import Order, { convertDocSnapToOrder } from "@/models/Order";
 import Post, { convertDocSnapToPost } from "@/models/Post";
 import Product, { convertFirebaseObjectToProduct } from "@/models/Product";
@@ -251,4 +252,11 @@ export async function fetchMarketPrices(): Promise<MarketPrices> {
     }
 
     return result;
+}
+
+export async function fetchNoticeList(): Promise<Notice[]> {
+    const querySnapshot = await getDocs(collection(db, "notices"));
+    return querySnapshot.docs
+        .map((doc) => convertDocSnapToNotice(doc))
+        .sort((a, b) => b.createdTime.getTime() - a.createdTime.getTime());
 }

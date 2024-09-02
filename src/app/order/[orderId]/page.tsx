@@ -16,6 +16,8 @@ import { useMediaQuery } from "react-responsive";
 
 export default function Page({ params }: { params: { orderId: string } }) {
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+
+    const [isFetchDone, setIsFetchDone] = useState(false);
     const [order, setOrder] = useState<Order | null>(null);
     const [productList, setProductList] = useState<Product[]>([]);
 
@@ -30,6 +32,7 @@ export default function Page({ params }: { params: { orderId: string } }) {
     async function fetchData() {
         setProductList(await fetchAllProductList());
         setOrder(await fetchOrder(params.orderId));
+        setIsFetchDone(true);
     }
 
     function getProduct(productId: string): Product {
@@ -447,7 +450,7 @@ export default function Page({ params }: { params: { orderId: string } }) {
                 onOpenChange={updateAddressModal.onOpenChange}
                 handleDone={() => window.location.reload()}
             />
-            <MyFooter />
+            <MyFooter isShow={isFetchDone} />
         </>
     );
 }

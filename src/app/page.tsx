@@ -27,6 +27,8 @@ export default function Home() {
     const [mainCategoryList, setMainCategoryList] = useState<MainCategory[]>(
         []
     );
+
+    const [isFetchDone, setIsFetchDone] = useState(false);
     const [productList, setProductList] = useState<Product[]>([]);
     const [banner, setBanner] = useState<Banner | null>(null);
 
@@ -58,6 +60,7 @@ export default function Home() {
         setProductList(products.filter((prod) => prod.isDeleted === false));
         setBanner(banners);
         setMainCategoryList(categories);
+        setIsFetchDone(true);
     }
 
     function getProduct(id: string): Product {
@@ -146,7 +149,7 @@ export default function Home() {
                         </div>
                     </div>
                 )}
-                <MyFooter />
+                <MyFooter isShow={isFetchDone} />
             </main>
             <BannerModal
                 banner={banner}

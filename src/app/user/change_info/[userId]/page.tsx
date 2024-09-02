@@ -19,6 +19,7 @@ import { KeyboardEvent, useEffect, useRef, useState } from "react";
 export default function Page({ params }: { params: { userId: string } }) {
     const router = useRouter();
 
+    const [isFetchDone, setIsFetchDone] = useState(false);
     const [name, setName] = useState("");
     const [phoneNumber1, setPhoneNumber1] = useState("");
     const [phoneNumber2, setPhoneNumber2] = useState("");
@@ -54,6 +55,7 @@ export default function Page({ params }: { params: { userId: string } }) {
             setDetailAddress(myUser.addressDetail);
             setEmail(myUser.email.split("@")[0]);
             setShowEmailAddress(myUser.email.split("@")[1]);
+            setIsFetchDone(true);
         }
     }
 
@@ -350,7 +352,7 @@ export default function Page({ params }: { params: { userId: string } }) {
                         </div>
                     </div>
                 </div>
-                <MyFooter />
+                <MyFooter isShow={isFetchDone} />
             </div>
             <SearchAddressModal
                 isOpen={searchAddressModal.isOpen}
