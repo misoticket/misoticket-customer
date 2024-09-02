@@ -40,7 +40,7 @@ export default function Page() {
     const orderPasswordRef = useRef<HTMLInputElement>(null);
 
     const deleteOrderDisclosure = useDisclosure();
-    const updateAddressModal = useDisclosure();
+    const updateAddressDisclosure = useDisclosure();
 
     useEffect(() => {
         fetchUser();
@@ -303,7 +303,7 @@ export default function Page() {
                                                                 setOrderWillBeUpdated(
                                                                     order
                                                                 );
-                                                                updateAddressModal.onOpen();
+                                                                updateAddressDisclosure.onOpen();
                                                             }}
                                                             className="font-medium text-xs text-gray-500 bg-gray-200 px-3 py-1 rounded hover:bg-gray-300 duration-200 mb-2"
                                                         >
@@ -588,7 +588,7 @@ export default function Page() {
                                                                 setOrderWillBeUpdated(
                                                                     order
                                                                 );
-                                                                updateAddressModal.onOpen();
+                                                                updateAddressDisclosure.onOpen();
                                                             }}
                                                             className="font-medium text-sm text-gray-500 bg-gray-200 px-3 py-1 rounded hover:bg-gray-300 duration-200 mb-2"
                                                         >
@@ -741,8 +741,8 @@ export default function Page() {
             />
             <UpdateAddressModal
                 order={orderWillBeUpdated}
-                isOpen={updateAddressModal.isOpen}
-                onOpenChange={updateAddressModal.onOpenChange}
+                isOpen={updateAddressDisclosure.isOpen}
+                onOpenChange={updateAddressDisclosure.onOpenChange}
                 handleDone={() => window.location.reload()}
             />
             <MyFooter />

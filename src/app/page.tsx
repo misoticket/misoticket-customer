@@ -11,9 +11,11 @@ import CategoryTabBar from "@/components/CategoryTabBar";
 import MyFooter from "@/components/MyFooter";
 import MyHeader from "@/components/MyHeader";
 import ProductCell from "@/components/cells/ProductCell";
+import BannerModal from "@/modals/BannerModal";
 import { Banner } from "@/models/Banner";
 import MainCategory from "@/models/MainCategory";
 import Product from "@/models/Product";
+import { useDisclosure } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
@@ -28,10 +30,23 @@ export default function Home() {
     const [productList, setProductList] = useState<Product[]>([]);
     const [banner, setBanner] = useState<Banner | null>(null);
 
+    const bannerDiscolsure = useDisclosure();
+
     useEffect(() => {
         fetchData();
         window.scrollTo(0, 0);
     }, []);
+
+    useEffect(() => {
+        if (banner !== null) {
+            const isSkip = localStorage.getItem(banner.id);
+
+            if (isSkip !== "skip") {
+                localStorage.setItem(banner.id, "skip");
+                bannerDiscolsure.onOpen();
+            }
+        }
+    }, [banner]);
 
     async function fetchData() {
         const [products, banners, categories] = await Promise.all([
@@ -56,18 +71,6 @@ export default function Home() {
                 <CategoryTabBar selectedCategoryId={null} />
                 {isMobile ? (
                     <div>
-                        <div className="flex justify-center">
-                            {banner && (
-                                <div className="mt-28 bg-gray-100 w-full mx-4 px-8 py-4 rounded-lg">
-                                    <p className="font-medium text-base mb-4">
-                                        {banner.title}
-                                    </p>
-                                    <p className="font-medium text-xs whitespace-pre-line">
-                                        {banner.desc}
-                                    </p>
-                                </div>
-                            )}
-                        </div>
                         <img
                             className={`${banner !== null ? "mt-4" : "mt-32"}`}
                             src={mainBannerMobile.src}
@@ -105,27 +108,13 @@ export default function Home() {
                 ) : (
                     <div>
                         <div>
-                            <div className="relative">
-                                <div className="flex justify-center">
-                                    {banner && (
-                                        <div className="mt-40 bg-gray-100 w-1/2 px-8 py-4 rounded-lg border">
-                                            <p className="font-medium text-base mb-4">
-                                                {banner.title}
-                                            </p>
-                                            <p className="font-medium text-sm whitespace-pre-line">
-                                                {banner.desc}
-                                            </p>
-                                        </div>
-                                    )}
-                                </div>
-                                <img
-                                    className={`${
-                                        banner !== null ? "mt-4" : "mt-12"
-                                    }`}
-                                    src={mainBanner.src}
-                                    alt=""
-                                />
-                            </div>
+                            <img
+                                className={`${
+                                    banner !== null ? "mt-4" : "mt-12"
+                                }`}
+                                src={mainBanner.src}
+                                alt=""
+                            />
                             <div className="mt-16 flex justify-center">
                                 <div className="">
                                     {mainCategoryList.map((mc) => (
@@ -159,6 +148,11 @@ export default function Home() {
                 )}
                 <MyFooter />
             </main>
+            <BannerModal
+                banner={banner}
+                isOpen={bannerDiscolsure.isOpen}
+                onOpenChange={bannerDiscolsure.onOpenChange}
+            />
         </>
     );
 }
