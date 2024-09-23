@@ -1,3 +1,4 @@
+import { increaseNoticeNumViews } from "@/apis/FirestoreUPDATE";
 import Notice from "@/models/Notice";
 import {
     Button,
@@ -7,14 +8,27 @@ import {
     ModalFooter,
     ModalHeader,
 } from "@nextui-org/react";
+import { useEffect } from "react";
 
 interface NoticeModalProps {
     notice: Notice | null;
+    numViewsIncreased: (notice: Notice) => void;
     isOpen: boolean;
     onOpenChange: () => void;
 }
 
 export default function NoticeModal(props: NoticeModalProps) {
+    useEffect(() => {
+        updateData();
+    }, [props.notice]);
+
+    async function updateData() {
+        if (props.notice !== null) {
+            await increaseNoticeNumViews(props.notice);
+            props.numViewsIncreased(props.notice);
+        }
+    }
+
     return (
         <>
             <Modal isOpen={props.isOpen} onOpenChange={props.onOpenChange}>

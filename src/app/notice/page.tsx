@@ -55,6 +55,16 @@ export default function Page() {
         return Math.round(diffInDays);
     }
 
+    function noticeNumViewsIncresed(notice: Notice) {
+        const newNoticeList = [...noticeList];
+        for (let i = 0; i < newNoticeList.length; i++) {
+            if (newNoticeList[i].id === notice.id) {
+                newNoticeList[i].numViews++;
+                break;
+            }
+        }
+    }
+
     return (
         <>
             <div>
@@ -101,7 +111,7 @@ export default function Page() {
                                                             </p>
                                                             {getDaysFromNow(
                                                                 notice.createdTime
-                                                            ) <= 9 && (
+                                                            ) <= 7 && (
                                                                 <p className="text-xs bg-red-100 text-red-500 py-0.5 px-0.5 rounded font-medium">
                                                                     New
                                                                 </p>
@@ -200,6 +210,7 @@ export default function Page() {
             </div>
             <NoticeModal
                 notice={willOpenNotice}
+                numViewsIncreased={(notice) => noticeNumViewsIncresed(notice)}
                 isOpen={noticeDisclosure.isOpen}
                 onOpenChange={noticeDisclosure.onOpenChange}
             />
