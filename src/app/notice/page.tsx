@@ -49,6 +49,12 @@ export default function Page() {
         return dateStr + " " + timeStr;
     }
 
+    function getDaysFromNow(date: Date): number {
+        const diffInMs = Math.abs(date.getTime() - new Date().getTime());
+        const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+        return Math.round(diffInDays);
+    }
+
     return (
         <>
             <div>
@@ -89,9 +95,18 @@ export default function Page() {
                                                         key={notice.id}
                                                         className="flex border-b hover:bg-gray-50 cursor-pointer items-center"
                                                     >
-                                                        <p className="text-xs font-regular flex-1 px-2 border-r py-2">
-                                                            {notice.title}
-                                                        </p>
+                                                        <div className="flex flex-1 px-2 border-r py-2 gap-2 items-center">
+                                                            <p className="text-xs font-regular">
+                                                                {notice.title}
+                                                            </p>
+                                                            {getDaysFromNow(
+                                                                notice.createdTime
+                                                            ) <= 9 && (
+                                                                <p className="text-xs bg-red-100 text-red-500 py-0.5 px-0.5 rounded font-medium">
+                                                                    New
+                                                                </p>
+                                                            )}
+                                                        </div>
                                                         <p className="text-xs font-regular w-16 px-2 border-r py-2 text-center">
                                                             관리자
                                                         </p>
@@ -146,9 +161,18 @@ export default function Page() {
                                                         key={notice.id}
                                                         className="flex border-b hover:bg-gray-50 cursor-pointer"
                                                     >
-                                                        <p className="text-sm font-regular flex-1 px-4 border-r py-2">
-                                                            {notice.title}
-                                                        </p>
+                                                        <div className="flex flex-1 px-4 border-r py-2 gap-4 items-center">
+                                                            <p className="text-sm font-regular">
+                                                                {notice.title}
+                                                            </p>
+                                                            {getDaysFromNow(
+                                                                notice.createdTime
+                                                            ) <= 7 && (
+                                                                <p className="text-xs bg-red-100 text-red-500 py-0.5 px-2 rounded font-medium">
+                                                                    New
+                                                                </p>
+                                                            )}
+                                                        </div>
                                                         <p className="text-sm font-regular w-32 px-4 border-r py-2 text-center">
                                                             관리자
                                                         </p>
