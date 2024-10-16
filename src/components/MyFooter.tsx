@@ -12,24 +12,24 @@ export default function MyFooter(props: MyFooterProps) {
     function openEscrow() {
         window.open(
             "https://okbfex.kbstar.com/quics?page=C016760&mHValue=034d60a69b928601e8ab5b534f1ca8a8#loading",
-            "_blank"
+            "_self"
         );
     }
 
     function openCompany() {
-        window.open("/company", "_blank");
+        window.open("/company", "_self");
     }
 
     function openPolicy() {
-        window.open("/policy", "_blank");
+        window.open("/policy", "_self");
     }
 
     function openPrivacy() {
-        window.open("/privacy", "_blank");
+        window.open("/privacy", "_self");
     }
 
     function openGuide() {
-        window.open("/guide", "_blank");
+        window.open("/guide", "_self");
     }
 
     return (
@@ -133,7 +133,7 @@ export default function MyFooter(props: MyFooterProps) {
                                     </p>
                                     <p className="font-medium text-xs text-gray-600 mt-4">
                                         개인정보보호책임자: 백승헌
-                                        (baerer@naver.com)
+                                        (misoticket@naver.com)
                                     </p>
                                     <p className="font-medium text-xs text-gray-600">
                                         Copyright © 2024 티켓나라 잠실. All
@@ -242,7 +242,7 @@ export default function MyFooter(props: MyFooterProps) {
                                     </div>
                                     <p className="font-medium text-xs text-gray-600">
                                         개인정보보호책임자: 백승헌
-                                        (baerer@naver.com)
+                                        (misoticket@naver.com)
                                     </p>
                                     <p className="font-medium text-xs text-gray-600">
                                         Copyright © 2024 티켓나라 잠실. All
