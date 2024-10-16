@@ -111,12 +111,19 @@ export default function Page() {
             setAmount(Number(searchParams.get("amount")));
             setProduct(await fetchProduct(searchParams.get("productId")!));
         } else {
-            setProductList(await fetchAllProductList());
+            const prodList = await fetchAllProductList();
+            setProductList(prodList);
             const pList: ProductOrder[] = [];
 
             for (const p of searchParams.getAll("prod_order")) {
+                const prodId = p.split("_")[0];
+                const prod = prodList.filter((p) => p.id === prodId)[0];
                 pList.push(
-                    new ProductOrder(p.split("_")[0], Number(p.split("_")[1]))
+                    new ProductOrder(
+                        p.split("_")[0],
+                        Number(p.split("_")[1]),
+                        prod.price * Number(p.split("_")[1])
+                    )
                 );
             }
 
@@ -179,7 +186,13 @@ export default function Page() {
                         "",
                         new Date(),
                         user === null ? "" : user.id,
-                        [new ProductOrder(product.id, amount)],
+                        [
+                            new ProductOrder(
+                                product.id,
+                                amount,
+                                product.price * amount
+                            ),
+                        ],
                         orderPersonName,
                         orderPhoneNumber1 +
                             "-" +

@@ -195,11 +195,12 @@ export default function Page({ params }: { params: { orderId: string } }) {
                                                         </p>
                                                     </div>
                                                     <p className="font-semibold text-xs mt-1 ml-4 text-theme">
-                                                        {(
-                                                            getProduct(
-                                                                prod.productId
-                                                            ).price *
-                                                            prod.amount
+                                                        {(prod.price != null
+                                                            ? prod.price
+                                                            : getProduct(
+                                                                  prod.productId
+                                                              ).price *
+                                                              prod.amount
                                                         ).toLocaleString()}
                                                         원
                                                     </p>
@@ -382,11 +383,12 @@ export default function Page({ params }: { params: { orderId: string } }) {
                                                         </p>
                                                     </div>
                                                     <p className="font-semibold text-xs mt-1 ml-4 text-theme">
-                                                        {(
-                                                            getProduct(
-                                                                prod.productId
-                                                            ).price *
-                                                            prod.amount
+                                                        {(prod.price != null
+                                                            ? prod.price
+                                                            : getProduct(
+                                                                  prod.productId
+                                                              ).price *
+                                                              prod.amount
                                                         ).toLocaleString()}
                                                         원
                                                     </p>

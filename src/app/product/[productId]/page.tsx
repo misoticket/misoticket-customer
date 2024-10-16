@@ -134,7 +134,11 @@ export default function Page({ params }: { params: { productId: string } }) {
                     const userId = localStorage.getItem("misoticket-userId")!;
                     await addProductOrderWithUserId(
                         userId,
-                        new ProductOrder(product!.id, amount)
+                        new ProductOrder(
+                            product!.id,
+                            amount,
+                            product!.price * amount
+                        )
                     );
                 } else {
                     const noneUserId = localStorage.getItem(
@@ -143,7 +147,11 @@ export default function Page({ params }: { params: { productId: string } }) {
                     if (noneUserId !== null) {
                         await addProductOrderWithNoneUserId(
                             noneUserId,
-                            new ProductOrder(product!.id, amount)
+                            new ProductOrder(
+                                product!.id,
+                                amount,
+                                product!.price * amount
+                            )
                         );
                     } else {
                         const newNoneUserId = uuidv4();
@@ -153,7 +161,11 @@ export default function Page({ params }: { params: { productId: string } }) {
                         );
                         await addProductOrderWithNoneUserId(
                             newNoneUserId,
-                            new ProductOrder(product!.id, amount)
+                            new ProductOrder(
+                                product!.id,
+                                amount,
+                                product!.price * amount
+                            )
                         );
                     }
                 }
@@ -164,7 +176,11 @@ export default function Page({ params }: { params: { productId: string } }) {
                 if (noneUserId !== null) {
                     await addProductOrderWithNoneUserId(
                         noneUserId,
-                        new ProductOrder(product!.id, amount)
+                        new ProductOrder(
+                            product!.id,
+                            amount,
+                            product!.price * amount
+                        )
                     );
                 } else {
                     const newNoneUserId = uuidv4();
@@ -174,7 +190,11 @@ export default function Page({ params }: { params: { productId: string } }) {
                     );
                     await addProductOrderWithNoneUserId(
                         newNoneUserId,
-                        new ProductOrder(product!.id, amount)
+                        new ProductOrder(
+                            product!.id,
+                            amount,
+                            product!.price * amount
+                        )
                     );
                 }
             }

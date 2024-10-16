@@ -148,7 +148,11 @@ export default function Page() {
         let sum = 4000;
 
         for (const prod of order.productList) {
-            sum += prod.amount * getProduct(prod.productId).price;
+            if (prod.price != null) {
+                sum += prod.price;
+            } else {
+                sum += prod.amount * getProduct(prod.productId).price;
+            }
         }
 
         return sum;
@@ -353,12 +357,14 @@ export default function Page() {
                                                                     </p>
                                                                 </div>
                                                                 <p className="font-semibold text-xs mt-1 ml-4 text-theme">
-                                                                    {(
-                                                                        getProduct(
-                                                                            prod.productId
-                                                                        )
-                                                                            .price *
-                                                                        prod.amount
+                                                                    {(prod.price !=
+                                                                    null
+                                                                        ? prod.price
+                                                                        : getProduct(
+                                                                              prod.productId
+                                                                          )
+                                                                              .price *
+                                                                          prod.amount
                                                                     ).toLocaleString()}
                                                                     원
                                                                 </p>
@@ -638,12 +644,14 @@ export default function Page() {
                                                                     </p>
                                                                 </div>
                                                                 <p className="font-semibold text-xs mt-1 ml-4 text-theme">
-                                                                    {(
-                                                                        getProduct(
-                                                                            prod.productId
-                                                                        )
-                                                                            .price *
-                                                                        prod.amount
+                                                                    {(prod.price !=
+                                                                    null
+                                                                        ? prod.price
+                                                                        : getProduct(
+                                                                              prod.productId
+                                                                          )
+                                                                              .price *
+                                                                          prod.amount
                                                                     ).toLocaleString()}
                                                                     원
                                                                 </p>
